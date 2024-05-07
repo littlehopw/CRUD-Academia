@@ -31,7 +31,7 @@ public class PessoaDAO{
       }
   }
 
-    public Pessoa[] getAcademias() {
+    public Pessoa[] getPessoa() {
         return pessoas;
     }
 

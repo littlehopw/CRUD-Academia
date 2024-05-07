@@ -18,9 +18,6 @@ public class main {
     AcademiaDAO academiadao = new AcademiaDAO();
     Academia novaacademia = new Academia();
     
-    PessoaDAO pessoadao = new PessoaDAO();
-    Pessoa novapessoa = new Pessoa();
- 
     public void menu(){
         
         novaacademia.setId(1);  
@@ -31,13 +28,6 @@ public class main {
         academiadao.inserirAcademia(novaacademia);
         academiadao.mostrarAcademia();
         
-        novapessoa.setId(1);  
-        novapessoa.setNome("Ana");
-        novapessoa.setDataCriacao(LocalDate.now());
-        novapessoa.setDataModificacao(LocalDate.now());  
-        pessoadao.inserirPessoa(novapessoa);
-        pessoadao.mostrarPessoa();
-     
     }
     
     public static void main(String[] args){
