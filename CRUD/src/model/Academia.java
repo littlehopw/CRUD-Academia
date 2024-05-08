@@ -23,7 +23,7 @@ public class Academia{
     public Academia(){
          id = ++Academia.serial;
     }
-    
+        
     @Override
     public String toString(){
        return "Academia{" + nome + "}" ; 

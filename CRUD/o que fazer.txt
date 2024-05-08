@@ -1,4 +1,32 @@
-1- criar o construtor das classes DAO
-inicializando contadores -> id
+Linha de raciocinio
 
-2- Criar classe MENU, pra agrupar os menus
+
+----------------------------------------------------------------------------------------------------------
+
+-> LOGIN 
+
+PESSOA COMUM, A pessoa comum pode efetuar a sua entrada na portaria da academia, 
+visualizar e imprimir a sua ficha de treino e visualizar avaliações físicas.
+- MENU COM OPÇÕES DE ENTRAR NA ACADEMIA, VER FICHA DE TREINO E AVALIAÇÃO FISICA PROPRIA
+
+PROFESSOR/INSTRUTOR, O professor/instrutor pode fazer o crud de aluno e treino e as operações do 
+aluno.
+- CADASTRAR ALUNO, CADASTRAR TREINO, ENTRAR NA ACADEMIA, VER FICHA DE TREINO DO ALUNOS E 
+AVALIAÇÃO FISICA DOS ALUNOS
+
+ADMINISTRADOR; O administrador pode fazer tudo que o professor faz e movimentações 
+financeiras.
+- CADASTRAR ALUNO, CADASTRAR TREINO, ENTRAR NA ACADEMIA, VER FICHA DE TREINO DO ALUNOS E 
+AVALIAÇÃO FISICA DOS ALUNOS, VER MENSALIDADES, PAGAMENTOS E PAGAMENTO ALUNOS
+
+----------------------------------------------------------------------------------------------------------
+
+-> RELATÓRIOS 
+
+- ALUNOS QUE PAGARAM ATÉ O FIM DE UM MÊS (ADM)
+- MOVIMENTACAO DA ACADEMIA DE UM MÊS (ADM)
+- FICHA DE TREINO DO ALUNO (TODOS)
+
+
+
+----------------------------------------------------------------------------------------------------------

@@ -21,15 +21,13 @@ public class Pessoa {
     private String tipoUsuario;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
-
+    
+  
     //constructor
     public Pessoa(){
         id = ++Pessoa.serial;
-    }
-    
-    @Override
-    public String toString(){
-       return "Pessoa{" + nome + "}"; 
+        this.dataCriacao = LocalDate.now();
+        this.dataModificacao = LocalDate.now();
     }
     
     public long getId() {
