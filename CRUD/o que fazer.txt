@@ -1,0 +1,4 @@
+1- criar o construtor das classes DAO
+inicializando contadores -> id
+
+2- Criar classe MENU, pra agrupar os menus
