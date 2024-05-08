@@ -11,17 +11,23 @@ import java.time.LocalDate;
  */
 public class MovimentacaoFinanceira {
     
-    private int id;
+    private long id;
+    private static long serial;
     private Double valor;
     private String tipo;
     private String descricao;
     private LocalDate dataModificacao;
-
-    public int getId() {
+    
+    //constructor
+    public MovimentacaoFinanceira(){
+        id = ++MovimentacaoFinanceira.serial;
+    }
+    
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

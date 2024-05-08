@@ -11,22 +11,28 @@ import java.time.LocalDate;
  */
 public class Exercicio {
     
-    private int id;
+    private long id;
+    private static long serial;
     private String nome;
     private String descricaoFoto;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
 
+    //constructor
+    public Exercicio(){
+        id = ++Exercicio.serial;
+    }
+    
     @Override
     public String toString(){
        return "Exercicio{" + nome + "}"; 
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -12,17 +12,23 @@ import java.time.LocalDateTime;
  */
 public class EntradaAluno {
     
-    private int id;
+    private long id;
+    private static long serial;
     private LocalDateTime data;
     private String nascimento;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
-
-    public int getId() {
+    
+    //constructor
+    public EntradaAluno(){
+        id = ++EntradaAluno.serial;
+    }
+    
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

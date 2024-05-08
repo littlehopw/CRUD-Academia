@@ -12,23 +12,28 @@ import java.time.LocalDate;
  */
 public class Academia{
     
-    private int id;
+    private long id;
+    private static long serial;
     private String nome;
     private String endereco;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
     
+    //constructor
+    public Academia(){
+         id = ++Academia.serial;
+    }
     
     @Override
     public String toString(){
        return "Academia{" + nome + "}" ; 
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

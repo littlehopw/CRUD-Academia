@@ -11,17 +11,22 @@ import java.time.LocalDate;
  */
 public class DivisaoTreinoMusculo {
     
-    private int id;
+    private long id;
+    private static long serial;
     private String descricao;
     private String divisaoTreino;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
 
-    public int getId() {
+    //constructor
+    public DivisaoTreinoMusculo(){
+        id = ++DivisaoTreinoMusculo.serial;
+    }
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

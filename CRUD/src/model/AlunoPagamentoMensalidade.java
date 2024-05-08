@@ -11,7 +11,8 @@ import java.time.LocalDate;
  */
 public class AlunoPagamentoMensalidade{
     
-    private int id;
+    private long id;
+    private static long serial;
     private String pessoa;
     private String modalidade;
     private String mensalidadeVigente;
@@ -19,12 +20,17 @@ public class AlunoPagamentoMensalidade{
     private LocalDate data;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
-
-    public int getId() {
+    
+    //constructor
+    public AlunoPagamentoMensalidade(){
+        id = ++AlunoPagamentoMensalidade.serial;
+    }
+    
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

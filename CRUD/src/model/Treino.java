@@ -11,7 +11,8 @@ import java.time.LocalDate;
  */
 public class Treino {
     
-    private int id;
+    private long id;
+    private static long serial;
     private String objetivo;
     private String divisaoTreino;
     private LocalDate dataInicio;
@@ -19,11 +20,16 @@ public class Treino {
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
 
-    public int getId() {
+    //constructor
+    public Treino(){
+        id = ++Treino.serial;
+    }
+    
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
