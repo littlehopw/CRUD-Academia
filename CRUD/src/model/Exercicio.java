@@ -1,14 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+
 import java.time.LocalDate;
 
-/**
- *
- * @author Ana Clara
- */
 public class Exercicio {
     
     private long id;
@@ -21,13 +14,10 @@ public class Exercicio {
     //constructor
     public Exercicio(){
         id = ++Exercicio.serial;
+        this.dataCriacao = LocalDate.now();
+        this.dataModificacao = LocalDate.now();
     }
     
-    @Override
-    public String toString(){
-       return "Exercicio{" + nome + "}"; 
-    }
-
     public long getId() {
         return id;
     }

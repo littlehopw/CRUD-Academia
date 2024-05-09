@@ -1,14 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+
 import java.time.LocalDate;
 
-/**
- *
- * @author Ana Clara
- */
 public class Treino {
     
     private long id;
@@ -23,6 +16,8 @@ public class Treino {
     //constructor
     public Treino(){
         id = ++Treino.serial;
+        this.dataCriacao = LocalDate.now();
+        this.dataModificacao = LocalDate.now();
     }
     
     public long getId() {

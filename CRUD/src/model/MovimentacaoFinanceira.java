@@ -1,14 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+
 import java.time.LocalDate;
 
-/**
- *
- * @author Ana Clara
- */
 public class MovimentacaoFinanceira {
     
     private long id;
@@ -16,11 +9,14 @@ public class MovimentacaoFinanceira {
     private Double valor;
     private String tipo;
     private String descricao;
+    private LocalDate dataCriacao;
     private LocalDate dataModificacao;
     
     //constructor
     public MovimentacaoFinanceira(){
         id = ++MovimentacaoFinanceira.serial;
+        this.dataCriacao = LocalDate.now();
+        this.dataModificacao = LocalDate.now();
     }
     
     public long getId() {
