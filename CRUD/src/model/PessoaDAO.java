@@ -22,6 +22,15 @@ public class PessoaDAO{
         exemplo1.setTipoUsuario("Administrado");
 
         inserirPessoa(exemplo1);
+        
+        
+        Pessoa exemplo2 = new Pessoa();
+        
+        exemplo2.setLogin("joao");
+        exemplo2.setSenha("joao");
+        exemplo2.setTipoUsuario("Administrado");
+
+        inserirPessoa(exemplo2);
     }
     
   public void inserirPessoa(Pessoa pessoa){

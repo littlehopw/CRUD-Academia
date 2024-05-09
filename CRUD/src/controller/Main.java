@@ -17,7 +17,7 @@ public class Main {
                
         pessoaDAO.inserirPessoaExemplo();
      
-        while (opcao == 1 && opcao == 2){
+        while (opcao == 1 || opcao == 2){
            opcao = novoMenu.menuInicial();
            for (int i = 0; i < 30; ++i) System.out.println();
            
