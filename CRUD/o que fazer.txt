@@ -8,6 +8,7 @@ Linha de raciocinio
 PESSOA COMUM, A pessoa comum pode efetuar a sua entrada na portaria da academia, 
 visualizar e imprimir a sua ficha de treino e visualizar avaliações físicas.
 - MENU COM OPÇÕES DE ENTRAR NA ACADEMIA, VER FICHA DE TREINO E AVALIAÇÃO FISICA PROPRIA
+(feito)
 
 PROFESSOR/INSTRUTOR, O professor/instrutor pode fazer o crud de aluno e treino e as operações do 
 aluno.
@@ -30,3 +31,5 @@ AVALIAÇÃO FISICA DOS ALUNOS, VER MENSALIDADES, PAGAMENTOS E PAGAMENTO ALUNOS
 
 
 ----------------------------------------------------------------------------------------------------------
+
+lembrar de adicionar dados nos vetores pra poder deixar salvo alguns.
