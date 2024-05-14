@@ -1,47 +1,46 @@
 package model;
 
-public class PessoaDAO{
-    
-    Pessoa [] pessoas = new Pessoa [10];
-    
+public class PessoaDAO {
+
+    Pessoa[] pessoas = new Pessoa[10];
+
     public void inserirPessoaExemplo() {
-    Pessoa exemplo1 = new Pessoa();
-    
-    exemplo1.setNome("Ana Clara");
-    exemplo1.setSexo("Feminino");
-    exemplo1.setNascimento("14/07/2004");
-    exemplo1.setLogin("ana");
-    exemplo1.setSenha("ana");
-    exemplo1.setTipoUsuario("aluno");
+        Pessoa exemplo1 = new Pessoa();
 
-    inserirPessoa(exemplo1);
-    
-    
-    Pessoa exemplo2 = new Pessoa();
-    
-    exemplo2.setLogin("joao");
-    exemplo2.setSenha("joao");
-    exemplo2.setTipoUsuario("administrador");
+        exemplo1.setNome("Ana Clara");
+        exemplo1.setSexo("Feminino");
+        exemplo1.setNascimento("14/07/2004");
+        exemplo1.setLogin("ana");
+        exemplo1.setSenha("ana");
+        exemplo1.setTipoUsuario("professor");
 
-    inserirPessoa(exemplo2);
-}
-    
-  public void inserirPessoa(Pessoa pessoa){
-      for (int i = 0; i < pessoas.length; i++){
-          if(null == pessoas[i]){
-              pessoas[i] = pessoa;
-              break;
-          } 
-      }
-  }
-  
-   public void mostrarPessoa(){
-      for (int i = 0; i < pessoas.length; i++){
-          if(null != pessoas[i]){
-          System.out.println(pessoas[i].toString());
-          }
-      }
-  }
+        inserirPessoa(exemplo1);
+
+        Pessoa exemplo2 = new Pessoa();
+
+        exemplo2.setLogin("joao");
+        exemplo2.setSenha("joao");
+        exemplo2.setTipoUsuario("administrador");
+
+        inserirPessoa(exemplo2);
+    }
+
+    public void inserirPessoa(Pessoa pessoa) {
+        for (int i = 0; i < pessoas.length; i++) {
+            if (pessoas[i] == null) {
+                pessoas[i] = pessoa;
+                break;
+            }
+        }
+    }
+
+    public void mostrarPessoa() {
+        for (int i = 0; i < pessoas.length; i++) {
+            if (null != pessoas[i]) {
+                System.out.println(pessoas[i].toString());
+            }
+        }
+    }
 
     public Pessoa[] getPessoa() {
         return pessoas;
