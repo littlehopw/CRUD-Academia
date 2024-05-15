@@ -9,6 +9,7 @@ import model.AvaliacaoFisica;
 import model.PessoaDAO;
 import model.Treino;
 import model.TreinoDAO;
+import model.AvaliacaoFisicaDAO;
 
 public class Menus {
 
@@ -17,12 +18,14 @@ public class Menus {
     private TreinoAplicacao[] treinos;
     private AvaliacaoFisica[] avaliacoesfisicas;
     private Scanner scanner;
+    private AvaliacaoFisicaDAO avaliacaoFisicaDAO;
 
-    public Menus(Pessoa[] pessoas, AlunoPagamentoMensalidade[] alunospagamentos, TreinoAplicacao[] treinos, AvaliacaoFisica[] avaliacoesfisicas) {
+    public Menus(Pessoa[] pessoas, AlunoPagamentoMensalidade[] alunospagamentos, TreinoAplicacao[] treinos, AvaliacaoFisica[] avaliacoesfisicas, AvaliacaoFisicaDAO avaliacaoFisicaDAO) {
         this.pessoas = pessoas;
         this.alunospagamentos = alunospagamentos;
         this.treinos = treinos;
         this.avaliacoesfisicas = avaliacoesfisicas;
+        this.avaliacaoFisicaDAO = avaliacaoFisicaDAO;
         this.scanner = new Scanner(System.in);
     }
 
@@ -137,7 +140,7 @@ public class Menus {
         }
     }
 
-    public void menuLoginProfessor() {
+    public void menuLoginProfessor(String login, String senha) {
         int opcao = 0;
 
         while (opcao != 6) {
@@ -155,7 +158,7 @@ public class Menus {
 
                     Pessoa novoAluno = new Pessoa();
                     System.out.println("Cadastro de Novo Aluno");
-                    
+
                     System.out.println("Nome:");
                     novoAluno.setNome(scanner.nextLine());
 
@@ -207,13 +210,97 @@ public class Menus {
                     System.out.println("Treino cadastrado com sucesso!");
                     break;
                 case 3:
-                    // Lógica para entrada na academia
+                    for (int i = 0; i < 30; ++i) {
+                        System.out.println();
+                    }
+                    boolean mensalidadeEmDia = false;
+                    for (AlunoPagamentoMensalidade alunopagamento : alunospagamentos) {
+                        if (alunopagamento != null && alunopagamento.getPessoa().equals(login) && alunopagamento.getMensalidadeVigente().equals("valida")) {
+                            mensalidadeEmDia = true;
+                            break;
+                        }
+                    }
+                    if (mensalidadeEmDia) {
+                        for (int i = 0; i < 30; ++i) {
+                            System.out.println();
+                        }
+                        System.out.println("Acesso permitido na academia.");
+
+                    } else {
+                        System.out.println("Você não tem a mensalidade em dia. Por favor, entre em contato com a administração.");
+                    }
                     break;
                 case 4:
-                    // Lógica para ver ficha de treino do aluno
+                    System.out.println("Ficha de Treino do Aluno");
+                    System.out.println("Informe o login do aluno:");
+                    String alunoLogin = scanner.next();
+                    scanner.nextLine();
+                    for (int i = 0; i < 30; ++i) {
+                        System.out.println();
+                    }
+                    boolean alunoEncontrado = false;
+                    for (Pessoa pessoa : pessoas) {
+                        if (pessoa != null && pessoa.getLogin().equals(alunoLogin) && pessoa.getTipoUsuario().equals("aluno")) {
+                            alunoEncontrado = true;
+                            break;
+                        }
+                    }
+
+                    if (alunoEncontrado) {
+                        for (TreinoAplicacao treino : treinos) {
+                            if (treino != null && treino.getTreino().equals(alunoLogin)) {
+                                System.out.println("Detalhes do Treino de " + treino.getTreino());
+                                System.out.println("Exercício: " + treino.getExercicio());
+                                System.out.println("Exercício Aplicação: " + treino.getExercicioAplicacao());
+                                System.out.println("Divisão do Treino: " + treino.getDivisaoTreino());
+                                System.out.println("Divisão do Treino Muscular: " + treino.getDivisaoTreinoMusculo());
+                                System.out.println("Data de Criação: " + treino.getDataCriacao());
+                                System.out.println("Data de Modificação: " + treino.getDataModificacao());
+                                System.out.println();
+                            }
+                        }
+                    } else {
+                        System.out.println("Aluno não encontrado ou não é um aluno.");
+                    }
                     break;
                 case 5:
-                    // Lógica para ver avaliação física dos alunos
+                    System.out.println("Consultar Avaliação Física de um Aluno");
+                    System.out.println("Informe o login do aluno:");
+                    String alunoLoginAvaliacao = scanner.nextLine();
+                    scanner.nextLine();
+
+                    for (int i = 0; i < 30; ++i) {
+                        System.out.println();
+                    }
+                    boolean alunoEncontradoAvaliacao = false; // Declaração movida para fora do switch
+                    for (Pessoa pessoa : pessoas) {
+                        if (pessoa != null && pessoa.getLogin().equals(alunoLoginAvaliacao) && pessoa.getTipoUsuario().equals("aluno")) {
+                            alunoEncontradoAvaliacao = true;
+                            break;
+                        }
+                    }
+
+                    if (alunoEncontradoAvaliacao) {
+                        boolean encontrouAvaliacao = false;
+                        for (AvaliacaoFisica avaliacao : avaliacoesfisicas) {
+                            if (avaliacao != null && avaliacao.getPessoa().equals(alunoLoginAvaliacao)) {
+                                encontrouAvaliacao = true;
+                                System.out.println("Detalhes da Avaliação Física de " + avaliacao.getPessoa());
+                                System.out.println("Último Treino: " + avaliacao.getUltimoTreino());
+                                System.out.println("Peso: " + avaliacao.getPeso());
+                                System.out.println("Altura: " + avaliacao.getAltura());
+                                System.out.println("IMC: " + avaliacao.getImc());
+                                System.out.println("Satisfação: " + avaliacao.getSatisfacao());
+                                System.out.println();
+                                break;
+                            }
+                        }
+                        if (!encontrouAvaliacao) {
+                            System.out.println("Nenhuma avaliação física encontrada para o aluno " + alunoLoginAvaliacao);
+                        }
+                    } else {
+                        System.out.println("Aluno não encontrado ou não é um aluno.");
+                    }
                     break;
                 case 6:
                     System.out.println("Saindo do sistema...");

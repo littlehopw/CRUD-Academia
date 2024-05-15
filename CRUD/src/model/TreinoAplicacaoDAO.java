@@ -12,6 +12,15 @@ public class TreinoAplicacaoDAO {
     exemplo1.setDivisaoTreino("C");
     exemplo1.setDivisaoTreinoMusculo("C = Perna");
     inserirTreinoAplicacao(exemplo1);
+    
+    TreinoAplicacao exemplo2 = new TreinoAplicacao();
+    
+    exemplo2.setTreino("joao");
+    exemplo1.setExercicio("elevação pélvica");
+    exemplo1.setExercicioAplicacao("4x12");
+    exemplo1.setDivisaoTreino("C");
+    exemplo1.setDivisaoTreinoMusculo("C = Perna");
+    inserirTreinoAplicacao(exemplo2);
 }
     
   public void inserirTreinoAplicacao(TreinoAplicacao treinoaplicacao){

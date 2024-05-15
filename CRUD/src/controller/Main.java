@@ -24,7 +24,7 @@ public class Main {
         AlunoPagamentoMensalidade[] alunospagamentos = mensalidadeDAO.getAlunoPagamentoMensalidade();
         TreinoAplicacao[] treinosaplicacao = treinoaplicacaoDAO.getTreinoAplicacao();
         AvaliacaoFisica[] avaliacaofisica = avaliacaofisicaDAO.getAvaliacoes();
-        Menus novoMenu = new Menus(pessoas, alunospagamentos, treinosaplicacao, avaliacaofisica);
+        Menus novoMenu = new Menus(pessoas, alunospagamentos, treinosaplicacao, avaliacaofisica, avaliacaofisicaDAO);
 
         pessoaDAO.inserirPessoaExemplo();
         avaliacaofisicaDAO.inserirAvaliacaoExemplo();
@@ -65,7 +65,7 @@ public class Main {
                                 opcao = 3;
                                 break;
                             case "professor":
-                                novoMenu.menuLoginProfessor();
+                                novoMenu.menuLoginProfessor(pessoaLogada.getLogin(), pessoaLogada.getSenha());
                                 opcao = 3;
                                 break;
                             case "administrador":

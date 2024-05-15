@@ -20,7 +20,7 @@ public class PessoaDAO {
 
         exemplo2.setLogin("joao");
         exemplo2.setSenha("joao");
-        exemplo2.setTipoUsuario("administrador");
+        exemplo2.setTipoUsuario("aluno");
 
         inserirPessoa(exemplo2);
     }
