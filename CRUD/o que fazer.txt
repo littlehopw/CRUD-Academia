@@ -1,6 +1,3 @@
-Linha de raciocinio
-
-
 ----------------------------------------------------------------------------------------------------------
 
 -> LOGIN 
@@ -14,11 +11,13 @@ PROFESSOR/INSTRUTOR, O professor/instrutor pode fazer o crud de aluno e treino e
 aluno.
 - CADASTRAR ALUNO, CADASTRAR TREINO, ENTRAR NA ACADEMIA, VER FICHA DE TREINO DO ALUNOS E 
 AVALIAÇÃO FISICA DOS ALUNOS
+(feito)
 
 ADMINISTRADOR; O administrador pode fazer tudo que o professor faz e movimentações 
 financeiras.
 - CADASTRAR ALUNO, CADASTRAR TREINO, ENTRAR NA ACADEMIA, VER FICHA DE TREINO DO ALUNOS E 
 AVALIAÇÃO FISICA DOS ALUNOS, VER MENSALIDADES, PAGAMENTOS E PAGAMENTO ALUNOS
+(FEITO MAS TEM Q TESTAR A PARTE FINANCEIRA E A PARTE DE CADASTRAR ALUNO E TREINO, QUE PARECE Q TA DANDO ERRADO NA HORA DE CADASTRAR UMA PESSOA NOVA)
 
 ----------------------------------------------------------------------------------------------------------
 
@@ -26,9 +25,6 @@ AVALIAÇÃO FISICA DOS ALUNOS, VER MENSALIDADES, PAGAMENTOS E PAGAMENTO ALUNOS
 
 - ALUNOS QUE PAGARAM ATÉ O FIM DE UM MÊS (ADM)
 - MOVIMENTACAO DA ACADEMIA DE UM MÊS (ADM)
-- FICHA DE TREINO DO ALUNO (TODOS)
-
-
 
 ----------------------------------------------------------------------------------------------------------
 

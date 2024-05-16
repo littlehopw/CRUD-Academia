@@ -69,7 +69,8 @@ public class Main {
                                 opcao = 3;
                                 break;
                             case "administrador":
-
+                                novoMenu.menuLoginAdministrador(pessoaLogada.getLogin(), pessoaLogada.getSenha());
+                                opcao = 3;
                                 break;
                             default:
                                 System.out.println("Tipo de usuário não reconhecido.");

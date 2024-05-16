@@ -12,7 +12,7 @@ public class PessoaDAO {
         exemplo1.setNascimento("14/07/2004");
         exemplo1.setLogin("ana");
         exemplo1.setSenha("ana");
-        exemplo1.setTipoUsuario("professor");
+        exemplo1.setTipoUsuario("administrador");
 
         inserirPessoa(exemplo1);
 
