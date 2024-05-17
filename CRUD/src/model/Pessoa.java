@@ -23,6 +23,16 @@ public class Pessoa {
         this.dataModificacao = LocalDate.now();
     }
     
+    public Pessoa(String nome, String sexo, String nascimento, String login, String senha, String tipoUsuario) {
+        this();
+        this.nome = nome;
+        this.sexo = sexo;
+        this.nascimento = nascimento;
+        this.login = login;
+        this.senha = senha;
+        this.tipoUsuario = tipoUsuario;
+    }
+    
     public long getId() {
         return id;
     }

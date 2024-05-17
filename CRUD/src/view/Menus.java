@@ -15,6 +15,7 @@ import model.TreinoAplicacaoDAO;
 
 public class Menus {
 
+    private static PessoaDAO pessoaDAO = new PessoaDAO();
     private Pessoa[] pessoas;
     private AlunoPagamentoMensalidade[] alunospagamentos;
     private TreinoAplicacao[] treinos;
@@ -318,7 +319,7 @@ public class Menus {
         TreinoAplicacaoDAO treinoAplicacaoDAO = new TreinoAplicacaoDAO();
         int opcao = 0;
 
-        while (opcao != 7) {
+        while (opcao != 8) {
             System.out.println("Bem vindo, administrador! Escolha sua opção:\n");
             System.out.println("1 - Cadastrar aluno");
             System.out.println("2 - Cadastrar treino");
@@ -326,8 +327,10 @@ public class Menus {
             System.out.println("4 - Ver ficha de treino do aluno");
             System.out.println("5 - Ver avaliação física dos alunos");
             System.out.println("6 - Movimentações Financeiras");
-            System.out.println("7 - Sair do sistema");
+            System.out.println("7 - Relatórios");
+            System.out.println("8 - Sair do sistema");
             opcao = scanner.nextInt();
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -336,7 +339,6 @@ public class Menus {
                     System.out.println("Cadastro de Novo Aluno");
                     System.out.println("Nome do aluno:");
                     novoAluno.setNome(scanner.nextLine());
-                    scanner.nextLine();
                     System.out.println("Sexo do aluno:");
                     novoAluno.setSexo(scanner.nextLine());
                     System.out.println("Data de nascimento:");
@@ -347,7 +349,6 @@ public class Menus {
                     novoAluno.setSenha(scanner.nextLine());
                     novoAluno.setTipoUsuario("aluno");
 
-                    PessoaDAO pessoaDAO = new PessoaDAO();
                     pessoaDAO.inserirPessoa(novoAluno);
 
                     System.out.println("Aluno cadastrado com sucesso!");
@@ -356,7 +357,7 @@ public class Menus {
                     System.out.println("Cadastro de Novo Treino");
                     System.out.println("Login do aluno que realizará o treino:");
                     String loginAlunoTreino = scanner.nextLine();
-                    scanner.nextLine(); 
+                    scanner.nextLine();
 
                     boolean alunotTreinoEncontrado = false;
                     for (Pessoa pessoa : pessoas) {
@@ -501,44 +502,105 @@ public class Menus {
                 case 6:
                     System.out.println("Movimentações Financeiras:\n1 - Ver mensalidades\n2 - Registrar pagamento de aluno\nDigite sua opção:");
                     int opcaoFinanceira = scanner.nextInt();
+                    scanner.nextLine(); // Limpar o buffer após ler a opção
+
                     switch (opcaoFinanceira) {
                         case 1:
-                            for (AlunoPagamentoMensalidade pagamento : alunospagamentos) {
-                                if (pagamento != null) {
-                                    System.out.println("Aluno: " + pagamento.getPessoa());
-                                    System.out.println("Data de pagamento: " + pagamento.getData());
-                                    System.out.println("Valor: " + pagamento.getValorPago());
-                                    System.out.println("Status: " + pagamento.getMensalidadeVigente());
-                                    System.out.println("Modalidade: " + pagamento.getModalidade());
-                                    System.out.println();
+                            System.out.println("Digite o login do aluno para ver as mensalidades:");
+                            String loginAlunoVerMensalidades = scanner.nextLine();
+                            boolean alunoFinanceiroEncontrado = false;
+                            for (Pessoa pessoa : pessoaDAO.getPessoa()) {
+                                if (pessoa != null && pessoa.getLogin().equals(loginAlunoVerMensalidades) && pessoa.getTipoUsuario().equals("aluno")) {
+                                    alunoFinanceiroEncontrado = true;
+                                    break;
                                 }
                             }
-                            alunoPagamentoMensalidadeDAO.mostrarAlunoPagamentoMensalidade();
+
+                            if (alunoFinanceiroEncontrado) {
+                                AlunoPagamentoMensalidade[] pagamentos = alunoPagamentoMensalidadeDAO.getPagamentosPorAluno(loginAlunoVerMensalidades);
+                                boolean pagamentosEncontrados = false;
+                                for (AlunoPagamentoMensalidade pagamento : pagamentos) {
+                                    if (pagamento != null) {
+                                        System.out.println(pagamento.toString());
+                                        pagamentosEncontrados = true;
+                                    }
+                                }
+                                if (!pagamentosEncontrados) {
+                                    System.out.println("Nenhuma mensalidade encontrada para o aluno: " + loginAlunoVerMensalidades);
+                                }
+                            } else {
+                                System.out.println("Aluno não encontrado.");
+                            }
                             break;
+
                         case 2:
                             System.out.println("Digite o login do aluno:");
-                            String loginAluno = scanner.next();
-                            AlunoPagamentoMensalidade novoPagamento = new AlunoPagamentoMensalidade();
-                            novoPagamento.setPessoa(loginAluno);
-                            System.out.println("Digite o valor do pagamento:");
-                            double valorPagamento = scanner.nextDouble();
-                            novoPagamento.setValorPago(valorPagamento);
-                            alunoPagamentoMensalidadeDAO.inserirAlunoPagamentoMensalidade(novoPagamento);
-                            System.out.println("Pagamento registrado com sucesso!");
-                            break;
-                        default:
-                            System.out.println("Opção inválida. Tente novamente.");
+                            String loginAlunoPagamento = scanner.nextLine();
+                            boolean alunoParaPagamentoEncontrado = false;
+                            for (Pessoa pessoa : pessoaDAO.getPessoa()) {
+                                if (pessoa != null && pessoa.getLogin().equals(loginAlunoPagamento) && pessoa.getTipoUsuario().equals("aluno")) {
+                                    alunoParaPagamentoEncontrado = true;
+                                    break;
+                                }
+                            }
+
+                            if (alunoParaPagamentoEncontrado) {
+                                AlunoPagamentoMensalidade novoPagamento = new AlunoPagamentoMensalidade();
+                                novoPagamento.setPessoa(loginAlunoPagamento);
+                                System.out.println("Digite o valor do pagamento:");
+                                double valorPagamento = scanner.nextDouble();
+                                novoPagamento.setValorPago(valorPagamento);
+                                novoPagamento.setData(LocalDate.now());
+                                System.out.println("Digite a modalidade:");
+                                scanner.nextLine(); // Limpar o buffer após ler o double
+                                novoPagamento.setModalidade(scanner.nextLine());
+                                System.out.println("Digite o status da mensalidade (pago, pendente, etc.):");
+                                novoPagamento.setMensalidadeVigente(scanner.nextLine());
+
+                                alunoPagamentoMensalidadeDAO.inserirAlunoPagamentoMensalidade(novoPagamento);
+                                System.out.println("Pagamento registrado com sucesso!");
+                            } else {
+                                System.out.println("Aluno não encontrado.");
+                            }
                     }
                     break;
 
                 case 7:
-                    System.out.println("Saindo do sistema...");
+                    System.out.println("Relatórios:");
+                    System.out.println("1 - Alunos que pagaram até o fim de um mês");
+                    System.out.println("2 - Movimentação da academia de um mês");
+                    int opcaoRelatorio = scanner.nextInt();
+                    scanner.nextLine(); // Limpar o buffer
+
+                    switch (opcaoRelatorio) {
+                        case 1:
+                            System.out.println("Informe o mês (1 a 12):");
+                            int mesRelatorio = scanner.nextInt();
+                            System.out.println("Informe o ano:");
+                            int anoRelatorio = scanner.nextInt();
+                            alunoPagamentoMensalidadeDAO.relatorioAlunosPagaramAteFimDoMes(mesRelatorio, anoRelatorio);
+                            break;
+                        case 2:
+                            System.out.println("Informe o mês (1 a 12):");
+                            int mesMovimentacao = scanner.nextInt();
+                            System.out.println("Informe o ano:");
+                            int anoMovimentacao = scanner.nextInt();
+                            alunoPagamentoMensalidadeDAO.relatorioMovimentacaoAcademiaMes(mesMovimentacao, anoMovimentacao);
+                            break;
+                        default:
+                            System.out.println("Opção inválida. Tente novamente.");
+                            break;
+                    }
                     break;
+                case 8:
+                    System.out.println("Finalizando o sistema.");
+
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
                     break;
+
             }
         }
-    }
 
+    }
 }

@@ -17,7 +17,7 @@ ADMINISTRADOR; O administrador pode fazer tudo que o professor faz e movimentaç
 financeiras.
 - CADASTRAR ALUNO, CADASTRAR TREINO, ENTRAR NA ACADEMIA, VER FICHA DE TREINO DO ALUNOS E 
 AVALIAÇÃO FISICA DOS ALUNOS, VER MENSALIDADES, PAGAMENTOS E PAGAMENTO ALUNOS
-(FEITO MAS TEM Q TESTAR A PARTE FINANCEIRA E A PARTE DE CADASTRAR ALUNO E TREINO, QUE PARECE Q TA DANDO ERRADO NA HORA DE CADASTRAR UMA PESSOA NOVA)
+(FEITOmas a parte financeira e a de inserção de alunos é meio ruim)
 
 ----------------------------------------------------------------------------------------------------------
 
@@ -26,6 +26,11 @@ AVALIAÇÃO FISICA DOS ALUNOS, VER MENSALIDADES, PAGAMENTOS E PAGAMENTO ALUNOS
 - ALUNOS QUE PAGARAM ATÉ O FIM DE UM MÊS (ADM)
 - MOVIMENTACAO DA ACADEMIA DE UM MÊS (ADM)
 
+(feito)
+
 ----------------------------------------------------------------------------------------------------------
 
 lembrar de adicionar dados nos vetores pra poder deixar salvo alguns.
+alem disso, adicionar a função de cadastro no comeco do main.
+
+--> Tem que colocar no comeco do main as funções pra poder salvar em memoria, pq nao tem banco ainda.

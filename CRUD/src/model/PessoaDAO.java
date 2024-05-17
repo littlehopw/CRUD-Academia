@@ -1,28 +1,18 @@
 package model;
 
+import java.time.LocalDate;
+
 public class PessoaDAO {
 
-    Pessoa[] pessoas = new Pessoa[10];
+    Pessoa[] pessoas = new Pessoa[40];
 
     public void inserirPessoaExemplo() {
-        Pessoa exemplo1 = new Pessoa();
-
-        exemplo1.setNome("Ana Clara");
-        exemplo1.setSexo("Feminino");
-        exemplo1.setNascimento("14/07/2004");
-        exemplo1.setLogin("ana");
-        exemplo1.setSenha("ana");
-        exemplo1.setTipoUsuario("administrador");
-
-        inserirPessoa(exemplo1);
-
-        Pessoa exemplo2 = new Pessoa();
-
-        exemplo2.setLogin("joao");
-        exemplo2.setSenha("joao");
-        exemplo2.setTipoUsuario("aluno");
-
-        inserirPessoa(exemplo2);
+        inserirPessoa(new Pessoa("Ana Clara", "Feminino", "14/07/2004", "ana", "ana", "administrador"));
+        inserirPessoa(new Pessoa("João Pedro", "Masculino", "22/03/2005", "joao", "joao", "administrador"));
+        inserirPessoa(new Pessoa("Maria Silva", "Feminino", "15/05/2003", "maria", "maria123", "professor"));
+        inserirPessoa(new Pessoa("Carlos Souza", "Masculino", "09/09/2002", "carlos", "carlos123", "professor"));
+        inserirPessoa(new Pessoa("Lucia Ferreira", "Feminino", "12/12/2001", "lucia", "lucia123", "aluno"));
+        inserirPessoa(new Pessoa("Roberto Santos", "Masculino", "17/02/2000", "roberto", "roberto123", "aluno")); 
     }
 
     public void inserirPessoa(Pessoa pessoa) {

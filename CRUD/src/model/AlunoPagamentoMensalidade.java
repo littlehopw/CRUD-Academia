@@ -85,6 +85,11 @@ public class AlunoPagamentoMensalidade{
         this.dataModificacao = dataModificacao;
     }
     
+    @Override
+    public String toString() {
+        return "Aluno: " + pessoa + ", Data de pagamento: " + data + ", Valor: " + valorPago +
+               ", Status: " + mensalidadeVigente + ", Modalidade: " + modalidade;
+    }
     
      
 }
