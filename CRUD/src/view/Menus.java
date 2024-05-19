@@ -321,7 +321,7 @@ public class Menus {
 
         while (opcao != 8) {
             System.out.println("Bem vindo, administrador! Escolha sua opção:\n");
-            System.out.println("1 - Cadastrar aluno");
+            System.out.println("1 - Cadastrar usuario");
             System.out.println("2 - Cadastrar treino");
             System.out.println("3 - Entrar na Academia");
             System.out.println("4 - Ver ficha de treino do aluno");
@@ -336,22 +336,22 @@ public class Menus {
                 case 1:
 
                     Pessoa novoAluno = new Pessoa();
-                    System.out.println("Cadastro de Novo Aluno");
-                    System.out.println("Nome do aluno:");
+                    System.out.println("\nCADASTRO DE NOVO USUARIO\n");
+                    System.out.println("Informe o tipo de Usuario:");
+                    novoAluno.setTipoUsuario(scanner.nextLine());
+                    System.out.println("Informe o Nome:");
                     novoAluno.setNome(scanner.nextLine());
-                    System.out.println("Sexo do aluno:");
+                    System.out.println("Informe o Sexo:");
                     novoAluno.setSexo(scanner.nextLine());
-                    System.out.println("Data de nascimento:");
+                    System.out.println("Informe a Data de nascimento:");
                     novoAluno.setNascimento(scanner.nextLine());
-                    System.out.println("Login do aluno:");
+                    System.out.println("Informe o Login");
                     novoAluno.setLogin(scanner.nextLine());
-                    System.out.println("Senha do aluno:");
+                    System.out.println("Informe a Senha:");
                     novoAluno.setSenha(scanner.nextLine());
-                    novoAluno.setTipoUsuario("aluno");
 
                     pessoaDAO.inserirPessoa(novoAluno);
-
-                    System.out.println("Aluno cadastrado com sucesso!");
+                    System.out.println("Usuario cadastrado com sucesso!");
                     break;
                 case 2:
                     System.out.println("Cadastro de Novo Treino");

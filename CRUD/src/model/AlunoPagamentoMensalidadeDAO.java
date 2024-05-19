@@ -10,7 +10,7 @@ public class AlunoPagamentoMensalidadeDAO {
         AlunoPagamentoMensalidade exemplo1 = new AlunoPagamentoMensalidade();
         exemplo1.setPessoa("ana");
         exemplo1.setMensalidadeVigente("valida");
-        exemplo1.setModalidade("Musculação");
+        exemplo1.setModalidade("Dinheiro");
         exemplo1.setValorPago(150.00);
 
         inserirAlunoPagamentoMensalidade(exemplo1);
@@ -18,7 +18,7 @@ public class AlunoPagamentoMensalidadeDAO {
         AlunoPagamentoMensalidade exemplo2 = new AlunoPagamentoMensalidade();
         exemplo2.setPessoa("lucia");
         exemplo2.setMensalidadeVigente("atrasada");
-        exemplo2.setModalidade("Natação");
+        exemplo2.setModalidade("Pix");
         exemplo2.setValorPago(120.00);
        
         inserirAlunoPagamentoMensalidade(exemplo2);
@@ -26,10 +26,50 @@ public class AlunoPagamentoMensalidadeDAO {
         AlunoPagamentoMensalidade exemplo3 = new AlunoPagamentoMensalidade();
         exemplo3.setPessoa("roberto");
         exemplo3.setMensalidadeVigente("valida");
-        exemplo3.setModalidade("Funcional");
+        exemplo3.setModalidade("Debito");
         exemplo3.setValorPago(180.00);
         
         inserirAlunoPagamentoMensalidade(exemplo3);
+        
+        // Exemplo 4
+        AlunoPagamentoMensalidade exemplo4 = new AlunoPagamentoMensalidade();
+        exemplo4.setPessoa("maria");
+        exemplo4.setMensalidadeVigente("valida");
+        exemplo4.setModalidade("Recorrente");
+        exemplo4.setValorPago(200.00);
+        inserirAlunoPagamentoMensalidade(exemplo4);
+
+        // Exemplo 5
+        AlunoPagamentoMensalidade exemplo5 = new AlunoPagamentoMensalidade();
+        exemplo5.setPessoa("carlos");
+        exemplo5.setMensalidadeVigente("atrasada");
+        exemplo5.setModalidade("Dinheiro");
+        exemplo5.setValorPago(250.00);
+        inserirAlunoPagamentoMensalidade(exemplo5);
+
+        // Exemplo 6
+        AlunoPagamentoMensalidade exemplo6 = new AlunoPagamentoMensalidade();
+        exemplo6.setPessoa("lucia");
+        exemplo6.setMensalidadeVigente("valida");
+        exemplo6.setModalidade("Pix");
+        exemplo6.setValorPago(130.00);
+        inserirAlunoPagamentoMensalidade(exemplo6);
+
+        // Exemplo 7
+        AlunoPagamentoMensalidade exemplo7 = new AlunoPagamentoMensalidade();
+        exemplo7.setPessoa("roberto");
+        exemplo7.setMensalidadeVigente("atrasada");
+        exemplo7.setModalidade("Debito");
+        exemplo7.setValorPago(170.00);
+        inserirAlunoPagamentoMensalidade(exemplo7);
+
+        // Exemplo 8
+        AlunoPagamentoMensalidade exemplo8 = new AlunoPagamentoMensalidade();
+        exemplo8.setPessoa("maria");
+        exemplo8.setMensalidadeVigente("atrasada");
+        exemplo8.setModalidade("Recorrente");
+        exemplo8.setValorPago(150.00);
+        inserirAlunoPagamentoMensalidade(exemplo8);
     }
 
     public void inserirAlunoPagamentoMensalidade(AlunoPagamentoMensalidade alunopagamento) {
@@ -88,6 +128,7 @@ public class AlunoPagamentoMensalidadeDAO {
                 if (dataPagamento.getMonthValue() == mes && dataPagamento.getYear() == ano) {
                     System.out.println("Aluno: " + pagamento.getPessoa() + ", Data de Pagamento: " + dataPagamento);
                 }
+         
             }
         }
     }
