@@ -32,7 +32,6 @@ public class Main {
         AlunoPagamentoMensalidadeDAO mensalidadeDAO = new AlunoPagamentoMensalidadeDAO();
         TreinoAplicacaoDAO treinoaplicacaoDAO = new TreinoAplicacaoDAO();
         AvaliacaoFisicaDAO avaliacaofisicaDAO = new AvaliacaoFisicaDAO();
-        //novos
         AcademiaDAO academiaDAO = new AcademiaDAO();
         ExercicioAplicacaoDAO aplicacaoDAO = new ExercicioAplicacaoDAO();
         ExercicioDAO exercicioDAO = new ExercicioDAO();
@@ -44,8 +43,6 @@ public class Main {
         AlunoPagamentoMensalidade[] alunospagamentos = mensalidadeDAO.getAlunoPagamentoMensalidade();
         TreinoAplicacao[] treinosaplicacao = treinoaplicacaoDAO.getTreinoAplicacao();
         AvaliacaoFisica[] avaliacaofisica = avaliacaofisicaDAO.getAvaliacoes();
-        Menus novoMenu = new Menus(pessoas, alunospagamentos, treinosaplicacao, avaliacaofisica, avaliacaofisicaDAO);
-        //novos
         Academia[] academias = academiaDAO.getAcademias();
         ExercicioAplicacao [] aplicacoes = aplicacaoDAO.getAplicacoes();
         Exercicio [] exercicios = exercicioDAO.getExercicios();
@@ -57,7 +54,6 @@ public class Main {
         avaliacaofisicaDAO.inserirAvaliacaoExemplo();
         mensalidadeDAO.inserirMensalidadeExemplo();
         treinoaplicacaoDAO.inserirTreinoAplicacaoExemplo();
-        //novos
         academiaDAO.inserirAcademiaExemplo();
         aplicacaoDAO.inserirAplicacaoExemplo();
         exercicioDAO.inserirExercicioExemplo();
@@ -65,6 +61,8 @@ public class Main {
         financeiraDAO.inserirMovimentacaoFinanceiraExemplo();
         mensalidadevigenteDAO.inserirMensalidadeExemplo();
         
+        
+        Menus novoMenu = new Menus(pessoas, alunospagamentos, treinosaplicacao, avaliacaofisica, avaliacaofisicaDAO);
 
         int opcao = 1;
 

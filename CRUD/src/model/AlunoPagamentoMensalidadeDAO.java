@@ -46,30 +46,6 @@ public class AlunoPagamentoMensalidadeDAO {
         exemplo5.setModalidade("Dinheiro");
         exemplo5.setValorPago(250.00);
         inserirAlunoPagamentoMensalidade(exemplo5);
-
-        // Exemplo 6
-        AlunoPagamentoMensalidade exemplo6 = new AlunoPagamentoMensalidade();
-        exemplo6.setPessoa("lucia");
-        exemplo6.setMensalidadeVigente("valida");
-        exemplo6.setModalidade("Pix");
-        exemplo6.setValorPago(130.00);
-        inserirAlunoPagamentoMensalidade(exemplo6);
-
-        // Exemplo 7
-        AlunoPagamentoMensalidade exemplo7 = new AlunoPagamentoMensalidade();
-        exemplo7.setPessoa("roberto");
-        exemplo7.setMensalidadeVigente("atrasada");
-        exemplo7.setModalidade("Debito");
-        exemplo7.setValorPago(170.00);
-        inserirAlunoPagamentoMensalidade(exemplo7);
-
-        // Exemplo 8
-        AlunoPagamentoMensalidade exemplo8 = new AlunoPagamentoMensalidade();
-        exemplo8.setPessoa("maria");
-        exemplo8.setMensalidadeVigente("atrasada");
-        exemplo8.setModalidade("Recorrente");
-        exemplo8.setValorPago(150.00);
-        inserirAlunoPagamentoMensalidade(exemplo8);
     }
 
     public void inserirAlunoPagamentoMensalidade(AlunoPagamentoMensalidade alunopagamento) {

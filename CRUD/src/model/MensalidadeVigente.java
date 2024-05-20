@@ -7,7 +7,6 @@ public class MensalidadeVigente {
     private long id;
     private static long serial;
     private Double valor;
-    private String sexo;
     private LocalDate inicio;
     private LocalDate termino;
     private LocalDate dataCriacao;
@@ -34,14 +33,6 @@ public class MensalidadeVigente {
 
     public void setValor(Double valor) {
         this.valor = valor;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
     }
 
     public LocalDate getInicio() {

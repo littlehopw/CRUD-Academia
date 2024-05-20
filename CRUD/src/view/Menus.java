@@ -15,7 +15,7 @@ import model.TreinoAplicacaoDAO;
 
 public class Menus {
 
-    private static PessoaDAO pessoaDAO = new PessoaDAO();
+    private PessoaDAO pessoaDAO = new PessoaDAO();
     private Pessoa[] pessoas;
     private AlunoPagamentoMensalidade[] alunospagamentos;
     private TreinoAplicacao[] treinos;
@@ -145,6 +145,7 @@ public class Menus {
 
     public void menuLoginProfessor(String login, String senha) {
         int opcao = 0;
+         TreinoAplicacaoDAO treinoAplicacaoDAO = new TreinoAplicacaoDAO();
 
         while (opcao != 6) {
             System.out.println("Bem vindo, professor! Escolha sua opção:\n");
@@ -188,29 +189,58 @@ public class Menus {
 
                     break;
                 case 2:
-                    Treino novoTreino = new Treino();
                     System.out.println("Cadastro de Novo Treino");
-
-                    System.out.println("Objetivo:");
-                    novoTreino.setObjetivo(scanner.nextLine());
+                    System.out.println("Login do aluno que realizará o treino:");
+                    String loginAlunoTreino = scanner.nextLine();
                     scanner.nextLine();
 
-                    System.out.println("Divisão de Treino:");
-                    novoTreino.setDivisaoTreino(scanner.nextLine());
+                    boolean alunoTreinoEncontrado = false;
+                    for (Pessoa pessoa : pessoas) {
+                        if (pessoa != null && pessoa.getLogin().equals(loginAlunoTreino) && pessoa.getTipoUsuario().equals("aluno")) {
+                            alunoTreinoEncontrado = true;
+                            break;
+                        }
+                    }
 
-                    System.out.println("Data de Início (YYYY-MM-DD):");
-                    novoTreino.setDataInicio(LocalDate.parse(scanner.nextLine()));
+                    if (alunoTreinoEncontrado) {
+                        TreinoAplicacao novoTreino = new TreinoAplicacao();
+                       
 
-                    System.out.println("Data de Término (YYYY-MM-DD):");
-                    novoTreino.setDataTermino(LocalDate.parse(scanner.nextLine()));
+                        System.out.println("Exercício do treino:");
+                        novoTreino.setExercicio(scanner.nextLine());
+                        System.out.println("Aplicação do exercício (repetições):");
+                        novoTreino.setExercicioAplicacao(scanner.nextLine());
+                        System.out.println("Divisão de treino (A,B,C):");
+                        novoTreino.setDivisaoTreino(scanner.nextLine());
+                        System.out.println("Divisão de treino músculo (Perna, Ombro):");
+                        novoTreino.setDivisaoTreinoMusculo(scanner.nextLine());
+                        novoTreino.setTreino(loginAlunoTreino); // Associa o treino ao aluno
+                        novoTreino.setDataCriacao(LocalDate.now());
+                        novoTreino.setDataModificacao(LocalDate.now());
 
-                    novoTreino.setDataCriacao(LocalDate.now());
-                    novoTreino.setDataModificacao(LocalDate.now());
+                        boolean treinoEncontrado = false;
+                        for (int i = 0; i < treinoAplicacaoDAO.getTreinoAplicacao().length; i++) {
+                            TreinoAplicacao treino = treinoAplicacaoDAO.getTreinoAplicacao()[i];
+                            if (treino != null && treino.getTreino().equals(loginAlunoTreino)) {
 
-                    TreinoDAO treinoDAO = new TreinoDAO();
-                    treinoDAO.inserirTreino(novoTreino);
+                                treino.setExercicio(novoTreino.getExercicio());
+                                treino.setExercicioAplicacao(novoTreino.getExercicioAplicacao());
+                                treino.setDivisaoTreino(novoTreino.getDivisaoTreino());
+                                treino.setDivisaoTreinoMusculo(novoTreino.getDivisaoTreinoMusculo());
+                                treino.setDataModificacao(LocalDate.now());
+                                treinoEncontrado = true;
+                                break;
+                            }
+                        }
 
-                    System.out.println("Treino cadastrado com sucesso!");
+                        if (!treinoEncontrado) {
+                            treinoAplicacaoDAO.inserirTreinoAplicacao(novoTreino);
+                        }
+
+                        System.out.println("Treino cadastrado/atualizado com sucesso!");
+                    } else {
+                        System.out.println("Aluno não encontrado ou não é um aluno.");
+                    }
                     break;
                 case 3:
                     for (int i = 0; i < 30; ++i) {
@@ -357,17 +387,16 @@ public class Menus {
                     System.out.println("Cadastro de Novo Treino");
                     System.out.println("Login do aluno que realizará o treino:");
                     String loginAlunoTreino = scanner.nextLine();
-                    scanner.nextLine();
 
-                    boolean alunotTreinoEncontrado = false;
+                    boolean alunoTreinoEncontrado = false;
                     for (Pessoa pessoa : pessoas) {
                         if (pessoa != null && pessoa.getLogin().equals(loginAlunoTreino) && pessoa.getTipoUsuario().equals("aluno")) {
-                            alunotTreinoEncontrado = true;
+                            alunoTreinoEncontrado = true;
                             break;
                         }
                     }
 
-                    if (alunotTreinoEncontrado) {
+                    if (alunoTreinoEncontrado) {
                         TreinoAplicacao novoTreino = new TreinoAplicacao();
 
                         System.out.println("Exercício do treino:");
@@ -431,7 +460,7 @@ public class Menus {
                     System.out.println("Ficha de Treino do Aluno");
                     System.out.println("Informe o login do aluno:");
                     String alunoLogin = scanner.next();
-                    scanner.nextLine();
+                    
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
@@ -464,7 +493,6 @@ public class Menus {
                     System.out.println("Consultar Avaliação Física de um Aluno");
                     System.out.println("Informe o login do aluno:");
                     String alunoLoginAvaliacao = scanner.nextLine();
-                    scanner.nextLine();
 
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
@@ -502,7 +530,7 @@ public class Menus {
                 case 6:
                     System.out.println("Movimentações Financeiras:\n1 - Ver mensalidades\n2 - Registrar pagamento de aluno\nDigite sua opção:");
                     int opcaoFinanceira = scanner.nextInt();
-                    scanner.nextLine(); // Limpar o buffer após ler a opção
+                    scanner.nextLine();
 
                     switch (opcaoFinanceira) {
                         case 1:
@@ -537,7 +565,7 @@ public class Menus {
                             System.out.println("Digite o login do aluno:");
                             String loginAlunoPagamento = scanner.nextLine();
                             boolean alunoParaPagamentoEncontrado = false;
-                            for (Pessoa pessoa : pessoaDAO.getPessoa()) {
+                            for (Pessoa pessoa : pessoas) {
                                 if (pessoa != null && pessoa.getLogin().equals(loginAlunoPagamento) && pessoa.getTipoUsuario().equals("aluno")) {
                                     alunoParaPagamentoEncontrado = true;
                                     break;
@@ -552,7 +580,7 @@ public class Menus {
                                 novoPagamento.setValorPago(valorPagamento);
                                 novoPagamento.setData(LocalDate.now());
                                 System.out.println("Digite a modalidade:");
-                                scanner.nextLine(); // Limpar o buffer após ler o double
+                                scanner.nextLine(); 
                                 novoPagamento.setModalidade(scanner.nextLine());
                                 System.out.println("Digite o status da mensalidade (pago, pendente, etc.):");
                                 novoPagamento.setMensalidadeVigente(scanner.nextLine());
