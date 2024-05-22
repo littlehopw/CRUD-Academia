@@ -1,45 +1,29 @@
 package controller;
 
 import java.util.Scanner;
-import model.AlunoPagamentoMensalidade;
-import model.AlunoPagamentoMensalidadeDAO;
-import model.AvaliacaoFisica;
-import model.PessoaDAO;
-import model.Pessoa;
-import model.TreinoAplicacao;
-import model.TreinoAplicacaoDAO;
-import model.AvaliacaoFisicaDAO;
-import model.AcademiaDAO;
-import model.Academia;
-import model.ExercicioAplicacao;        
-import model.ExercicioAplicacaoDAO;
-import model.Exercicio;
-import model.ExercicioDAO;
-import model.MensalidadeVigente;
-import model.MensalidadeVigenteDAO;
-import model.MovimentacaoFinanceira;
-import model.MovimentacaoFinanceiraDAO;
-import model.Treino;
-import model.TreinoDAO;
+import model.*;
 import view.Menus;
 
 public class Main {
 
-    public Main() {
-
-        PessoaDAO pessoaDAO = new PessoaDAO();
-        Scanner scanner = new Scanner(System.in);
-        AlunoPagamentoMensalidadeDAO mensalidadeDAO = new AlunoPagamentoMensalidadeDAO();
-        TreinoAplicacaoDAO treinoaplicacaoDAO = new TreinoAplicacaoDAO();
-        AvaliacaoFisicaDAO avaliacaofisicaDAO = new AvaliacaoFisicaDAO();
+    public static void main(String[] args) {
         AcademiaDAO academiaDAO = new AcademiaDAO();
-        ExercicioAplicacaoDAO aplicacaoDAO = new ExercicioAplicacaoDAO();
+        AlunoPagamentoMensalidadeDAO mensalidadeDAO = new AlunoPagamentoMensalidadeDAO();
+        AvaliacaoFisicaDAO avaliacaofisicaDAO = new AvaliacaoFisicaDAO();
+        DivisaoTreinoDAO divisaotreinoDAO = new DivisaoTreinoDAO();
+        DivisaoTreinoMusculoDAO divisaotreinoMusculoDAO = new DivisaoTreinoMusculoDAO();
+        EntradaAlunoDAO entradaalunoDAO = new EntradaAlunoDAO();
         ExercicioDAO exercicioDAO = new ExercicioDAO();
-        TreinoDAO treinoDAO = new TreinoDAO();
+        ExercicioAplicacaoDAO aplicacaoDAO = new ExercicioAplicacaoDAO();
+        MensalidadeVigenteDAO mensalidadevigenteDAO = new MensalidadeVigenteDAO();
         MovimentacaoFinanceiraDAO financeiraDAO = new MovimentacaoFinanceiraDAO();
-        MensalidadeVigenteDAO mensalidadevigenteDAO = new MensalidadeVigenteDAO(); 
+        PagamentoRecorrenteDAO pagamentorecorrenteDAO = new PagamentoRecorrenteDAO();
+        PessoaDAO pessoaDAO = new PessoaDAO();
+        TreinoDAO treinoDAO = new TreinoDAO();
+        TreinoAplicacaoDAO treinoaplicacaoDAO = new TreinoAplicacaoDAO();
         
-        Pessoa[] pessoas = pessoaDAO.getPessoa();
+        Scanner scanner = new Scanner(System.in);
+        /*Pessoa[] pessoas = pessoaDAO.getPessoa();
         AlunoPagamentoMensalidade[] alunospagamentos = mensalidadeDAO.getAlunoPagamentoMensalidade();
         TreinoAplicacao[] treinosaplicacao = treinoaplicacaoDAO.getTreinoAplicacao();
         AvaliacaoFisica[] avaliacaofisica = avaliacaofisicaDAO.getAvaliacoes();
@@ -48,7 +32,7 @@ public class Main {
         Exercicio [] exercicios = exercicioDAO.getExercicios();
         Treino [] treinos = treinoDAO.getTreino();
         MovimentacaoFinanceira [] movimentacoes = financeiraDAO.getMovimentacaoFinanceira();
-        MensalidadeVigente [] mensalidades = mensalidadevigenteDAO.getMensalidadesVigente();
+        MensalidadeVigente [] mensalidades = mensalidadevigenteDAO.getMensalidadesVigente();*/
         
         pessoaDAO.inserirPessoaExemplo();
         avaliacaofisicaDAO.inserirAvaliacaoExemplo();
@@ -60,9 +44,11 @@ public class Main {
         treinoDAO.inserirTreinoExemplo();
         financeiraDAO.inserirMovimentacaoFinanceiraExemplo();
         mensalidadevigenteDAO.inserirMensalidadeExemplo();
+                
         
-        
-        Menus novoMenu = new Menus(pessoas, alunospagamentos, treinosaplicacao, avaliacaofisica, avaliacaofisicaDAO);
+        Menus novoMenu = new Menus(academiaDAO, mensalidadeDAO, avaliacaofisicaDAO, divisaotreinoDAO, divisaotreinoMusculoDAO,
+        entradaalunoDAO, exercicioDAO, aplicacaoDAO, mensalidadevigenteDAO, financeiraDAO, pagamentorecorrenteDAO, pessoaDAO,
+        treinoDAO, treinoaplicacaoDAO);
 
         int opcao = 1;
 
@@ -137,9 +123,5 @@ public class Main {
             }
         }
         System.out.println("Obrigado por utilizar o sistema de academia!");
-    }
-
-    public static void main(String[] args) {
-        new Main();
     }
 }

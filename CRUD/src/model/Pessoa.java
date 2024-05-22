@@ -104,5 +104,12 @@ public class Pessoa {
     public void setDataModificacao(LocalDate dataModificacao) {
         this.dataModificacao = dataModificacao;
     }   
+
+        @Override
+    public String toString() {
+        return "Nome: " + this.getNome() + ", Sexo: " + this.getSexo() + ", Nascimento: " + this.getNascimento() +
+               ", Login: " + this.getLogin() + ", Senha: " + this.getSenha() + ", Tipo Usuario: " + this.getTipoUsuario();
+    }
+    
     
 }

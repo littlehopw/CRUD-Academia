@@ -2,33 +2,45 @@ package view;
 
 import java.time.LocalDate;
 import java.util.Scanner;
-import model.Pessoa;
-import model.AlunoPagamentoMensalidade;
-import model.AlunoPagamentoMensalidadeDAO;
-import model.TreinoAplicacao;
-import model.AvaliacaoFisica;
-import model.PessoaDAO;
-import model.Treino;
-import model.TreinoDAO;
-import model.AvaliacaoFisicaDAO;
-import model.TreinoAplicacaoDAO;
+import model.*;
 
 public class Menus {
 
-    private PessoaDAO pessoaDAO = new PessoaDAO();
-    private Pessoa[] pessoas;
+    //private PessoaDAO pessoaDAO = new PessoaDAO();
+    //private Pessoa[] pessoas;
     private AlunoPagamentoMensalidade[] alunospagamentos;
     private TreinoAplicacao[] treinos;
     private AvaliacaoFisica[] avaliacoesfisicas;
     private Scanner scanner;
     private AvaliacaoFisicaDAO avaliacaoFisicaDAO;
+    
+        AcademiaDAO academiaDAO = new AcademiaDAO();
+        AlunoPagamentoMensalidadeDAO mensalidadeDAO = new AlunoPagamentoMensalidadeDAO();
+       private AvaliacaoFisicaDAO avaliacaofisicaDAO = new AvaliacaoFisicaDAO();
+        DivisaoTreinoDAO divisaotreinoDAO = new DivisaoTreinoDAO();
+        DivisaoTreinoMusculoDAO divisaotreinoMusculoDAO = new DivisaoTreinoMusculoDAO();
+        EntradaAlunoDAO entradaalunoDAO = new EntradaAlunoDAO();
+        ExercicioDAO exercicioDAO = new ExercicioDAO();
+        ExercicioAplicacaoDAO aplicacaoDAO = new ExercicioAplicacaoDAO();
+        MensalidadeVigenteDAO mensalidadevigenteDAO = new MensalidadeVigenteDAO();
+        MovimentacaoFinanceiraDAO financeiraDAO = new MovimentacaoFinanceiraDAO();
+        PagamentoRecorrenteDAO pagamentorecorrenteDAO = new PagamentoRecorrenteDAO();
+       private PessoaDAO pessoaDAO = new PessoaDAO();
+        TreinoDAO treinoDAO = new TreinoDAO();
+       private TreinoAplicacaoDAO treinoaplicacaoDAO = new TreinoAplicacaoDAO();
+    
+    
 
-    public Menus(Pessoa[] pessoas, AlunoPagamentoMensalidade[] alunospagamentos, TreinoAplicacao[] treinos, AvaliacaoFisica[] avaliacoesfisicas, AvaliacaoFisicaDAO avaliacaoFisicaDAO) {
-        this.pessoas = pessoas;
+    public Menus(AcademiaDAO academiaDAO, AlunoPagamentoMensalidadeDAO mensalidadeDAO, AvaliacaoFisicaDAO avaliacaofisicaDAO,
+                 DivisaoTreinoDAO divisaotreinoDAO, DivisaoTreinoMusculoDAO divisaotreinoMusculoDAO, EntradaAlunoDAO entradaalunoDAO,
+                 ExercicioDAO exercicioDAO,ExercicioAplicacaoDAO aplicacaoDAO,MensalidadeVigenteDAO mensalidadevigenteDAO,
+                 MovimentacaoFinanceiraDAO financeiraDAO,PagamentoRecorrenteDAO pagamentorecorrenteDAO,PessoaDAO pessoaDAO,
+                 TreinoDAO treinoDAO,TreinoAplicacaoDAO treinoaplicacaoDAO) {
+        this.pessoaDAO = pessoaDAO;
         this.alunospagamentos = alunospagamentos;
-        this.treinos = treinos;
-        this.avaliacoesfisicas = avaliacoesfisicas;
-        this.avaliacaoFisicaDAO = avaliacaoFisicaDAO;
+        this.treinoaplicacaoDAO = treinoaplicacaoDAO;
+        this.avaliacaofisicaDAO = avaliacaofisicaDAO;
+        //this.avaliacaoFisicaDAO = avaliacaoFisicaDAO;
         this.scanner = new Scanner(System.in);
     }
 
@@ -44,7 +56,7 @@ public class Menus {
         System.out.println("Senha:");
         String senha = scanner.nextLine();
 
-        for (Pessoa pessoa : pessoas) {
+        for (Pessoa pessoa : pessoaDAO.getPessoa()) {
             if (pessoa != null && pessoa.getLogin().equals(login) && pessoa.getSenha().equals(senha)) {
                 System.out.println("Login bem-sucedido!");
                 return pessoa;
@@ -96,7 +108,7 @@ public class Menus {
                     System.out.println();
                 }
                 boolean encontrouTreino = false;
-                for (TreinoAplicacao treino : treinos) {
+                for (TreinoAplicacao treino : treinoaplicacaoDAO.getTreinoAplicacao()) {
                     if (treino != null && treino.getTreino().equals(login)) {
                         encontrouTreino = true;
                         System.out.println("Detalhes do Treino de " + treino.getTreino());
@@ -119,7 +131,7 @@ public class Menus {
                     System.out.println();
                 }
                 boolean encontrouAvaliacao = false;
-                for (AvaliacaoFisica avaliacao : avaliacoesfisicas) {
+                for (AvaliacaoFisica avaliacao : avaliacaofisicaDAO.getAvaliacoes()) {
                     if (avaliacao != null && avaliacao.getPessoa().equals(login)) {
                         encontrouAvaliacao = true;
                         System.out.println("Detalhes da Avaliação Física de " + avaliacao.getPessoa());
@@ -139,6 +151,7 @@ public class Menus {
             //sair do sistema
             if (opcao == 4) {
                 System.out.println("Saindo do sistema...");
+                
             }
         }
     }
@@ -182,7 +195,7 @@ public class Menus {
 
                     novoAluno.setTipoUsuario("aluno");
 
-                    PessoaDAO pessoaDAO = new PessoaDAO();
+                    
                     pessoaDAO.inserirPessoa(novoAluno);
 
                     System.out.println("Aluno cadastrado com sucesso!");
@@ -195,7 +208,7 @@ public class Menus {
                     scanner.nextLine();
 
                     boolean alunoTreinoEncontrado = false;
-                    for (Pessoa pessoa : pessoas) {
+                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                         if (pessoa != null && pessoa.getLogin().equals(loginAlunoTreino) && pessoa.getTipoUsuario().equals("aluno")) {
                             alunoTreinoEncontrado = true;
                             break;
@@ -272,7 +285,7 @@ public class Menus {
                         System.out.println();
                     }
                     boolean alunoEncontrado = false;
-                    for (Pessoa pessoa : pessoas) {
+                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                         if (pessoa != null && pessoa.getLogin().equals(alunoLogin) && pessoa.getTipoUsuario().equals("aluno")) {
                             alunoEncontrado = true;
                             break;
@@ -280,7 +293,7 @@ public class Menus {
                     }
 
                     if (alunoEncontrado) {
-                        for (TreinoAplicacao treino : treinos) {
+                        for (TreinoAplicacao treino : treinoaplicacaoDAO.getTreinoAplicacao()) {
                             if (treino != null && treino.getTreino().equals(alunoLogin)) {
                                 System.out.println("Detalhes do Treino de " + treino.getTreino());
                                 System.out.println("Exercício: " + treino.getExercicio());
@@ -300,22 +313,24 @@ public class Menus {
                     System.out.println("Consultar Avaliação Física de um Aluno");
                     System.out.println("Informe o login do aluno:");
                     String alunoLoginAvaliacao = scanner.nextLine();
-                    scanner.nextLine();
-
+                    System.out.println(scanner.nextLine());
+                    
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
                     boolean alunoEncontradoAvaliacao = false;
-                    for (Pessoa pessoa : pessoas) {
+                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
+                        System.out.println(pessoa.getLogin() + pessoa.getTipoUsuario());
                         if (pessoa != null && pessoa.getLogin().equals(alunoLoginAvaliacao) && pessoa.getTipoUsuario().equals("aluno")) {
                             alunoEncontradoAvaliacao = true;
                             break;
                         }
+                        
                     }
 
                     if (alunoEncontradoAvaliacao) {
                         boolean encontrouAvaliacao = false;
-                        for (AvaliacaoFisica avaliacao : avaliacoesfisicas) {
+                        for (AvaliacaoFisica avaliacao : avaliacaofisicaDAO.getAvaliacoes()) {
                             if (avaliacao != null && avaliacao.getPessoa().equals(alunoLoginAvaliacao)) {
                                 encontrouAvaliacao = true;
                                 System.out.println("Detalhes da Avaliação Física de " + avaliacao.getPessoa());
@@ -337,6 +352,7 @@ public class Menus {
                     break;
                 case 6:
                     System.out.println("Saindo do sistema...");
+                    
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -389,7 +405,7 @@ public class Menus {
                     String loginAlunoTreino = scanner.nextLine();
 
                     boolean alunoTreinoEncontrado = false;
-                    for (Pessoa pessoa : pessoas) {
+                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                         if (pessoa != null && pessoa.getLogin().equals(loginAlunoTreino) && pessoa.getTipoUsuario().equals("aluno")) {
                             alunoTreinoEncontrado = true;
                             break;
@@ -465,7 +481,7 @@ public class Menus {
                         System.out.println();
                     }
                     boolean alunoEncontrado = false;
-                    for (Pessoa pessoa : pessoas) {
+                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                         if (pessoa != null && pessoa.getLogin().equals(alunoLogin) && pessoa.getTipoUsuario().equals("aluno")) {
                             alunoEncontrado = true;
                             break;
@@ -473,7 +489,7 @@ public class Menus {
                     }
 
                     if (alunoEncontrado) {
-                        for (TreinoAplicacao treino : treinos) {
+                        for (TreinoAplicacao treino : treinoaplicacaoDAO.getTreinoAplicacao()) {
                             if (treino != null && treino.getTreino().equals(alunoLogin)) {
                                 System.out.println("Detalhes do Treino de " + treino.getTreino());
                                 System.out.println("Exercício: " + treino.getExercicio());
@@ -498,7 +514,7 @@ public class Menus {
                         System.out.println();
                     }
                     boolean alunoEncontradoAvaliacao = false;
-                    for (Pessoa pessoa : pessoas) {
+                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                         if (pessoa != null && pessoa.getLogin().equals(alunoLoginAvaliacao) && pessoa.getTipoUsuario().equals("aluno")) {
                             alunoEncontradoAvaliacao = true;
                             break;
@@ -507,7 +523,7 @@ public class Menus {
 
                     if (alunoEncontradoAvaliacao) {
                         boolean encontrouAvaliacao = false;
-                        for (AvaliacaoFisica avaliacao : avaliacoesfisicas) {
+                        for (AvaliacaoFisica avaliacao : avaliacaofisicaDAO.getAvaliacoes()) {
                             if (avaliacao != null && avaliacao.getPessoa().equals(alunoLoginAvaliacao)) {
                                 encontrouAvaliacao = true;
                                 System.out.println("Detalhes da Avaliação Física de " + avaliacao.getPessoa());
@@ -565,7 +581,7 @@ public class Menus {
                             System.out.println("Digite o login do aluno:");
                             String loginAlunoPagamento = scanner.nextLine();
                             boolean alunoParaPagamentoEncontrado = false;
-                            for (Pessoa pessoa : pessoas) {
+                            for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                                 if (pessoa != null && pessoa.getLogin().equals(loginAlunoPagamento) && pessoa.getTipoUsuario().equals("aluno")) {
                                     alunoParaPagamentoEncontrado = true;
                                     break;

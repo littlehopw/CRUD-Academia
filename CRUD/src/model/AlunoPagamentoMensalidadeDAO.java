@@ -122,5 +122,4 @@ public class AlunoPagamentoMensalidadeDAO {
         }
         System.out.println("Total Recebido: R$" + totalRecebido);
     }
-
 }
