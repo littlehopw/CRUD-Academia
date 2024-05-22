@@ -14,7 +14,6 @@ public class AlunoPagamentoMensalidade{
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
     
-    //constructor
     public AlunoPagamentoMensalidade(){
         id = ++AlunoPagamentoMensalidade.serial;
         this.dataCriacao = LocalDate.now();

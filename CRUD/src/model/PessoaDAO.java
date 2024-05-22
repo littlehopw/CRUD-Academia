@@ -1,7 +1,5 @@
 package model;
 
-import java.time.LocalDate;
-
 public class PessoaDAO {
 
     Pessoa[] pessoas = new Pessoa[40];

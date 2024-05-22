@@ -4,7 +4,11 @@ import java.time.LocalDate;
 
 public class AlunoPagamentoMensalidadeDAO {
 
-    AlunoPagamentoMensalidade[] alunospagamentos = new AlunoPagamentoMensalidade[10];
+    private AlunoPagamentoMensalidade[] alunospagamentos = new AlunoPagamentoMensalidade[10];
+
+    public AlunoPagamentoMensalidadeDAO() {
+        inserirMensalidadeExemplo();
+    }
 
     public void inserirMensalidadeExemplo() {
         AlunoPagamentoMensalidade exemplo1 = new AlunoPagamentoMensalidade();
@@ -12,6 +16,7 @@ public class AlunoPagamentoMensalidadeDAO {
         exemplo1.setMensalidadeVigente("valida");
         exemplo1.setModalidade("Dinheiro");
         exemplo1.setValorPago(150.00);
+        exemplo1.setData(LocalDate.now());
 
         inserirAlunoPagamentoMensalidade(exemplo1);
 
@@ -20,7 +25,8 @@ public class AlunoPagamentoMensalidadeDAO {
         exemplo2.setMensalidadeVigente("atrasada");
         exemplo2.setModalidade("Pix");
         exemplo2.setValorPago(120.00);
-       
+        exemplo1.setData(LocalDate.now());
+
         inserirAlunoPagamentoMensalidade(exemplo2);
 
         AlunoPagamentoMensalidade exemplo3 = new AlunoPagamentoMensalidade();
@@ -28,23 +34,24 @@ public class AlunoPagamentoMensalidadeDAO {
         exemplo3.setMensalidadeVigente("valida");
         exemplo3.setModalidade("Debito");
         exemplo3.setValorPago(180.00);
-        
+        exemplo1.setData(LocalDate.of(2024, 3, 11));
+
         inserirAlunoPagamentoMensalidade(exemplo3);
-        
-        // Exemplo 4
+
         AlunoPagamentoMensalidade exemplo4 = new AlunoPagamentoMensalidade();
         exemplo4.setPessoa("maria");
         exemplo4.setMensalidadeVigente("valida");
         exemplo4.setModalidade("Recorrente");
         exemplo4.setValorPago(200.00);
+        exemplo1.setData(LocalDate.now());
         inserirAlunoPagamentoMensalidade(exemplo4);
 
-        // Exemplo 5
         AlunoPagamentoMensalidade exemplo5 = new AlunoPagamentoMensalidade();
         exemplo5.setPessoa("carlos");
         exemplo5.setMensalidadeVigente("atrasada");
         exemplo5.setModalidade("Dinheiro");
         exemplo5.setValorPago(250.00);
+        exemplo1.setData(LocalDate.of(2024, 3, 11));
         inserirAlunoPagamentoMensalidade(exemplo5);
     }
 
@@ -77,7 +84,7 @@ public class AlunoPagamentoMensalidadeDAO {
         }
     }
 
-    public AlunoPagamentoMensalidade[] getAlunoPagamentoMensalidade() {
+    public AlunoPagamentoMensalidade[] getAlunosPagamentos() {
         return alunospagamentos;
     }
 
@@ -95,8 +102,8 @@ public class AlunoPagamentoMensalidadeDAO {
         }
         return pagamentosDoAluno;
     }
-    
-     public void relatorioAlunosPagaramAteFimDoMes(int mes, int ano) {
+
+    public void relatorioAlunosPagaramAteFimDoMes(int mes, int ano) {
         System.out.println("Relatório de Alunos que Pagaram até o Fim do Mês " + mes + "/" + ano);
         for (AlunoPagamentoMensalidade pagamento : alunospagamentos) {
             if (pagamento != null && pagamento.getData() != null) {
@@ -104,7 +111,7 @@ public class AlunoPagamentoMensalidadeDAO {
                 if (dataPagamento.getMonthValue() == mes && dataPagamento.getYear() == ano) {
                     System.out.println("Aluno: " + pagamento.getPessoa() + ", Data de Pagamento: " + dataPagamento);
                 }
-         
+
             }
         }
     }

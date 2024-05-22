@@ -6,41 +6,22 @@ import model.*;
 
 public class Menus {
 
-    //private PessoaDAO pessoaDAO = new PessoaDAO();
-    //private Pessoa[] pessoas;
     private AlunoPagamentoMensalidade[] alunospagamentos;
-    private TreinoAplicacao[] treinos;
-    private AvaliacaoFisica[] avaliacoesfisicas;
     private Scanner scanner;
-    private AvaliacaoFisicaDAO avaliacaoFisicaDAO;
-    
-        AcademiaDAO academiaDAO = new AcademiaDAO();
-        AlunoPagamentoMensalidadeDAO mensalidadeDAO = new AlunoPagamentoMensalidadeDAO();
-       private AvaliacaoFisicaDAO avaliacaofisicaDAO = new AvaliacaoFisicaDAO();
-        DivisaoTreinoDAO divisaotreinoDAO = new DivisaoTreinoDAO();
-        DivisaoTreinoMusculoDAO divisaotreinoMusculoDAO = new DivisaoTreinoMusculoDAO();
-        EntradaAlunoDAO entradaalunoDAO = new EntradaAlunoDAO();
-        ExercicioDAO exercicioDAO = new ExercicioDAO();
-        ExercicioAplicacaoDAO aplicacaoDAO = new ExercicioAplicacaoDAO();
-        MensalidadeVigenteDAO mensalidadevigenteDAO = new MensalidadeVigenteDAO();
-        MovimentacaoFinanceiraDAO financeiraDAO = new MovimentacaoFinanceiraDAO();
-        PagamentoRecorrenteDAO pagamentorecorrenteDAO = new PagamentoRecorrenteDAO();
-       private PessoaDAO pessoaDAO = new PessoaDAO();
-        TreinoDAO treinoDAO = new TreinoDAO();
-       private TreinoAplicacaoDAO treinoaplicacaoDAO = new TreinoAplicacaoDAO();
-    
-    
+    private AvaliacaoFisicaDAO avaliacaofisicaDAO = new AvaliacaoFisicaDAO();
+    private PessoaDAO pessoaDAO = new PessoaDAO();
+    private TreinoAplicacaoDAO treinoaplicacaoDAO = new TreinoAplicacaoDAO();
 
     public Menus(AcademiaDAO academiaDAO, AlunoPagamentoMensalidadeDAO mensalidadeDAO, AvaliacaoFisicaDAO avaliacaofisicaDAO,
-                 DivisaoTreinoDAO divisaotreinoDAO, DivisaoTreinoMusculoDAO divisaotreinoMusculoDAO, EntradaAlunoDAO entradaalunoDAO,
-                 ExercicioDAO exercicioDAO,ExercicioAplicacaoDAO aplicacaoDAO,MensalidadeVigenteDAO mensalidadevigenteDAO,
-                 MovimentacaoFinanceiraDAO financeiraDAO,PagamentoRecorrenteDAO pagamentorecorrenteDAO,PessoaDAO pessoaDAO,
-                 TreinoDAO treinoDAO,TreinoAplicacaoDAO treinoaplicacaoDAO) {
+            DivisaoTreinoDAO divisaotreinoDAO, DivisaoTreinoMusculoDAO divisaotreinoMusculoDAO, EntradaAlunoDAO entradaalunoDAO,
+            ExercicioDAO exercicioDAO, ExercicioAplicacaoDAO aplicacaoDAO, MensalidadeVigenteDAO mensalidadevigenteDAO,
+            MovimentacaoFinanceiraDAO financeiraDAO, PagamentoRecorrenteDAO pagamentorecorrenteDAO, PessoaDAO pessoaDAO,
+            TreinoDAO treinoDAO, TreinoAplicacaoDAO treinoaplicacaoDAO) {
         this.pessoaDAO = pessoaDAO;
+        this.alunospagamentos = mensalidadeDAO.getAlunosPagamentos();
         this.alunospagamentos = alunospagamentos;
         this.treinoaplicacaoDAO = treinoaplicacaoDAO;
         this.avaliacaofisicaDAO = avaliacaofisicaDAO;
-        //this.avaliacaoFisicaDAO = avaliacaoFisicaDAO;
         this.scanner = new Scanner(System.in);
     }
 
@@ -79,86 +60,86 @@ public class Menus {
             System.out.println("4 - Sair do sistema");
             opcao = scanner.nextInt();
 
-            //entrar na academia
-            if (opcao == 1) {
-                for (int i = 0; i < 30; ++i) {
-                    System.out.println();
-                }
-                boolean mensalidadeEmDia = false;
-                for (AlunoPagamentoMensalidade alunopagamento : alunospagamentos) {
-                    if (alunopagamento != null && alunopagamento.getPessoa().equals(login) && alunopagamento.getMensalidadeVigente().equals("valida")) {
-                        mensalidadeEmDia = true;
-                        break;
-                    }
-                }
-                if (mensalidadeEmDia) {
+            switch (opcao) {
+                case 1:
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
-                    System.out.println("Acesso permitido na academia.");
+                    boolean mensalidadeEmDia = false;
+                    for (AlunoPagamentoMensalidade alunopagamento : alunospagamentos) {
+                        if (alunopagamento != null && alunopagamento.getPessoa().equals(login) && alunopagamento.getMensalidadeVigente().equals("valida")) {
+                            mensalidadeEmDia = true;
+                            break;
+                        }
+                    }
+                    if (mensalidadeEmDia) {
+                        for (int i = 0; i < 30; ++i) {
+                            System.out.println();
+                        }
+                        System.out.println("Acesso permitido na academia.");
 
-                } else {
-                    System.out.println("Você não tem a mensalidade em dia. Por favor, entre em contato com a administração.");
-                }
-            }
+                    } else {
+                        System.out.println("Você não tem a mensalidade em dia. Por favor, entre em contato com a administração.");
+                    }
+                    break;
 
-            //ficha de treino
-            if (opcao == 2) {
-                for (int i = 0; i < 30; ++i) {
-                    System.out.println();
-                }
-                boolean encontrouTreino = false;
-                for (TreinoAplicacao treino : treinoaplicacaoDAO.getTreinoAplicacao()) {
-                    if (treino != null && treino.getTreino().equals(login)) {
-                        encontrouTreino = true;
-                        System.out.println("Detalhes do Treino de " + treino.getTreino());
-                        System.out.println("Exercício: " + treino.getExercicio());
-                        System.out.println("Exercício Aplicação: " + treino.getExercicioAplicacao());
-                        System.out.println("Divisão do Treino: " + treino.getDivisaoTreino());
-                        System.out.println("Divisão do Treino Muscular: " + treino.getDivisaoTreinoMusculo());
-                        System.out.println("Data de Criação: " + treino.getDataCriacao());
-                        System.out.println("Data de Modificação: " + treino.getDataModificacao());
+                case 2:
+                    for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
-                }
-                if (!encontrouTreino) {
-                    System.out.println("Nenhum treino encontrado para o usuário " + login);
-                }
-            }
+                    boolean encontrouTreino = false;
+                    for (TreinoAplicacao treino : treinoaplicacaoDAO.getTreinoAplicacao()) {
+                        if (treino != null && treino.getTreino().equals(login)) {
+                            encontrouTreino = true;
+                            System.out.println("Detalhes do Treino de " + treino.getTreino());
+                            System.out.println("Exercício: " + treino.getExercicio());
+                            System.out.println("Exercício Aplicação: " + treino.getExercicioAplicacao());
+                            System.out.println("Divisão do Treino: " + treino.getDivisaoTreino());
+                            System.out.println("Divisão do Treino Muscular: " + treino.getDivisaoTreinoMusculo());
+                            System.out.println("Data de Criação: " + treino.getDataCriacao());
+                            System.out.println("Data de Modificação: " + treino.getDataModificacao());
+                            System.out.println();
+                        }
+                    }
+                    if (!encontrouTreino) {
+                        System.out.println("Nenhum treino encontrado para o usuário " + login);
+                    }
+                    break;
 
-            if (opcao == 3) {
-                for (int i = 0; i < 30; ++i) {
-                    System.out.println();
-                }
-                boolean encontrouAvaliacao = false;
-                for (AvaliacaoFisica avaliacao : avaliacaofisicaDAO.getAvaliacoes()) {
-                    if (avaliacao != null && avaliacao.getPessoa().equals(login)) {
-                        encontrouAvaliacao = true;
-                        System.out.println("Detalhes da Avaliação Física de " + avaliacao.getPessoa());
-                        System.out.println("Último Treino: " + avaliacao.getUltimoTreino());
-                        System.out.println("Peso: " + avaliacao.getPeso());
-                        System.out.println("Altura: " + avaliacao.getAltura());
-                        System.out.println("IMC: " + avaliacao.getImc());
-                        System.out.println("Satisfação: " + avaliacao.getSatisfacao());
+                case 3:
+                    for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
-                }
-                if (!encontrouAvaliacao) {
-                    System.out.println("Nenhuma avaliação física encontrada para o usuário " + login);
-                }
+                    boolean encontrouAvaliacao = false;
+                    for (AvaliacaoFisica avaliacao : avaliacaofisicaDAO.getAvaliacoes()) {
+                        if (avaliacao != null && avaliacao.getPessoa().equals(login)) {
+                            encontrouAvaliacao = true;
+                            System.out.println("Detalhes da Avaliação Física de " + avaliacao.getPessoa());
+                            System.out.println("Último Treino: " + avaliacao.getUltimoTreino());
+                            System.out.println("Peso: " + avaliacao.getPeso());
+                            System.out.println("Altura: " + avaliacao.getAltura());
+                            System.out.println("IMC: " + avaliacao.getImc());
+                            System.out.println("Satisfação: " + avaliacao.getSatisfacao());
+                            System.out.println();
+                        }
+                    }
+                    if (!encontrouAvaliacao) {
+                        System.out.println("Nenhuma avaliação física encontrada para o usuário " + login);
+                    }
+
+                    break;
             }
 
-            //sair do sistema
             if (opcao == 4) {
                 System.out.println("Saindo do sistema...");
-                
+
             }
         }
     }
 
     public void menuLoginProfessor(String login, String senha) {
         int opcao = 0;
-         TreinoAplicacaoDAO treinoAplicacaoDAO = new TreinoAplicacaoDAO();
+        TreinoAplicacaoDAO treinoAplicacaoDAO = new TreinoAplicacaoDAO();
 
         while (opcao != 6) {
             System.out.println("Bem vindo, professor! Escolha sua opção:\n");
@@ -169,43 +150,33 @@ public class Menus {
             System.out.println("5 - Ver avaliação física dos alunos");
             System.out.println("6 - Sair do sistema");
             opcao = scanner.nextInt();
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
-
                     Pessoa novoAluno = new Pessoa();
-                    System.out.println("Cadastro de Novo Aluno");
 
-                    System.out.println("Nome:");
+                    System.out.println("CADASTRO DE ALUNO:\n ");
+                    System.out.println("Informe seu nome: ");
                     novoAluno.setNome(scanner.nextLine());
-
-                    scanner.nextLine();
-
-                    System.out.println("Sexo:");
+                    System.out.println("\nInforme seu sexo: ");
                     novoAluno.setSexo(scanner.nextLine());
-
-                    System.out.println("Data de Nascimento (YYYY-MM-DD):");
+                    System.out.println("\nInforme seu nascimento: ");
                     novoAluno.setNascimento(scanner.nextLine());
-
-                    System.out.println("Login:");
+                    System.out.println("\nInforme seu login: ");
                     novoAluno.setLogin(scanner.nextLine());
-
-                    System.out.println("Senha:");
+                    System.out.println("\nInforme sua senha: ");
                     novoAluno.setSenha(scanner.nextLine());
-
                     novoAluno.setTipoUsuario("aluno");
 
-                    
                     pessoaDAO.inserirPessoa(novoAluno);
 
-                    System.out.println("Aluno cadastrado com sucesso!");
-
+                    System.out.println("Aluno cadastrado com sucesso!\n");
                     break;
                 case 2:
                     System.out.println("Cadastro de Novo Treino");
                     System.out.println("Login do aluno que realizará o treino:");
                     String loginAlunoTreino = scanner.nextLine();
-                    scanner.nextLine();
 
                     boolean alunoTreinoEncontrado = false;
                     for (Pessoa pessoa : pessoaDAO.getPessoa()) {
@@ -217,7 +188,6 @@ public class Menus {
 
                     if (alunoTreinoEncontrado) {
                         TreinoAplicacao novoTreino = new TreinoAplicacao();
-                       
 
                         System.out.println("Exercício do treino:");
                         novoTreino.setExercicio(scanner.nextLine());
@@ -227,7 +197,7 @@ public class Menus {
                         novoTreino.setDivisaoTreino(scanner.nextLine());
                         System.out.println("Divisão de treino músculo (Perna, Ombro):");
                         novoTreino.setDivisaoTreinoMusculo(scanner.nextLine());
-                        novoTreino.setTreino(loginAlunoTreino); // Associa o treino ao aluno
+                        novoTreino.setTreino(loginAlunoTreino);
                         novoTreino.setDataCriacao(LocalDate.now());
                         novoTreino.setDataModificacao(LocalDate.now());
 
@@ -235,7 +205,6 @@ public class Menus {
                         for (int i = 0; i < treinoAplicacaoDAO.getTreinoAplicacao().length; i++) {
                             TreinoAplicacao treino = treinoAplicacaoDAO.getTreinoAplicacao()[i];
                             if (treino != null && treino.getTreino().equals(loginAlunoTreino)) {
-
                                 treino.setExercicio(novoTreino.getExercicio());
                                 treino.setExercicioAplicacao(novoTreino.getExercicioAplicacao());
                                 treino.setDivisaoTreino(novoTreino.getDivisaoTreino());
@@ -271,7 +240,6 @@ public class Menus {
                             System.out.println();
                         }
                         System.out.println("Acesso permitido na academia.");
-
                     } else {
                         System.out.println("Você não tem a mensalidade em dia. Por favor, entre em contato com a administração.");
                     }
@@ -279,8 +247,7 @@ public class Menus {
                 case 4:
                     System.out.println("Ficha de Treino do Aluno");
                     System.out.println("Informe o login do aluno:");
-                    String alunoLogin = scanner.next();
-                    scanner.nextLine();
+                    String alunoLogin = scanner.nextLine();
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
@@ -313,19 +280,16 @@ public class Menus {
                     System.out.println("Consultar Avaliação Física de um Aluno");
                     System.out.println("Informe o login do aluno:");
                     String alunoLoginAvaliacao = scanner.nextLine();
-                    System.out.println(scanner.nextLine());
-                    
+
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
                     boolean alunoEncontradoAvaliacao = false;
                     for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-                        System.out.println(pessoa.getLogin() + pessoa.getTipoUsuario());
                         if (pessoa != null && pessoa.getLogin().equals(alunoLoginAvaliacao) && pessoa.getTipoUsuario().equals("aluno")) {
                             alunoEncontradoAvaliacao = true;
                             break;
                         }
-                        
                     }
 
                     if (alunoEncontradoAvaliacao) {
@@ -352,7 +316,6 @@ public class Menus {
                     break;
                 case 6:
                     System.out.println("Saindo do sistema...");
-                    
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -423,7 +386,7 @@ public class Menus {
                         novoTreino.setDivisaoTreino(scanner.nextLine());
                         System.out.println("Divisão de treino músculo (Perna, Ombro):");
                         novoTreino.setDivisaoTreinoMusculo(scanner.nextLine());
-                        novoTreino.setTreino(loginAlunoTreino); // Associa o treino ao aluno
+                        novoTreino.setTreino(loginAlunoTreino);
                         novoTreino.setDataCriacao(LocalDate.now());
                         novoTreino.setDataModificacao(LocalDate.now());
 
@@ -476,7 +439,7 @@ public class Menus {
                     System.out.println("Ficha de Treino do Aluno");
                     System.out.println("Informe o login do aluno:");
                     String alunoLogin = scanner.next();
-                    
+
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
@@ -596,9 +559,9 @@ public class Menus {
                                 novoPagamento.setValorPago(valorPagamento);
                                 novoPagamento.setData(LocalDate.now());
                                 System.out.println("Digite a modalidade:");
-                                scanner.nextLine(); 
+                                scanner.nextLine();
                                 novoPagamento.setModalidade(scanner.nextLine());
-                                System.out.println("Digite o status da mensalidade (pago, pendente, etc.):");
+                                System.out.println("Digite o status da mensalidade (valido ou invalido):");
                                 novoPagamento.setMensalidadeVigente(scanner.nextLine());
 
                                 alunoPagamentoMensalidadeDAO.inserirAlunoPagamentoMensalidade(novoPagamento);
@@ -638,6 +601,7 @@ public class Menus {
                     break;
                 case 8:
                     System.out.println("Finalizando o sistema.");
+                    break;
 
                 default:
                     System.out.println("Opção inválida. Tente novamente.");

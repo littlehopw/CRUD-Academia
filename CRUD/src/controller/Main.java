@@ -23,16 +23,6 @@ public class Main {
         TreinoAplicacaoDAO treinoaplicacaoDAO = new TreinoAplicacaoDAO();
         
         Scanner scanner = new Scanner(System.in);
-        /*Pessoa[] pessoas = pessoaDAO.getPessoa();
-        AlunoPagamentoMensalidade[] alunospagamentos = mensalidadeDAO.getAlunoPagamentoMensalidade();
-        TreinoAplicacao[] treinosaplicacao = treinoaplicacaoDAO.getTreinoAplicacao();
-        AvaliacaoFisica[] avaliacaofisica = avaliacaofisicaDAO.getAvaliacoes();
-        Academia[] academias = academiaDAO.getAcademias();
-        ExercicioAplicacao [] aplicacoes = aplicacaoDAO.getAplicacoes();
-        Exercicio [] exercicios = exercicioDAO.getExercicios();
-        Treino [] treinos = treinoDAO.getTreino();
-        MovimentacaoFinanceira [] movimentacoes = financeiraDAO.getMovimentacaoFinanceira();
-        MensalidadeVigente [] mensalidades = mensalidadevigenteDAO.getMensalidadesVigente();*/
         
         pessoaDAO.inserirPessoaExemplo();
         avaliacaofisicaDAO.inserirAvaliacaoExemplo();
@@ -101,7 +91,7 @@ public class Main {
                 case 2:
                     Pessoa novoAluno = new Pessoa();
                     
-                    System.out.println("CADASTRO DE ALUNO:\n ");
+                    System.out.println("CADASTRO DE ALUNO\n ");
                     System.out.println("Informe seu nome: ");
                     novoAluno.setNome(scanner.nextLine());
                     System.out.println("\nInforme seu sexo: ");
