@@ -2,10 +2,9 @@ package model;
 
 import java.time.LocalDate;
 
-public class AlunoPagamentoMensalidade{
+public class AlunoPagamentoMensalidade {
     
     private long id;
-    private static long serial;
     private String pessoa;
     private String modalidade;
     private String mensalidadeVigente;
@@ -14,8 +13,7 @@ public class AlunoPagamentoMensalidade{
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
     
-    public AlunoPagamentoMensalidade(){
-        id = ++AlunoPagamentoMensalidade.serial;
+    public AlunoPagamentoMensalidade() {
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = LocalDate.now();
     }
@@ -89,6 +87,4 @@ public class AlunoPagamentoMensalidade{
         return "Aluno: " + pessoa + ", Data de pagamento: " + data + ", Valor: " + valorPago +
                ", Status: " + mensalidadeVigente + ", Modalidade: " + modalidade;
     }
-    
-     
 }

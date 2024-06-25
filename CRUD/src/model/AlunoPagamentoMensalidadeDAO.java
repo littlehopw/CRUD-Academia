@@ -1,132 +1,201 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlunoPagamentoMensalidadeDAO {
 
-    private AlunoPagamentoMensalidade[] alunospagamentos = new AlunoPagamentoMensalidade[10];
+    private String sql;
+    private AlunoPagamentoMensalidade a;
+    List<AlunoPagamentoMensalidade> alunopagamentomensalidade = new ArrayList<>();
 
-    public AlunoPagamentoMensalidadeDAO() {
-        inserirMensalidadeExemplo();
-    }
-
-    public void inserirMensalidadeExemplo() {
-        AlunoPagamentoMensalidade exemplo1 = new AlunoPagamentoMensalidade();
-        exemplo1.setPessoa("ana");
-        exemplo1.setMensalidadeVigente("valida");
-        exemplo1.setModalidade("Dinheiro");
-        exemplo1.setValorPago(150.00);
-        exemplo1.setData(LocalDate.now());
-
-        inserirAlunoPagamentoMensalidade(exemplo1);
-
-        AlunoPagamentoMensalidade exemplo2 = new AlunoPagamentoMensalidade();
-        exemplo2.setPessoa("lucia");
-        exemplo2.setMensalidadeVigente("atrasada");
-        exemplo2.setModalidade("Pix");
-        exemplo2.setValorPago(120.00);
-        exemplo1.setData(LocalDate.now());
-
-        inserirAlunoPagamentoMensalidade(exemplo2);
-
-        AlunoPagamentoMensalidade exemplo3 = new AlunoPagamentoMensalidade();
-        exemplo3.setPessoa("roberto");
-        exemplo3.setMensalidadeVigente("valida");
-        exemplo3.setModalidade("Debito");
-        exemplo3.setValorPago(180.00);
-        exemplo1.setData(LocalDate.of(2024, 3, 11));
-
-        inserirAlunoPagamentoMensalidade(exemplo3);
-
-        AlunoPagamentoMensalidade exemplo4 = new AlunoPagamentoMensalidade();
-        exemplo4.setPessoa("maria");
-        exemplo4.setMensalidadeVigente("valida");
-        exemplo4.setModalidade("Recorrente");
-        exemplo4.setValorPago(200.00);
-        exemplo1.setData(LocalDate.now());
-        inserirAlunoPagamentoMensalidade(exemplo4);
-
-        AlunoPagamentoMensalidade exemplo5 = new AlunoPagamentoMensalidade();
-        exemplo5.setPessoa("carlos");
-        exemplo5.setMensalidadeVigente("atrasada");
-        exemplo5.setModalidade("Dinheiro");
-        exemplo5.setValorPago(250.00);
-        exemplo1.setData(LocalDate.of(2024, 3, 11));
-        inserirAlunoPagamentoMensalidade(exemplo5);
-    }
-
+    // INSERT
     public void inserirAlunoPagamentoMensalidade(AlunoPagamentoMensalidade alunopagamento) {
-        boolean alunoExistente = false;
-        for (int i = 0; i < alunospagamentos.length; i++) {
-            if (alunospagamentos[i] != null && alunospagamentos[i].getPessoa().equals(alunopagamento.getPessoa())) {
-                alunospagamentos[i].setMensalidadeVigente(alunopagamento.getMensalidadeVigente());
-                alunospagamentos[i].setData(alunopagamento.getData());
-                alunospagamentos[i].setValorPago(alunopagamento.getValorPago());
-                alunospagamentos[i].setModalidade(alunopagamento.getModalidade());
-                alunoExistente = true;
-                break;
-            } else if (alunospagamentos[i] == null) {
-                alunospagamentos[i] = alunopagamento;
-                alunoExistente = true;
-                break;
+        sql = "INSERT INTO aluno_pagamento_mensalidade (pessoa, modalidade, mensalidadeVigente, valorPago, data, dataCriacao, dataModificacao) "
+                + "VALUES (?,?,?,?,?,?,?)";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            // VALORES
+            ps.setString(1, alunopagamento.getPessoa());
+            ps.setString(2, alunopagamento.getModalidade());
+            ps.setString(3, alunopagamento.getMensalidadeVigente());
+            ps.setDouble(4, alunopagamento.getValorPago());
+            ps.setDate(5, java.sql.Date.valueOf(alunopagamento.getData()));
+            ps.setDate(6, java.sql.Date.valueOf(alunopagamento.getDataCriacao()));
+            ps.setDate(7, java.sql.Date.valueOf(alunopagamento.getDataModificacao()));
+
+            ps.execute();
+
+            System.out.println("\n Pagamento de mensalidade inserido com sucesso!");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível adicionar o pagamento de mensalidade no banco!", e);
+        }
+    }
+
+    // REMOVE
+    public void removerAlunoPagamentoMensalidade(long id) {
+        sql = "DELETE FROM aluno_pagamento_mensalidade WHERE id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+
+            ps.execute();
+
+            System.out.println("\n Pagamento de mensalidade removido com sucesso!");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível remover o pagamento de mensalidade!", e);
+        }
+    }
+
+    // UPDATE
+    public void alterarAlunoPagamentoMensalidade(AlunoPagamentoMensalidade alunopagamento) {
+        sql = "UPDATE aluno_pagamento_mensalidade SET pessoa = ?, modalidade = ?, mensalidadeVigente = ?, valorPago = ?, data = ?, dataModificacao = ? where id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            // VALORES
+            ps.setString(1, alunopagamento.getPessoa());
+            ps.setString(2, alunopagamento.getModalidade());
+            ps.setString(3, alunopagamento.getMensalidadeVigente());
+            ps.setDouble(4, alunopagamento.getValorPago());
+            ps.setDate(5, java.sql.Date.valueOf(alunopagamento.getData()));
+            ps.setDate(6, java.sql.Date.valueOf(alunopagamento.getDataModificacao()));
+            ps.setLong(7, alunopagamento.getId());
+
+            ps.execute();
+
+            System.out.println("\n Pagamento de mensalidade alterado com sucesso! \n");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível alterar o pagamento de mensalidade!", e);
+        }
+    }
+
+    //BUSCAR ID
+    public AlunoPagamentoMensalidade buscar(long id) {
+        sql = "SELECT * FROM aluno_pagamento_mensalidade WHERE id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                a = new AlunoPagamentoMensalidade();
+
+                if (rs.next()) {
+
+                    a.setPessoa(rs.getString("Pessoa: "));
+                    a.setModalidade(rs.getString("Modalidade"));
+                    a.setMensalidadeVigente(rs.getString("Mensalidade vigente:"));
+                    a.setValorPago(rs.getDouble("Valor pago:"));
+                    
+                } else {
+                    throw new SQLException("Pessoa não encontrada.");
+                }
+
+                return a;
             }
-        }
-        if (!alunoExistente) {
-            System.out.println("Limite de pagamentos atingido. Não é possível adicionar mais pagamentos.");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível buscar a pessoa!", e);
         }
     }
 
-    public void mostrarAlunoPagamentoMensalidade() {
-        for (int i = 0; i < alunospagamentos.length; i++) {
-            if (alunospagamentos[i] != null) {
-                System.out.println(alunospagamentos[i].toString());
+    //ACHAR NOME
+    public AlunoPagamentoMensalidade buscarNome(String pessoa) {
+        sql = "SELECT * FROM academia WHERE pessoa = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, pessoa);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                
+                a = new AlunoPagamentoMensalidade();
+
+                if (rs.next()) {
+                    
+                    a.setPessoa(rs.getString("Pessoa: "));
+                    a.setModalidade(rs.getString("Modalidade"));
+                    a.setMensalidadeVigente(rs.getString("Mensalidade vigente:"));
+                    a.setValorPago(rs.getDouble("Valor pago:"));
+                    
+                } else {
+                    throw new SQLException("Pessoa não encontrada.");
+                }
+
+                return a;
             }
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível buscar a pessoa!", e);
         }
     }
 
-    public AlunoPagamentoMensalidade[] getAlunosPagamentos() {
-        return alunospagamentos;
-    }
+    //BUSCAR TUDO
+    public List<AlunoPagamentoMensalidade> buscarTodos() {
+        sql = "SELECT * FROM aluno_pagamento_mensalidade";
 
-    public void setAlunoPagamentoMensalidade(AlunoPagamentoMensalidade[] alunospagamentos) {
-        this.alunospagamentos = alunospagamentos;
-    }
+        List<AlunoPagamentoMensalidade> pagamentos = new ArrayList<>();
 
-    public AlunoPagamentoMensalidade[] getPagamentosPorAluno(String login) {
-        AlunoPagamentoMensalidade[] pagamentosDoAluno = new AlunoPagamentoMensalidade[10];
-        int count = 0;
-        for (AlunoPagamentoMensalidade pagamento : alunospagamentos) {
-            if (pagamento != null && pagamento.getPessoa().equals(login)) {
-                pagamentosDoAluno[count++] = pagamento;
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                AlunoPagamentoMensalidade alunopagamento = new AlunoPagamentoMensalidade();
+                alunopagamento.setId(rs.getLong("id"));
+                alunopagamento.setPessoa(rs.getString("pessoa"));
+                alunopagamento.setModalidade(rs.getString("modalidade"));
+                alunopagamento.setMensalidadeVigente(rs.getString("mensalidadeVigente"));
+                alunopagamento.setValorPago(rs.getDouble("valorPago"));
+                alunopagamento.setData(rs.getDate("data").toLocalDate());
+                alunopagamento.setDataCriacao(rs.getDate("dataCriacao").toLocalDate());
+                alunopagamento.setDataModificacao(rs.getDate("dataModificacao").toLocalDate());
+
+                pagamentos.add(alunopagamento);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível buscar os pagamentos de mensalidade!", e);
         }
-        return pagamentosDoAluno;
+
+        return pagamentos;
     }
 
+    //PAGAMENTOS POR MES
     public void relatorioAlunosPagaramAteFimDoMes(int mes, int ano) {
         System.out.println("Relatório de Alunos que Pagaram até o Fim do Mês " + mes + "/" + ano);
-        for (AlunoPagamentoMensalidade pagamento : alunospagamentos) {
-            if (pagamento != null && pagamento.getData() != null) {
+
+        List<AlunoPagamentoMensalidade> pagamentos = buscarTodos();
+
+        for (AlunoPagamentoMensalidade pagamento : pagamentos) {
+            if (pagamento.getData() != null) {
                 LocalDate dataPagamento = pagamento.getData();
                 if (dataPagamento.getMonthValue() == mes && dataPagamento.getYear() == ano) {
                     System.out.println("Aluno: " + pagamento.getPessoa() + ", Data de Pagamento: " + dataPagamento);
                 }
-
             }
         }
     }
 
+    //PAGAMENTOS POR MES E ANO
     public void relatorioMovimentacaoAcademiaMes(int mes, int ano) {
         System.out.println("Relatório de Movimentação da Academia para o Mês " + mes + "/" + ano);
+
         double totalRecebido = 0;
-        for (AlunoPagamentoMensalidade pagamento : alunospagamentos) {
-            if (pagamento != null && pagamento.getData() != null) {
+        List<AlunoPagamentoMensalidade> pagamentos = buscarTodos();
+
+        for (AlunoPagamentoMensalidade pagamento : pagamentos) {
+            if (pagamento.getData() != null) {
                 LocalDate dataPagamento = pagamento.getData();
                 if (dataPagamento.getMonthValue() == mes && dataPagamento.getYear() == ano) {
                     totalRecebido += pagamento.getValorPago();
                 }
             }
         }
+
         System.out.println("Total Recebido: R$" + totalRecebido);
     }
 }

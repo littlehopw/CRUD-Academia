@@ -19,7 +19,7 @@ public class ConnectionFactory {
             return DriverManager.getConnection(con, properties);
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao conectar com o banco",e);
+            throw new RuntimeException("Erro ao conectar com o banco!",e);
         }
     }
 }

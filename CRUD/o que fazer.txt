@@ -1,36 +1,3 @@
-----------------------------------------------------------------------------------------------------------
-
--> LOGIN 
-
-PESSOA COMUM, A pessoa comum pode efetuar a sua entrada na portaria da academia, 
-visualizar e imprimir a sua ficha de treino e visualizar avaliações físicas.
-- MENU COM OPÇÕES DE ENTRAR NA ACADEMIA, VER FICHA DE TREINO E AVALIAÇÃO FISICA PROPRIA
-(feito)
-
-PROFESSOR/INSTRUTOR, O professor/instrutor pode fazer o crud de aluno e treino e as operações do 
-aluno.
-- CADASTRAR ALUNO, CADASTRAR TREINO, ENTRAR NA ACADEMIA, VER FICHA DE TREINO DO ALUNOS E 
-AVALIAÇÃO FISICA DOS ALUNOS
-(feito)
-
-ADMINISTRADOR; O administrador pode fazer tudo que o professor faz e movimentações 
-financeiras.
-- CADASTRAR ALUNO, CADASTRAR TREINO, ENTRAR NA ACADEMIA, VER FICHA DE TREINO DO ALUNOS E 
-AVALIAÇÃO FISICA DOS ALUNOS, VER MENSALIDADES, PAGAMENTOS E PAGAMENTO ALUNOS
-(FEITOmas a parte financeira e a de inserção de alunos é meio ruim)
-
-----------------------------------------------------------------------------------------------------------
-
--> RELATÓRIOS 
-
-- ALUNOS QUE PAGARAM ATÉ O FIM DE UM MÊS (ADM)
-- MOVIMENTACAO DA ACADEMIA DE UM MÊS (ADM)
-
-(feito)
-
-----------------------------------------------------------------------------------------------------------
-
-lembrar de adicionar dados nos vetores pra poder deixar salvo alguns.
-alem disso, adicionar a função de cadastro no comeco do main.
-
---> Tem que colocar no comeco do main as funções pra poder salvar em memoria, pq nao tem banco ainda.
+- Conectar o banco
+- Colocar os insert/delete/alter nos arquivos DAO
+- Mudar o main

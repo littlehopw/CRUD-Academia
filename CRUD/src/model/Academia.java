@@ -2,20 +2,25 @@ package model;
 
 import java.time.LocalDate;
 
-public class Academia{
+public class Academia {
     
     private long id;
-    private static long serial;
     private String nome;
     private String endereco;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
+
+    //DEFAULT
+    public Academia() {
+        // Default constructor
+    }
     
-    //constructor
-    public Academia(){
-         id = ++Academia.serial;
-         this.dataCriacao = LocalDate.now();
-         this.dataModificacao = LocalDate.now();
+    //CONSTRUCTOR
+    public Academia(String nome, String endereco) {
+        this.nome = nome;
+        this.endereco = endereco;
+        this.dataCriacao = LocalDate.now();
+        this.dataModificacao = LocalDate.now();
     }
 
     public long getId() {
@@ -57,8 +62,4 @@ public class Academia{
     public void setDataModificacao(LocalDate dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
-    
-    
-    
-    
 }
