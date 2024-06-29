@@ -1,6 +1,7 @@
 package view;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 import model.*;
 
@@ -18,7 +19,7 @@ public class Menus {
             MovimentacaoFinanceiraDAO financeiraDAO, PagamentoRecorrenteDAO pagamentorecorrenteDAO, PessoaDAO pessoaDAO,
             TreinoDAO treinoDAO, TreinoAplicacaoDAO treinoaplicacaoDAO) {
         this.pessoaDAO = pessoaDAO;
-        this.alunospagamentos = mensalidadeDAO.getAlunosPagamentos();
+        // this.alunospagamentos = mensalidadeDAO.getAlunosPagamentos();
         this.alunospagamentos = alunospagamentos;
         this.treinoaplicacaoDAO = treinoaplicacaoDAO;
         this.avaliacaofisicaDAO = avaliacaofisicaDAO;
@@ -516,6 +517,7 @@ public class Menus {
                             System.out.println("Digite o login do aluno para ver as mensalidades:");
                             String loginAlunoVerMensalidades = scanner.nextLine();
                             boolean alunoFinanceiroEncontrado = false;
+
                             for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                                 if (pessoa != null && pessoa.getLogin().equals(loginAlunoVerMensalidades) && pessoa.getTipoUsuario().equals("aluno")) {
                                     alunoFinanceiroEncontrado = true;
@@ -524,10 +526,11 @@ public class Menus {
                             }
 
                             if (alunoFinanceiroEncontrado) {
-                                AlunoPagamentoMensalidade[] pagamentos = alunoPagamentoMensalidadeDAO.getPagamentosPorAluno(loginAlunoVerMensalidades);
+                                List<AlunoPagamentoMensalidade> pagamentos = alunoPagamentoMensalidadeDAO.buscarTodos();
                                 boolean pagamentosEncontrados = false;
+
                                 for (AlunoPagamentoMensalidade pagamento : pagamentos) {
-                                    if (pagamento != null) {
+                                    if (pagamento != null && pagamento.getPessoa().equals(loginAlunoVerMensalidades)) {
                                         System.out.println(pagamento.toString());
                                         pagamentosEncontrados = true;
                                     }
@@ -544,6 +547,7 @@ public class Menus {
                             System.out.println("Digite o login do aluno:");
                             String loginAlunoPagamento = scanner.nextLine();
                             boolean alunoParaPagamentoEncontrado = false;
+
                             for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                                 if (pessoa != null && pessoa.getLogin().equals(loginAlunoPagamento) && pessoa.getTipoUsuario().equals("aluno")) {
                                     alunoParaPagamentoEncontrado = true;
@@ -569,6 +573,11 @@ public class Menus {
                             } else {
                                 System.out.println("Aluno não encontrado.");
                             }
+                            break;
+
+                        default:
+                            System.out.println("Opção inválida.");
+                            break;
                     }
                     break;
 

@@ -6,7 +6,7 @@ import view.Menus;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public Main() {
         AcademiaDAO academiaDAO = new AcademiaDAO();
         AlunoPagamentoMensalidadeDAO mensalidadeDAO = new AlunoPagamentoMensalidadeDAO();
         AvaliacaoFisicaDAO avaliacaofisicaDAO = new AvaliacaoFisicaDAO();
@@ -26,7 +26,6 @@ public class Main {
         
         pessoaDAO.inserirPessoaExemplo();
         avaliacaofisicaDAO.inserirAvaliacaoExemplo();
-        mensalidadeDAO.inserirMensalidadeExemplo();
         treinoaplicacaoDAO.inserirTreinoAplicacaoExemplo();
         academiaDAO.inserirAcademiaExemplo();
         aplicacaoDAO.inserirAplicacaoExemplo();
@@ -113,5 +112,9 @@ public class Main {
             }
         }
         System.out.println("Obrigado por utilizar o sistema de academia!");
+    }
+    
+    public static void main(String[] args) {
+        new Main();
     }
 }

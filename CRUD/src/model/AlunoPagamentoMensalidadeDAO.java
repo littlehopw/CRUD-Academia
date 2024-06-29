@@ -16,7 +16,7 @@ public class AlunoPagamentoMensalidadeDAO {
 
     // INSERT
     public void inserirAlunoPagamentoMensalidade(AlunoPagamentoMensalidade alunopagamento) {
-        sql = "INSERT INTO aluno_pagamento_mensalidade (pessoa, modalidade, mensalidadeVigente, valorPago, data, dataCriacao, dataModificacao) "
+        sql = "INSERT INTO aluno_pagamento_mensalidade (pessoa, modalidade, mensalidade_vigente, valor_pago, data, data_criacao, data_modificacao) "
                 + "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -56,7 +56,7 @@ public class AlunoPagamentoMensalidadeDAO {
 
     // UPDATE
     public void alterarAlunoPagamentoMensalidade(AlunoPagamentoMensalidade alunopagamento) {
-        sql = "UPDATE aluno_pagamento_mensalidade SET pessoa = ?, modalidade = ?, mensalidadeVigente = ?, valorPago = ?, data = ?, dataModificacao = ? where id = ?";
+        sql = "UPDATE aluno_pagamento_mensalidade SET pessoa = ?, modalidade = ?, mensalidade_vigente = ?, valor_pago = ?, data = ?, data_modificacao = ? where id = ?";
 
         try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -149,11 +149,11 @@ public class AlunoPagamentoMensalidadeDAO {
                 alunopagamento.setId(rs.getLong("id"));
                 alunopagamento.setPessoa(rs.getString("pessoa"));
                 alunopagamento.setModalidade(rs.getString("modalidade"));
-                alunopagamento.setMensalidadeVigente(rs.getString("mensalidadeVigente"));
-                alunopagamento.setValorPago(rs.getDouble("valorPago"));
+                alunopagamento.setMensalidadeVigente(rs.getString("mensalidade_vigente"));
+                alunopagamento.setValorPago(rs.getDouble("valor_pago"));
                 alunopagamento.setData(rs.getDate("data").toLocalDate());
-                alunopagamento.setDataCriacao(rs.getDate("dataCriacao").toLocalDate());
-                alunopagamento.setDataModificacao(rs.getDate("dataModificacao").toLocalDate());
+                alunopagamento.setDataCriacao(rs.getDate("data_criacao").toLocalDate());
+                alunopagamento.setDataModificacao(rs.getDate("data_modificacao").toLocalDate());
 
                 pagamentos.add(alunopagamento);
             }

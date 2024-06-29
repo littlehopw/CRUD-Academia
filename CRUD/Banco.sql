@@ -1,7 +1,13 @@
+-- Criar o banco de dados se ele não existir
 CREATE DATABASE IF NOT EXISTS academia_db;
+
+-- Selecionar o banco de dados
 USE academia_db;
 
--- ACADEMIA
+-- Remover a tabela academia se ela já existir
+DROP TABLE IF EXISTS academia;
+
+-- Criar a tabela academia
 CREATE TABLE academia (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -13,7 +19,13 @@ CREATE TABLE academia (
 -- Inicializar serial (auto_increment) para id
 ALTER TABLE academia AUTO_INCREMENT = 1;
 
--- ALUNO PAGAMENTO MENSALIDADE
+-- Verificar a tabela academia
+SHOW TABLES;
+
+-- Remover a tabela aluno_pagamento_mensalidade se ela já existir
+DROP TABLE IF EXISTS aluno_pagamento_mensalidade;
+
+-- Criar a tabela aluno_pagamento_mensalidade
 CREATE TABLE aluno_pagamento_mensalidade (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     pessoa VARCHAR(255) NOT NULL,
@@ -26,4 +38,7 @@ CREATE TABLE aluno_pagamento_mensalidade (
 );
 
 -- Inicializar serial (auto_increment) para id
-ALTER TABLE registros_academia AUTO_INCREMENT = 1;
+ALTER TABLE aluno_pagamento_mensalidade AUTO_INCREMENT = 1;
+
+-- Verificar a tabela aluno_pagamento_mensalidade
+SHOW TABLES;
