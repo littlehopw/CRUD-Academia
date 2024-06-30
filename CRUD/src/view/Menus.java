@@ -8,7 +8,6 @@ import model.*;
 
 public class Menus {
 
-    private AlunoPagamentoMensalidade[] alunospagamentos;
     private Scanner scanner;
     private AvaliacaoFisicaDAO avaliacaofisicaDAO = new AvaliacaoFisicaDAO();
     private PessoaDAO pessoaDAO = new PessoaDAO();
@@ -31,21 +30,23 @@ public class Menus {
     }
 
     public Pessoa menuLogin() {
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("Faça seu login\n");
         System.out.println("Login:");
         String login = scanner.nextLine();
         System.out.println("Senha:");
         String senha = scanner.nextLine();
 
-        for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-            if (pessoa != null && pessoa.getLogin().equals(login) && pessoa.getSenha().equals(senha)) {
-                System.out.println("Login bem-sucedido!");
-                return pessoa;
-            }
-        }
+        Pessoa pessoa = pessoaDAO.buscarLogin(login);
 
-        System.out.println("Login ou senha incorretos.");
-        return null;
+        if (pessoa != null && pessoa.getSenha().equals(senha)) {
+            System.out.println("Login bem-sucedido!");
+            return pessoa;
+        } else {
+            System.out.println("Login ou senha incorretos.");
+            return null;
+        }
     }
 
     public void menuLoginAluno(String login, String senha) {
@@ -171,8 +172,10 @@ public class Menus {
                     System.out.println("\nInforme sua senha: ");
                     novoAluno.setSenha(scanner.nextLine());
                     novoAluno.setTipoUsuario("aluno");
+                    novoAluno.setDataCriacao(LocalDate.now());
+                    novoAluno.setDataModificacao(LocalDate.now());
 
-                    pessoaDAO.inserirPessoa(novoAluno);
+                    pessoaDAO.adicionar(novoAluno);
 
                     System.out.println("Aluno cadastrado com sucesso!\n");
                     break;
@@ -182,11 +185,11 @@ public class Menus {
                     String loginAlunoTreino = scanner.nextLine();
 
                     boolean alunoTreinoEncontrado = false;
-                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-                        if (pessoa != null && pessoa.getLogin().equals(loginAlunoTreino) && pessoa.getTipoUsuario().equals("aluno")) {
-                            alunoTreinoEncontrado = true;
-                            break;
-                        }
+
+                    Pessoa pessoa = pessoaDAO.buscarLogin(loginAlunoTreino);
+
+                    if (pessoa != null && pessoa.getTipoUsuario().equals("aluno")) {
+                        alunoTreinoEncontrado = true;
                     }
 
                     if (alunoTreinoEncontrado) {
@@ -248,15 +251,18 @@ public class Menus {
                     System.out.println("Ficha de Treino do Aluno");
                     System.out.println("Informe o login do aluno:");
                     String alunoLogin = scanner.nextLine();
+
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
+
                     boolean alunoEncontrado = false;
-                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-                        if (pessoa != null && pessoa.getLogin().equals(alunoLogin) && pessoa.getTipoUsuario().equals("aluno")) {
-                            alunoEncontrado = true;
-                            break;
-                        }
+
+                    Pessoa pessoatreino = pessoaDAO.buscarLogin(alunoLogin);
+
+                    if (pessoatreino != null && pessoatreino.getTipoUsuario().equals("aluno")) {
+                        System.out.println("Login bem-sucedido!");
+                        alunoEncontrado = true;
                     }
 
                     if (alunoEncontrado) {
@@ -287,11 +293,11 @@ public class Menus {
                     }
 
                     boolean alunoEncontradoAvaliacao = false;
-                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-                        if (pessoa != null && pessoa.getLogin().equals(alunoLoginAvaliacao) && pessoa.getTipoUsuario().equals("aluno")) {
-                            alunoEncontradoAvaliacao = true;
-                            break;
-                        }
+                    Pessoa pessoaavaliacao = pessoaDAO.buscarLogin(alunoLoginAvaliacao);
+
+                    if (pessoaavaliacao != null && pessoaavaliacao.getTipoUsuario().equals("aluno")) {
+                        System.out.println("Login bem-sucedido!");
+                        alunoEncontradoAvaliacao = true;
                     }
 
                     if (alunoEncontradoAvaliacao) {
@@ -430,7 +436,6 @@ public class Menus {
 
             switch (opcao) {
                 case 1:
-
                     Pessoa novoAluno = new Pessoa();
                     System.out.println("\nCADASTRO DE NOVO USUARIO\n");
                     System.out.println("Informe o tipo de Usuario:");
@@ -441,12 +446,15 @@ public class Menus {
                     novoAluno.setSexo(scanner.nextLine());
                     System.out.println("Informe a Data de nascimento:");
                     novoAluno.setNascimento(scanner.nextLine());
-                    System.out.println("Informe o Login");
+                    System.out.println("Informe o Login:");
                     novoAluno.setLogin(scanner.nextLine());
                     System.out.println("Informe a Senha:");
                     novoAluno.setSenha(scanner.nextLine());
+                    novoAluno.setDataCriacao(LocalDate.now());
+                    novoAluno.setDataModificacao(LocalDate.now());
 
-                    pessoaDAO.inserirPessoa(novoAluno);
+                    pessoaDAO.adicionar(novoAluno);
+
                     System.out.println("Usuario cadastrado com sucesso!");
                     break;
                 case 2:
@@ -455,11 +463,11 @@ public class Menus {
                     String loginAlunoTreino = scanner.nextLine();
 
                     boolean alunoTreinoEncontrado = false;
-                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-                        if (pessoa != null && pessoa.getLogin().equals(loginAlunoTreino) && pessoa.getTipoUsuario().equals("aluno")) {
-                            alunoTreinoEncontrado = true;
-                            break;
-                        }
+
+                    Pessoa pessoa = pessoaDAO.buscarLogin(loginAlunoTreino);
+
+                    if (pessoa != null && pessoa.getTipoUsuario().equals("aluno")) {
+                        alunoTreinoEncontrado = true;
                     }
 
                     if (alunoTreinoEncontrado) {
@@ -526,12 +534,13 @@ public class Menus {
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
+
                     boolean alunoEncontrado = false;
-                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-                        if (pessoa != null && pessoa.getLogin().equals(alunoLogin) && pessoa.getTipoUsuario().equals("aluno")) {
-                            alunoEncontrado = true;
-                            break;
-                        }
+
+                    Pessoa pessoatreino = pessoaDAO.buscarLogin(alunoLogin);
+
+                    if (pessoatreino != null && pessoatreino.getTipoUsuario().equals("aluno")) {
+                        alunoEncontrado = true;
                     }
 
                     if (alunoEncontrado) {
@@ -562,11 +571,11 @@ public class Menus {
                     }
 
                     boolean alunoEncontradoAvaliacao = false;
-                    for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-                        if (pessoa != null && pessoa.getLogin().equals(alunoLoginAvaliacao) && pessoa.getTipoUsuario().equals("aluno")) {
-                            alunoEncontradoAvaliacao = true;
-                            break;
-                        }
+
+                    Pessoa pessoaavaliacao = pessoaDAO.buscarLogin(alunoLoginAvaliacao);
+
+                    if (pessoaavaliacao != null && pessoaavaliacao.getTipoUsuario().equals("aluno")) {
+                        alunoEncontradoAvaliacao = true;
                     }
 
                     if (alunoEncontradoAvaliacao) {
@@ -605,13 +614,13 @@ public class Menus {
                         case 1:
                             System.out.println("Digite o login do aluno para ver as mensalidades:");
                             String loginAlunoVerMensalidades = scanner.nextLine();
+
                             boolean alunoFinanceiroEncontrado = false;
 
-                            for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-                                if (pessoa != null && pessoa.getLogin().equals(loginAlunoVerMensalidades) && pessoa.getTipoUsuario().equals("aluno")) {
-                                    alunoFinanceiroEncontrado = true;
-                                    break;
-                                }
+                            Pessoa pessoafinanceiro = pessoaDAO.buscarLogin(loginAlunoVerMensalidades);
+
+                            if (pessoafinanceiro != null && pessoafinanceiro.getTipoUsuario().equals("aluno")) {
+                                alunoFinanceiroEncontrado = true;
                             }
 
                             if (alunoFinanceiroEncontrado) {
@@ -635,13 +644,13 @@ public class Menus {
                         case 2:
                             System.out.println("Digite o login do aluno:");
                             String loginAlunoPagamento = scanner.nextLine();
+
                             boolean alunoParaPagamentoEncontrado = false;
 
-                            for (Pessoa pessoa : pessoaDAO.getPessoa()) {
-                                if (pessoa != null && pessoa.getLogin().equals(loginAlunoPagamento) && pessoa.getTipoUsuario().equals("aluno")) {
-                                    alunoParaPagamentoEncontrado = true;
-                                    break;
-                                }
+                            Pessoa pessoapagamento = pessoaDAO.buscarLogin(loginAlunoPagamento);
+
+                            if (pessoapagamento != null && pessoapagamento.getTipoUsuario().equals("aluno")) {
+                                alunoParaPagamentoEncontrado = true;
                             }
 
                             if (alunoParaPagamentoEncontrado) {

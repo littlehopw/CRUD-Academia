@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 import model.*;
 import view.Menus;
@@ -95,14 +96,15 @@ public class Main {
                     novoAluno.setSexo(scanner.nextLine());
                     System.out.println("\nInforme seu nascimento: ");
                     novoAluno.setNascimento(scanner.nextLine());
-
                     System.out.println("\nInforme seu login: ");
                     novoAluno.setLogin(scanner.nextLine());
                     System.out.println("\nInforme sua senha: ");
                     novoAluno.setSenha(scanner.nextLine());
                     novoAluno.setTipoUsuario("aluno");
+                    novoAluno.setDataCriacao(LocalDate.now());
+                    novoAluno.setDataModificacao(LocalDate.now());
 
-                    pessoaDAO.inserirPessoa(novoAluno);
+                    pessoaDAO.adicionar(novoAluno);
 
                     System.out.println("Aluno cadastrado com sucesso!\n");
                     break;

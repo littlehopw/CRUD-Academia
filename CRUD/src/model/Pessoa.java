@@ -3,9 +3,8 @@ package model;
 import java.time.LocalDate;
 
 public class Pessoa {
-    
+
     private long id;
-    private static long serial;
     private String nome;
     private String sexo;
     private String nascimento;
@@ -14,25 +13,23 @@ public class Pessoa {
     private String tipoUsuario;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
-    
-  
+
     //constructor
-    public Pessoa(){
-        id = ++Pessoa.serial;
-        this.dataCriacao = LocalDate.now();
-        this.dataModificacao = LocalDate.now();
+    public Pessoa() {
+
     }
-    
-    public Pessoa(String nome, String sexo, String nascimento, String login, String senha, String tipoUsuario) {
-        this();
+
+    public Pessoa(String nome, String sexo, String nascimento, String login, String senha, String tipoUsuario, LocalDate dataCriacao, LocalDate dataModificacao) {
         this.nome = nome;
         this.sexo = sexo;
         this.nascimento = nascimento;
         this.login = login;
         this.senha = senha;
         this.tipoUsuario = tipoUsuario;
+        this.dataCriacao = LocalDate.now();
+        this.dataModificacao = LocalDate.now();
     }
-    
+
     public long getId() {
         return id;
     }
@@ -103,13 +100,12 @@ public class Pessoa {
 
     public void setDataModificacao(LocalDate dataModificacao) {
         this.dataModificacao = dataModificacao;
-    }   
-
-        @Override
-    public String toString() {
-        return "Nome: " + this.getNome() + ", Sexo: " + this.getSexo() + ", Nascimento: " + this.getNascimento() +
-               ", Login: " + this.getLogin() + ", Senha: " + this.getSenha() + ", Tipo Usuario: " + this.getTipoUsuario();
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Nome: " + this.getNome() + ", Sexo: " + this.getSexo() + ", Nascimento: " + this.getNascimento()
+                + ", Login: " + this.getLogin() + ", Senha: " + this.getSenha() + ", Tipo Usuario: " + this.getTipoUsuario();
+    }
+
 }
