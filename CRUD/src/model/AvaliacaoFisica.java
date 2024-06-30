@@ -3,25 +3,34 @@ package model;
 import java.time.LocalDate;
 
 public class AvaliacaoFisica {
-    
+
     private long id;
-    private static long serial;
     private String pessoa;
     private String ultimoTreino;
-    private String peso;
-    private String altura;
-    private String imc;
+    private Double peso;
+    private Double altura;
+    private Double imc;
     private String satisfacao;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
-    
-    //constructor
-    public AvaliacaoFisica(){
-        id = ++AvaliacaoFisica.serial;
+
+    //DEFAULT
+    public AvaliacaoFisica() {
+        // Default constructor
+    }
+
+    //CONSTRUCTOR
+    public AvaliacaoFisica(String pessoa, String ultimoTreino, Double peso, Double altura, Double imc, String satisfacao) {
+        this.pessoa = pessoa;
+        this.ultimoTreino = ultimoTreino;
+        this.peso = peso;
+        this.altura = altura;
+        this.imc = imc;
+        this.satisfacao = satisfacao;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = LocalDate.now();
     }
-    
+
     public long getId() {
         return id;
     }
@@ -46,27 +55,27 @@ public class AvaliacaoFisica {
         this.ultimoTreino = ultimoTreino;
     }
 
-    public String getPeso() {
+    public Double getPeso() {
         return peso;
     }
 
-    public void setPeso(String peso) {
+    public void setPeso(Double peso) {
         this.peso = peso;
     }
 
-    public String getAltura() {
+    public Double getAltura() {
         return altura;
     }
 
-    public void setAltura(String altura) {
+    public void setAltura(Double altura) {
         this.altura = altura;
     }
 
-    public String getImc() {
+    public Double getImc() {
         return imc;
     }
 
-    public void setImc(String imc) {
+    public void setImc(Double imc) {
         this.imc = imc;
     }
 
@@ -93,7 +102,7 @@ public class AvaliacaoFisica {
     public void setDataModificacao(LocalDate dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
-    
-    
-    
+
+  
+
 }

@@ -5,15 +5,20 @@ import java.time.LocalDate;
 public class DivisaoTreino{
     
     private long id;
-    private static long serial;
     private String nome;
     private String descricao;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
     
-    //constructor
-    public DivisaoTreino(){
-        id = ++DivisaoTreino.serial;
+    //DEFAULT
+    public DivisaoTreino() {
+        // Default constructor
+    }
+    
+    //CONSTRUCTOR
+    public DivisaoTreino(String nome, String descricao) {
+        this.nome = nome;
+        this.descricao = descricao;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = LocalDate.now();
     }

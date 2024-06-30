@@ -1,6 +1,7 @@
 package view;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import model.*;
@@ -19,8 +20,6 @@ public class Menus {
             MovimentacaoFinanceiraDAO financeiraDAO, PagamentoRecorrenteDAO pagamentorecorrenteDAO, PessoaDAO pessoaDAO,
             TreinoDAO treinoDAO, TreinoAplicacaoDAO treinoaplicacaoDAO) {
         this.pessoaDAO = pessoaDAO;
-        // this.alunospagamentos = mensalidadeDAO.getAlunosPagamentos();
-        this.alunospagamentos = alunospagamentos;
         this.treinoaplicacaoDAO = treinoaplicacaoDAO;
         this.avaliacaofisicaDAO = avaliacaofisicaDAO;
         this.scanner = new Scanner(System.in);
@@ -66,19 +65,15 @@ public class Menus {
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
-                    boolean mensalidadeEmDia = false;
-                    for (AlunoPagamentoMensalidade alunopagamento : alunospagamentos) {
-                        if (alunopagamento != null && alunopagamento.getPessoa().equals(login) && alunopagamento.getMensalidadeVigente().equals("valida")) {
-                            mensalidadeEmDia = true;
-                            break;
-                        }
-                    }
+
+                    // Verificação de mensalidade em dia
+                    boolean mensalidadeEmDia = new AlunoPagamentoMensalidadeDAO().verificarMensalidadeEmDia(login);
+
                     if (mensalidadeEmDia) {
                         for (int i = 0; i < 30; ++i) {
                             System.out.println();
                         }
                         System.out.println("Acesso permitido na academia.");
-
                     } else {
                         System.out.println("Você não tem a mensalidade em dia. Por favor, entre em contato com a administração.");
                     }
@@ -108,14 +103,23 @@ public class Menus {
                     break;
 
                 case 3:
+                    // Limpa a tela
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
-                    boolean encontrouAvaliacao = false;
-                    for (AvaliacaoFisica avaliacao : avaliacaofisicaDAO.getAvaliacoes()) {
-                        if (avaliacao != null && avaliacao.getPessoa().equals(login)) {
-                            encontrouAvaliacao = true;
-                            System.out.println("Detalhes da Avaliação Física de " + avaliacao.getPessoa());
+
+                    // Busca todas as avaliações físicas do usuário logado
+                    List<AvaliacaoFisica> avaliacoes = new ArrayList<>();
+                    try {
+                        avaliacoes = avaliacaofisicaDAO.buscarPorPessoa(login);
+                    } catch (RuntimeException ex) {
+                        System.out.println("Erro ao buscar avaliações físicas: " + ex.getMessage());
+                    }
+
+                    // Verifica se encontrou alguma avaliação física para o usuário
+                    if (!avaliacoes.isEmpty()) {
+                        System.out.println("Detalhes das Avaliações Físicas de " + login + ":");
+                        for (AvaliacaoFisica avaliacao : avaliacoes) {
                             System.out.println("Último Treino: " + avaliacao.getUltimoTreino());
                             System.out.println("Peso: " + avaliacao.getPeso());
                             System.out.println("Altura: " + avaliacao.getAltura());
@@ -123,11 +127,9 @@ public class Menus {
                             System.out.println("Satisfação: " + avaliacao.getSatisfacao());
                             System.out.println();
                         }
-                    }
-                    if (!encontrouAvaliacao) {
+                    } else {
                         System.out.println("Nenhuma avaliação física encontrada para o usuário " + login);
                     }
-
                     break;
             }
 
@@ -229,13 +231,10 @@ public class Menus {
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
-                    boolean mensalidadeEmDia = false;
-                    for (AlunoPagamentoMensalidade alunopagamento : alunospagamentos) {
-                        if (alunopagamento != null && alunopagamento.getPessoa().equals(login) && alunopagamento.getMensalidadeVigente().equals("valida")) {
-                            mensalidadeEmDia = true;
-                            break;
-                        }
-                    }
+
+                    // Verificação de mensalidade em dia
+                    boolean mensalidadeEmDia = new AlunoPagamentoMensalidadeDAO().verificarMensalidadeEmDia(login);
+
                     if (mensalidadeEmDia) {
                         for (int i = 0; i < 30; ++i) {
                             System.out.println();
@@ -282,9 +281,11 @@ public class Menus {
                     System.out.println("Informe o login do aluno:");
                     String alunoLoginAvaliacao = scanner.nextLine();
 
+                    // Limpa a tela
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
+
                     boolean alunoEncontradoAvaliacao = false;
                     for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                         if (pessoa != null && pessoa.getLogin().equals(alunoLoginAvaliacao) && pessoa.getTipoUsuario().equals("aluno")) {
@@ -294,22 +295,107 @@ public class Menus {
                     }
 
                     if (alunoEncontradoAvaliacao) {
-                        boolean encontrouAvaliacao = false;
-                        for (AvaliacaoFisica avaliacao : avaliacaofisicaDAO.getAvaliacoes()) {
-                            if (avaliacao != null && avaliacao.getPessoa().equals(alunoLoginAvaliacao)) {
-                                encontrouAvaliacao = true;
-                                System.out.println("Detalhes da Avaliação Física de " + avaliacao.getPessoa());
-                                System.out.println("Último Treino: " + avaliacao.getUltimoTreino());
-                                System.out.println("Peso: " + avaliacao.getPeso());
-                                System.out.println("Altura: " + avaliacao.getAltura());
-                                System.out.println("IMC: " + avaliacao.getImc());
-                                System.out.println("Satisfação: " + avaliacao.getSatisfacao());
-                                System.out.println();
-                                break;
+                        List<AvaliacaoFisica> avaliacoes;
+                        try {
+                            avaliacoes = avaliacaofisicaDAO.buscarPorPessoa(alunoLoginAvaliacao);
+
+                            if (!avaliacoes.isEmpty()) {
+                                System.out.println("Detalhes das Avaliações Físicas de " + alunoLoginAvaliacao + ":");
+                                for (AvaliacaoFisica avaliacao : avaliacoes) {
+                                    System.out.println("Último Treino: " + avaliacao.getUltimoTreino());
+                                    System.out.println("Peso: " + avaliacao.getPeso());
+                                    System.out.println("Altura: " + avaliacao.getAltura());
+                                    System.out.println("IMC: " + avaliacao.getImc());
+                                    System.out.println("Satisfação: " + avaliacao.getSatisfacao());
+                                    System.out.println("Data de Criação: " + avaliacao.getDataCriacao());
+                                    System.out.println("Data de Modificação: " + avaliacao.getDataModificacao());
+                                    System.out.println();
+                                }
+
+                                System.out.println("Deseja adicionar uma nova avaliação? (sim/não)");
+                                String resposta = scanner.nextLine();
+
+                                if (resposta.equalsIgnoreCase("sim")) {
+                                    AvaliacaoFisica novaAvaliacao = new AvaliacaoFisica();
+                                    novaAvaliacao.setPessoa(alunoLoginAvaliacao);
+
+                                    System.out.println("Informe o último treino:");
+                                    novaAvaliacao.setUltimoTreino(scanner.nextLine());
+
+                                    System.out.println("Informe o peso:");
+                                    novaAvaliacao.setPeso(scanner.nextDouble());
+
+                                    System.out.println("Informe a altura:");
+                                    novaAvaliacao.setAltura(scanner.nextDouble());
+
+                                    // Calcular o IMC
+                                    double imc = novaAvaliacao.getPeso() / (novaAvaliacao.getAltura() * novaAvaliacao.getAltura());
+                                    novaAvaliacao.setImc(imc);
+
+                                    scanner.nextLine();  // Consumir a quebra de linha
+
+                                    System.out.println("Informe a satisfação:");
+                                    novaAvaliacao.setSatisfacao(scanner.nextLine());
+
+                                    // Definir as datas de criação e modificação
+                                    novaAvaliacao.setDataCriacao(LocalDate.now());
+                                    novaAvaliacao.setDataModificacao(LocalDate.now());
+
+                                    try {
+                                        avaliacaofisicaDAO.adicionar(novaAvaliacao);
+                                        System.out.println("Nova avaliação física adicionada com sucesso!");
+                                    } catch (RuntimeException e) {
+                                        System.out.println("Erro ao adicionar a nova avaliação física: " + e.getMessage());
+                                    }
+                                } else {
+                                    System.out.println("Você escolheu não realizar uma nova avaliação física do aluno!");
+                                    System.out.println();
+                                }
+
+                            } else {
+                                System.out.println("Nenhuma avaliação física encontrada para o aluno " + alunoLoginAvaliacao);
+                                System.out.println("Deseja adicionar uma nova avaliação? (sim/não)");
+                                String resposta = scanner.nextLine();
+
+                                if (resposta.equalsIgnoreCase("sim")) {
+                                    AvaliacaoFisica novaAvaliacao = new AvaliacaoFisica();
+                                    novaAvaliacao.setPessoa(alunoLoginAvaliacao);
+
+                                    System.out.println("Informe o último treino:");
+                                    novaAvaliacao.setUltimoTreino(scanner.nextLine());
+
+                                    System.out.println("Informe o peso:");
+                                    novaAvaliacao.setPeso(scanner.nextDouble());
+
+                                    System.out.println("Informe a altura:");
+                                    novaAvaliacao.setAltura(scanner.nextDouble());
+
+                                    // Calcular o IMC
+                                    double imc = novaAvaliacao.getPeso() / (novaAvaliacao.getAltura() * novaAvaliacao.getAltura());
+                                    novaAvaliacao.setImc(imc);
+
+                                    scanner.nextLine();  // Consumir a quebra de linha
+
+                                    System.out.println("Informe a satisfação:");
+                                    novaAvaliacao.setSatisfacao(scanner.nextLine());
+
+                                    // Definir as datas de criação e modificação
+                                    novaAvaliacao.setDataCriacao(LocalDate.now());
+                                    novaAvaliacao.setDataModificacao(LocalDate.now());
+
+                                    try {
+                                        avaliacaofisicaDAO.adicionar(novaAvaliacao);
+                                        System.out.println("Nova avaliação física adicionada com sucesso!");
+                                    } catch (RuntimeException e) {
+                                        System.out.println("Erro ao adicionar a nova avaliação física: " + e.getMessage());
+                                    }
+                                } else {
+                                    System.out.println("Você escolheu não realizar uma nova avaliação física do aluno!");
+                                    System.out.println();
+                                }
                             }
-                        }
-                        if (!encontrouAvaliacao) {
-                            System.out.println("Nenhuma avaliação física encontrada para o aluno " + alunoLoginAvaliacao);
+                        } catch (RuntimeException e) {
+                            System.out.println("Erro ao buscar avaliações físicas: " + e.getMessage());
                         }
                     } else {
                         System.out.println("Aluno não encontrado ou não é um aluno.");
@@ -419,19 +505,15 @@ public class Menus {
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
-                    boolean mensalidadeEmDia = false;
-                    for (AlunoPagamentoMensalidade alunopagamento : alunospagamentos) {
-                        if (alunopagamento != null && alunopagamento.getPessoa().equals(login) && alunopagamento.getMensalidadeVigente().equals("valida")) {
-                            mensalidadeEmDia = true;
-                            break;
-                        }
-                    }
+
+                    // Verificação de mensalidade em dia
+                    boolean mensalidadeEmDia = new AlunoPagamentoMensalidadeDAO().verificarMensalidadeEmDia(login);
+
                     if (mensalidadeEmDia) {
                         for (int i = 0; i < 30; ++i) {
                             System.out.println();
                         }
                         System.out.println("Acesso permitido na academia.");
-
                     } else {
                         System.out.println("Você não tem a mensalidade em dia. Por favor, entre em contato com a administração.");
                     }
@@ -474,9 +556,11 @@ public class Menus {
                     System.out.println("Informe o login do aluno:");
                     String alunoLoginAvaliacao = scanner.nextLine();
 
+                    // Limpa a tela
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
+
                     boolean alunoEncontradoAvaliacao = false;
                     for (Pessoa pessoa : pessoaDAO.getPessoa()) {
                         if (pessoa != null && pessoa.getLogin().equals(alunoLoginAvaliacao) && pessoa.getTipoUsuario().equals("aluno")) {
@@ -486,22 +570,27 @@ public class Menus {
                     }
 
                     if (alunoEncontradoAvaliacao) {
-                        boolean encontrouAvaliacao = false;
-                        for (AvaliacaoFisica avaliacao : avaliacaofisicaDAO.getAvaliacoes()) {
-                            if (avaliacao != null && avaliacao.getPessoa().equals(alunoLoginAvaliacao)) {
-                                encontrouAvaliacao = true;
-                                System.out.println("Detalhes da Avaliação Física de " + avaliacao.getPessoa());
-                                System.out.println("Último Treino: " + avaliacao.getUltimoTreino());
-                                System.out.println("Peso: " + avaliacao.getPeso());
-                                System.out.println("Altura: " + avaliacao.getAltura());
-                                System.out.println("IMC: " + avaliacao.getImc());
-                                System.out.println("Satisfação: " + avaliacao.getSatisfacao());
-                                System.out.println();
-                                break;
+                        try {
+                            List<AvaliacaoFisica> avaliacoes = avaliacaofisicaDAO.buscarPorPessoa(alunoLoginAvaliacao);
+
+                            if (!avaliacoes.isEmpty()) {
+                                System.out.println("Detalhes das Avaliações Físicas de " + alunoLoginAvaliacao + ":");
+                                for (AvaliacaoFisica avaliacao : avaliacoes) {
+                                    System.out.println("ID: " + avaliacao.getId());
+                                    System.out.println("Último Treino: " + avaliacao.getUltimoTreino());
+                                    System.out.println("Peso: " + avaliacao.getPeso());
+                                    System.out.println("Altura: " + avaliacao.getAltura());
+                                    System.out.println("IMC: " + avaliacao.getImc());
+                                    System.out.println("Satisfação: " + avaliacao.getSatisfacao());
+                                    System.out.println("Data de Criação: " + avaliacao.getDataCriacao());
+                                    System.out.println("Data de Modificação: " + avaliacao.getDataModificacao());
+                                    System.out.println();
+                                }
+                            } else {
+                                System.out.println("Nenhuma avaliação física encontrada para o aluno " + alunoLoginAvaliacao);
                             }
-                        }
-                        if (!encontrouAvaliacao) {
-                            System.out.println("Nenhuma avaliação física encontrada para o aluno " + alunoLoginAvaliacao);
+                        } catch (RuntimeException e) {
+                            System.out.println("Erro ao buscar avaliações físicas: " + e.getMessage());
                         }
                     } else {
                         System.out.println("Aluno não encontrado ou não é um aluno.");

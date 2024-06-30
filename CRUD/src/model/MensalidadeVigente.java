@@ -5,16 +5,22 @@ import java.time.LocalDate;
 public class MensalidadeVigente {
     
     private long id;
-    private static long serial;
     private Double valor;
     private LocalDate inicio;
     private LocalDate termino;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
     
-    //constructor
-    public MensalidadeVigente(){
-        id = ++MensalidadeVigente.serial;
+    //DEFAULT
+    public MensalidadeVigente() {
+        // Default constructor
+    }
+
+    //CONSTRUCTOR
+    public MensalidadeVigente(Double valor, LocalDate inicio, LocalDate termino) {
+        this.valor = valor;
+        this.inicio = inicio;
+        this.termino = termino;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = LocalDate.now();
     }

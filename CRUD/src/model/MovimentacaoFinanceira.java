@@ -5,18 +5,32 @@ import java.time.LocalDate;
 public class MovimentacaoFinanceira {
     
     private long id;
-    private static long serial;
     private Double valor;
     private String tipo;
     private String descricao;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
     
-    //constructor
-    public MovimentacaoFinanceira(){
-        id = ++MovimentacaoFinanceira.serial;
+    //DEFAULT
+    public MovimentacaoFinanceira() {
+        // Default constructor
+    }
+
+    //CONSTRUCTOR
+    public MovimentacaoFinanceira(Double valor, String tipo, String descricao) {
+        this.valor = valor;
+        this.tipo = tipo;
+        this.descricao = descricao;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = LocalDate.now();
+    }
+
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
     
     public long getId() {

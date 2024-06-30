@@ -84,7 +84,7 @@ public class AlunoPagamentoMensalidadeDAO {
         try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setLong(1, id);
-            
+
             try (ResultSet rs = ps.executeQuery()) {
                 a = new AlunoPagamentoMensalidade();
 
@@ -94,7 +94,7 @@ public class AlunoPagamentoMensalidadeDAO {
                     a.setModalidade(rs.getString("Modalidade"));
                     a.setMensalidadeVigente(rs.getString("Mensalidade vigente:"));
                     a.setValorPago(rs.getDouble("Valor pago:"));
-                    
+
                 } else {
                     throw new SQLException("Pessoa não encontrada.");
                 }
@@ -113,18 +113,18 @@ public class AlunoPagamentoMensalidadeDAO {
         try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, pessoa);
-            
+
             try (ResultSet rs = ps.executeQuery()) {
-                
+
                 a = new AlunoPagamentoMensalidade();
 
                 if (rs.next()) {
-                    
+
                     a.setPessoa(rs.getString("Pessoa: "));
                     a.setModalidade(rs.getString("Modalidade"));
                     a.setMensalidadeVigente(rs.getString("Mensalidade vigente:"));
                     a.setValorPago(rs.getDouble("Valor pago:"));
-                    
+
                 } else {
                     throw new SQLException("Pessoa não encontrada.");
                 }
@@ -198,4 +198,20 @@ public class AlunoPagamentoMensalidadeDAO {
 
         System.out.println("Total Recebido: R$" + totalRecebido);
     }
+
+    public boolean verificarMensalidadeEmDia(String pessoa) {
+        sql = "SELECT * FROM aluno_pagamento_mensalidade WHERE pessoa = ? AND mensalidade_vigente = 'valido'";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, pessoa);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // Retorna true se encontrou algum pagamento válido
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível verificar a mensalidade!", e);
+        }
+    }
+
 }

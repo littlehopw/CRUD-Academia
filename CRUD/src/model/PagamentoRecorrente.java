@@ -3,9 +3,8 @@ package model;
 import java.time.LocalDate;
 
 public class PagamentoRecorrente {
-    
+
     private long id;
-    private static long serial;
     private String pessoa;
     private LocalDate data;
     private String cartaodeCredito;
@@ -15,13 +14,23 @@ public class PagamentoRecorrente {
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
 
-    //constructor
-    public PagamentoRecorrente(){
-        id = ++PagamentoRecorrente.serial;
+    //DEFAULT
+    public PagamentoRecorrente() {
+        // Default constructor
+    }
+
+    //CONSTRUCTOR
+    public PagamentoRecorrente(String pessoa, LocalDate data, String cartaodeCredito, Double valor, int mesesAutorizados, LocalDate dataInicio) {
+        this.pessoa = pessoa;
+        this.data = data;
+        this.cartaodeCredito = cartaodeCredito;
+        this.valor = valor;
+        this.mesesAutorizados = mesesAutorizados;
+        this.dataInicio = dataInicio;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = LocalDate.now();
     }
-    
+
     public long getId() {
         return id;
     }
@@ -94,6 +103,4 @@ public class PagamentoRecorrente {
         this.dataModificacao = dataModificacao;
     }
 
-    
-    
 }

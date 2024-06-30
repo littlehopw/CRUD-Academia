@@ -1,72 +1,138 @@
 package model;
 
-import model.AvaliacaoFisica;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AvaliacaoFisicaDAO{
-    
-    AvaliacaoFisica [] avaliacoes = new AvaliacaoFisica [10];
-    
-    public void inserirAvaliacaoExemplo() {
-    AvaliacaoFisica exemplo1 = new AvaliacaoFisica();
-    exemplo1.setPessoa("lucia");
-    exemplo1.setUltimoTreino("Treino C");
-    exemplo1.setPeso("63kg");
-    exemplo1.setAltura("1.56");
-    exemplo1.setImc("25.89");
-    exemplo1.setSatisfacao("Mais ou menos");
-    inserirAvaliacoes(exemplo1);
-    
-    AvaliacaoFisica exemplo2 = new AvaliacaoFisica();
-    exemplo2.setPessoa("roberto");
-    exemplo2.setUltimoTreino("Treino A");
-    exemplo2.setPeso("70kg");
-    exemplo2.setAltura("1.75");
-    exemplo2.setImc("22.86");
-    exemplo2.setSatisfacao("Muito satisfeito");
-    inserirAvaliacoes(exemplo2);
+public class AvaliacaoFisicaDAO {
 
-    AvaliacaoFisica exemplo3 = new AvaliacaoFisica();
-    exemplo3.setPessoa("maria");
-    exemplo3.setUltimoTreino("Treino B");
-    exemplo3.setPeso("55kg");
-    exemplo3.setAltura("1.62");
-    exemplo3.setImc("20.96");
-    exemplo3.setSatisfacao("Satisfeita");
-    inserirAvaliacoes(exemplo3);
+    private AvaliacaoFisica a;
+    private String sql;
 
-    AvaliacaoFisica exemplo4 = new AvaliacaoFisica();
-    exemplo4.setPessoa("carlos");
-    exemplo4.setUltimoTreino("Treino D");
-    exemplo4.setPeso("82kg");
-    exemplo4.setAltura("1.80");
-    exemplo4.setImc("25.31");
-    exemplo4.setSatisfacao("Insatisfeito");
-    inserirAvaliacoes(exemplo4);
+    // INSERT
+    public void adicionar(AvaliacaoFisica avaliacao) {
+        sql = "INSERT INTO avaliacao_fisica (pessoa, ultimo_treino, peso, altura, imc, satisfacao, data_criacao, data_modificacao) VALUES (?,?,?,?,?,?,?,?)";
 
-}
-    
-  public void inserirAvaliacoes(AvaliacaoFisica avaliacao){
-      for (int i = 0; i < avaliacoes.length; i++){
-          if(null == avaliacoes[i]){
-              avaliacoes[i] = avaliacao;
-              break;
-          } 
-      }
-  }
-  
-   public void mostrarAvaliacoes(){
-      for (int i = 0; i < avaliacoes.length; i++){
-          if(null != avaliacoes[i]){
-          System.out.println(avaliacoes[i].toString());
-          }
-      }
-  }
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
 
-    public AvaliacaoFisica[] getAvaliacoes() {
-        return avaliacoes;
+            // VALORES
+            ps.setString(1, avaliacao.getPessoa());
+            ps.setString(2, avaliacao.getUltimoTreino());
+            ps.setDouble(3, avaliacao.getPeso());
+            ps.setDouble(4, avaliacao.getAltura());
+            ps.setDouble(5, avaliacao.getImc());
+            ps.setString(6, avaliacao.getSatisfacao());
+            ps.setDate(7, java.sql.Date.valueOf(avaliacao.getDataCriacao()));
+            ps.setDate(8, java.sql.Date.valueOf(avaliacao.getDataModificacao()));
+
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível adicionar a avaliação física no banco!", e);
+        }
     }
 
-    public void setAvaliacoes(AvaliacaoFisica[] avaliacoes) {
-        this.avaliacoes = avaliacoes;
+    // REMOVE
+    public void remover(AvaliacaoFisica avaliacao) {
+        sql = "DELETE FROM avaliacao_fisica WHERE id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setLong(1, avaliacao.getId());
+            ps.execute();
+
+            System.out.println("\n Avaliação física removida com sucesso!");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível remover a avaliação física!", e);
+        }
+    }
+
+    // UPDATE
+    public void alterar(AvaliacaoFisica avaliacao, AvaliacaoFisica novaAvaliacao) {
+        sql = "UPDATE avaliacao_fisica SET pessoa = ?, ultimo_treino = ?, peso = ?, altura = ?, imc = ?, satisfacao = ?, data_modificacao = ? WHERE id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            // VALORES
+            ps.setString(1, novaAvaliacao.getPessoa());
+            ps.setString(2, novaAvaliacao.getUltimoTreino());
+            ps.setDouble(3, novaAvaliacao.getPeso());
+            ps.setDouble(4, novaAvaliacao.getAltura());
+            ps.setDouble(5, novaAvaliacao.getImc());
+            ps.setString(6, novaAvaliacao.getSatisfacao());
+            ps.setDate(7, java.sql.Date.valueOf(novaAvaliacao.getDataModificacao()));
+            ps.setLong(8, avaliacao.getId());
+
+            ps.execute();
+
+            System.out.println("\n Avaliação física alterada com sucesso! \n");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível alterar a avaliação física!", e);
+        }
+    }
+
+    // BUSCAR ID
+    public AvaliacaoFisica buscar(long id) {
+        sql = "SELECT * FROM avaliacao_fisica WHERE id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                a = new AvaliacaoFisica();
+
+                if (rs.next()) {
+                    a.setId(rs.getLong("id"));
+                    a.setPessoa(rs.getString("pessoa"));
+                    a.setUltimoTreino(rs.getString("ultimoTreino"));
+                    a.setPeso(rs.getDouble("peso"));
+                    a.setAltura(rs.getDouble("altura"));
+                    a.setImc(rs.getDouble("imc"));
+                    a.setSatisfacao(rs.getString("satisfacao"));
+                    a.setDataCriacao(rs.getDate("dataCriacao").toLocalDate());
+                    a.setDataModificacao(rs.getDate("dataModificacao").toLocalDate());
+                } else {
+                    throw new SQLException("Avaliação física não encontrada");
+                }
+
+                return a;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível buscar a avaliação física!", e);
+        }
+    }
+
+    /// ACHAR POR PESSOA
+    public List<AvaliacaoFisica> buscarPorPessoa(String pessoa) {
+        List<AvaliacaoFisica> avaliacoes = new ArrayList<>();
+        sql = "SELECT * FROM avaliacao_fisica WHERE pessoa = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, pessoa);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    AvaliacaoFisica avaliacao = new AvaliacaoFisica();
+                    avaliacao.setId(rs.getLong("id"));
+                    avaliacao.setPessoa(rs.getString("pessoa"));
+                    avaliacao.setUltimoTreino(rs.getString("ultimo_treino"));
+                    avaliacao.setPeso(rs.getDouble("peso"));
+                    avaliacao.setAltura(rs.getDouble("altura"));
+                    avaliacao.setImc(rs.getDouble("imc"));
+                    avaliacao.setSatisfacao(rs.getString("satisfacao"));
+                    avaliacao.setDataCriacao(rs.getDate("data_criacao").toLocalDate());
+                    avaliacao.setDataModificacao(rs.getDate("data_modificacao").toLocalDate());
+
+                    avaliacoes.add(avaliacao);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível buscar as avaliações físicas por pessoa!", e);
+        }
+
+        return avaliacoes;
     }
 }

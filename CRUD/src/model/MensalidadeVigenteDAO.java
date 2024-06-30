@@ -1,75 +1,138 @@
 package model;
 
-import java.time.LocalDate;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MensalidadeVigenteDAO{
-    
-    MensalidadeVigente [] mensalidades = new MensalidadeVigente [10];
-    
+public class MensalidadeVigenteDAO {
+
+    private String sql;
+    private MensalidadeVigente mensalidadeVigente;
+
+    // Método para inserir exemplos de mensalidades vigentes
     public void inserirMensalidadeExemplo() {
-    MensalidadeVigente exemplo1 = new MensalidadeVigente();
-    exemplo1.setValor(150.00);
-    exemplo1.setInicio(LocalDate.parse("2024-08-01"));
-    exemplo1.setTermino(LocalDate.parse("2025-07-31"));
-    inserirMensalidadeVigente(exemplo1);
-
-    // Exemplo 2
-    MensalidadeVigente exemplo2 = new MensalidadeVigente();
-    exemplo2.setValor(200.00);
-    exemplo2.setInicio(LocalDate.parse("2024-09-01"));
-    exemplo2.setTermino(LocalDate.parse("2025-08-31"));
-    inserirMensalidadeVigente(exemplo2);
-
-    // Exemplo 3
-    MensalidadeVigente exemplo3 = new MensalidadeVigente();
-    exemplo3.setValor(180.00);
-    exemplo3.setInicio(LocalDate.parse("2024-10-01"));
-    exemplo3.setTermino(LocalDate.parse("2025-09-30"));
-    inserirMensalidadeVigente(exemplo3);
-
-    // Exemplo 4
-    MensalidadeVigente exemplo4 = new MensalidadeVigente();
-    exemplo4.setValor(220.00);
-    exemplo4.setInicio(LocalDate.parse("2024-11-01"));
-    exemplo4.setTermino(LocalDate.parse("2025-10-31"));
-    inserirMensalidadeVigente(exemplo4);
-
-    // Exemplo 5
-    MensalidadeVigente exemplo5 = new MensalidadeVigente();
-    exemplo5.setValor(160.00);
-    exemplo5.setInicio(LocalDate.parse("2024-12-01"));
-    exemplo5.setTermino(LocalDate.parse("2025-11-30"));
-    inserirMensalidadeVigente(exemplo5);
-
-    // Exemplo 6
-    MensalidadeVigente exemplo6 = new MensalidadeVigente();
-    exemplo6.setValor(210.00);
-    exemplo6.setInicio(LocalDate.parse("2025-01-01"));
-    exemplo6.setTermino(LocalDate.parse("2025-12-31"));
-    inserirMensalidadeVigente(exemplo6);
+//        MensalidadeVigente exemplo1 = new MensalidadeVigente(150.00, LocalDate.parse("2024-08-01"), LocalDate.parse("2025-07-31"));
+//        inserirMensalidadeVigente(exemplo1);
+//
+//        MensalidadeVigente exemplo2 = new MensalidadeVigente(200.00, LocalDate.parse("2024-09-01"), LocalDate.parse("2025-08-31"));
+//        inserirMensalidadeVigente(exemplo2);
+//
+//        MensalidadeVigente exemplo3 = new MensalidadeVigente(180.00, LocalDate.parse("2024-10-01"), LocalDate.parse("2025-09-30"));
+//        inserirMensalidadeVigente(exemplo3);
+//
+//        MensalidadeVigente exemplo4 = new MensalidadeVigente(220.00, LocalDate.parse("2024-11-01"), LocalDate.parse("2025-10-31"));
+//        inserirMensalidadeVigente(exemplo4);
+//
+//        MensalidadeVigente exemplo5 = new MensalidadeVigente(160.00, LocalDate.parse("2024-12-01"), LocalDate.parse("2025-11-30"));
+//        inserirMensalidadeVigente(exemplo5);
+//
+//        MensalidadeVigente exemplo6 = new MensalidadeVigente(210.00, LocalDate.parse("2025-01-01"), LocalDate.parse("2025-12-31"));
+//        inserirMensalidadeVigente(exemplo6);
     }
-  public void inserirMensalidadeVigente(MensalidadeVigente mensalidade){
-      for (int i = 0; i < mensalidades.length; i++){
-          if(null == mensalidades[i]){
-              mensalidades[i] = mensalidade;
-              break;
-          } 
-      }
-  }
-  
-   public void mostrarMensalidadeVigente(){
-      for (int i = 0; i < mensalidades.length; i++){
-          if(null != mensalidades[i]){
-          System.out.println(mensalidades[i].toString());
-          }
-      }
-  }
 
-    public MensalidadeVigente[] getMensalidadesVigente() {
+    // INSERT
+    public void adicionar(MensalidadeVigente mensalidadeVigente) {
+        sql = "INSERT INTO mensalidade_vigente (valor, inicio, termino, data_criacao, data_modificacao) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setDouble(1, mensalidadeVigente.getValor());
+            ps.setDate(2, java.sql.Date.valueOf(mensalidadeVigente.getInicio()));
+            ps.setDate(3, java.sql.Date.valueOf(mensalidadeVigente.getTermino()));
+            ps.setObject(4, mensalidadeVigente.getDataCriacao());
+            ps.setObject(5, mensalidadeVigente.getDataModificacao());
+
+            ps.execute();
+
+            System.out.println("\nMensalidade vigente inserida com sucesso!");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível adicionar essa mensalidade vigente no banco!", e);
+        }
+    }
+
+    // REMOVE
+    public void remover(MensalidadeVigente mensalidadeVigente) {
+        sql = "DELETE FROM mensalidade_vigente WHERE id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setLong(1, mensalidadeVigente.getId());
+            ps.execute();
+
+            System.out.println("\nMensalidade vigente removida com sucesso!");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível remover a mensalidade vigente!", e);
+        }
+    }
+
+    // UPDATE
+    public void alterar(MensalidadeVigente mensalidadeVigente, MensalidadeVigente novaMensalidadeVigente) {
+        sql = "UPDATE mensalidade_vigente SET valor = ?, inicio = ?, termino = ? WHERE id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setDouble(1, novaMensalidadeVigente.getValor());
+            ps.setDate(2, java.sql.Date.valueOf(novaMensalidadeVigente.getInicio()));
+            ps.setDate(3, java.sql.Date.valueOf(novaMensalidadeVigente.getTermino()));
+            ps.setLong(4, mensalidadeVigente.getId());
+
+            ps.execute();
+
+            System.out.println("\nMensalidade vigente alterada com sucesso! \n");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível alterar a mensalidade vigente!", e);
+        }
+    }
+
+    // BUSCAR ID
+    public MensalidadeVigente buscar(long id) {
+        sql = "SELECT * FROM mensalidade_vigente WHERE id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                mensalidadeVigente = new MensalidadeVigente();
+
+                if (rs.next()) {
+                    mensalidadeVigente.setId(rs.getLong("id"));
+                    mensalidadeVigente.setValor(rs.getDouble("valor"));
+                    mensalidadeVigente.setInicio(rs.getDate("inicio").toLocalDate());
+                    mensalidadeVigente.setTermino(rs.getDate("termino").toLocalDate());
+                } else {
+                    throw new SQLException("Mensalidade vigente não encontrada");
+                }
+
+                return mensalidadeVigente;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível buscar a mensalidade vigente!", e);
+        }
+    }
+
+    // LISTAR TODAS AS MENSALIDADES VIGENTES
+    public List<MensalidadeVigente> listar() {
+        sql = "SELECT * FROM mensalidade_vigente";
+        List<MensalidadeVigente> mensalidades = new ArrayList<>();
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                MensalidadeVigente mensalidade = new MensalidadeVigente();
+                mensalidade.setId(rs.getLong("id"));
+                mensalidade.setValor(rs.getDouble("valor"));
+                mensalidade.setInicio(rs.getDate("inicio").toLocalDate());
+                mensalidade.setTermino(rs.getDate("termino").toLocalDate());
+                mensalidades.add(mensalidade);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível listar as mensalidades vigentes!", e);
+        }
+
         return mensalidades;
-    }
-
-    public void setPessoa(MensalidadeVigente[] mensalidades) {
-        this.mensalidades = mensalidades;
     }
 }

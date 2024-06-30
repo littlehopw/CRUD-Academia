@@ -5,19 +5,23 @@ import java.time.LocalDate;
 public class Exercicio {
     
     private long id;
-    private static long serial;
     private String nome;
     private String descricaoFoto;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
 
-    //constructor
-    public Exercicio(){
-        id = ++Exercicio.serial;
+    //DEFAULT
+    public Exercicio() {
+        // Default constructor
+    }
+
+    //CONSTRUCTOR
+    public Exercicio(String nome, String descricaoFoto) {
+        this.nome = nome;
+        this.descricaoFoto = descricaoFoto;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = LocalDate.now();
     }
-    
     public long getId() {
         return id;
     }

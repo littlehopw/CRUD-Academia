@@ -4,21 +4,26 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class EntradaAluno {
-    
+
     private long id;
-    private static long serial;
     private LocalDateTime data;
     private String nascimento;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
-    
-    //constructor
-    public EntradaAluno(){
-        id = ++EntradaAluno.serial;
+
+    //DEFAULT
+    public EntradaAluno() {
+        // Default constructor
+    }
+
+    //CONSTRUCTOR
+    public EntradaAluno(LocalDateTime data, String nascimento) {
+        this.data = data;
+        this.nascimento = nascimento;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = LocalDate.now();
     }
-    
+
     public long getId() {
         return id;
     }
@@ -58,8 +63,5 @@ public class EntradaAluno {
     public void setDataModificacao(LocalDate dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
-    
 
-    
-    
 }

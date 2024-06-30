@@ -21,11 +21,10 @@ public class Main {
         PessoaDAO pessoaDAO = new PessoaDAO();
         TreinoDAO treinoDAO = new TreinoDAO();
         TreinoAplicacaoDAO treinoaplicacaoDAO = new TreinoAplicacaoDAO();
-        
+
         Scanner scanner = new Scanner(System.in);
-        
+
         pessoaDAO.inserirPessoaExemplo();
-        avaliacaofisicaDAO.inserirAvaliacaoExemplo();
         treinoaplicacaoDAO.inserirTreinoAplicacaoExemplo();
         academiaDAO.inserirAcademiaExemplo();
         aplicacaoDAO.inserirAplicacaoExemplo();
@@ -33,11 +32,10 @@ public class Main {
         treinoDAO.inserirTreinoExemplo();
         financeiraDAO.inserirMovimentacaoFinanceiraExemplo();
         mensalidadevigenteDAO.inserirMensalidadeExemplo();
-                
-        
+
         Menus novoMenu = new Menus(academiaDAO, mensalidadeDAO, avaliacaofisicaDAO, divisaotreinoDAO, divisaotreinoMusculoDAO,
-        entradaalunoDAO, exercicioDAO, aplicacaoDAO, mensalidadevigenteDAO, financeiraDAO, pagamentorecorrenteDAO, pessoaDAO,
-        treinoDAO, treinoaplicacaoDAO);
+                entradaalunoDAO, exercicioDAO, aplicacaoDAO, mensalidadevigenteDAO, financeiraDAO, pagamentorecorrenteDAO, pessoaDAO,
+                treinoDAO, treinoaplicacaoDAO);
 
         int opcao = 1;
 
@@ -89,7 +87,7 @@ public class Main {
 
                 case 2:
                     Pessoa novoAluno = new Pessoa();
-                    
+
                     System.out.println("CADASTRO DE ALUNO\n ");
                     System.out.println("Informe seu nome: ");
                     novoAluno.setNome(scanner.nextLine());
@@ -97,12 +95,13 @@ public class Main {
                     novoAluno.setSexo(scanner.nextLine());
                     System.out.println("\nInforme seu nascimento: ");
                     novoAluno.setNascimento(scanner.nextLine());
+
                     System.out.println("\nInforme seu login: ");
                     novoAluno.setLogin(scanner.nextLine());
                     System.out.println("\nInforme sua senha: ");
                     novoAluno.setSenha(scanner.nextLine());
                     novoAluno.setTipoUsuario("aluno");
-                    
+
                     pessoaDAO.inserirPessoa(novoAluno);
 
                     System.out.println("Aluno cadastrado com sucesso!\n");
@@ -113,7 +112,7 @@ public class Main {
         }
         System.out.println("Obrigado por utilizar o sistema de academia!");
     }
-    
+
     public static void main(String[] args) {
         new Main();
     }
