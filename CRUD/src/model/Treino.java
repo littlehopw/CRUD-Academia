@@ -5,7 +5,6 @@ import java.time.LocalDate;
 public class Treino {
     
     private long id;
-    private static long serial;
     private String objetivo;
     private String divisaoTreino;
     private LocalDate dataInicio;
@@ -15,7 +14,6 @@ public class Treino {
 
     //constructor
     public Treino(){
-        id = ++Treino.serial;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = LocalDate.now();
     }

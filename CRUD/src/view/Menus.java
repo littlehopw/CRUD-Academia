@@ -67,7 +67,6 @@ public class Menus {
                         System.out.println();
                     }
 
-                    // Verificação de mensalidade em dia
                     boolean mensalidadeEmDia = new AlunoPagamentoMensalidadeDAO().verificarMensalidadeEmDia(login);
 
                     if (mensalidadeEmDia) {
@@ -84,32 +83,34 @@ public class Menus {
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
-                    boolean encontrouTreino = false;
-                    for (TreinoAplicacao treino : treinoaplicacaoDAO.getTreinoAplicacao()) {
-                        if (treino != null && treino.getTreino().equals(login)) {
-                            encontrouTreino = true;
-                            System.out.println("Detalhes do Treino de " + treino.getTreino());
-                            System.out.println("Exercício: " + treino.getExercicio());
-                            System.out.println("Exercício Aplicação: " + treino.getExercicioAplicacao());
-                            System.out.println("Divisão do Treino: " + treino.getDivisaoTreino());
-                            System.out.println("Divisão do Treino Muscular: " + treino.getDivisaoTreinoMusculo());
-                            System.out.println("Data de Criação: " + treino.getDataCriacao());
-                            System.out.println("Data de Modificação: " + treino.getDataModificacao());
-                            System.out.println();
-                        }
+
+                    List<TreinoAplicacao> treinos = treinoaplicacaoDAO.getTreinoAplicacao(login);
+                    boolean encontrouTreino = !treinos.isEmpty();
+
+                    System.out.println("Detalhes do seu treino!");
+                    System.out.println();
+
+                    for (TreinoAplicacao treino : treinos) {
+                        System.out.println("Exercício: " + treino.getExercicio());
+                        System.out.println("Exercício Aplicação: " + treino.getExercicioAplicacao());
+                        System.out.println("Divisão do Treino: " + treino.getDivisaoTreino());
+                        System.out.println("Divisão do Treino Muscular: " + treino.getDivisaoTreinoMusculo());
+                        System.out.println("Data de Criação: " + treino.getDataCriacao());
+                        System.out.println("Data de Modificação: " + treino.getDataModificacao());
+                        System.out.println();
                     }
+
                     if (!encontrouTreino) {
                         System.out.println("Nenhum treino encontrado para o usuário " + login);
                     }
                     break;
 
                 case 3:
-                    // Limpa a tela
+                    
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
                     }
 
-                    // Busca todas as avaliações físicas do usuário logado
                     List<AvaliacaoFisica> avaliacoes = new ArrayList<>();
                     try {
                         avaliacoes = avaliacaofisicaDAO.buscarPorPessoa(login);
@@ -148,7 +149,7 @@ public class Menus {
         while (opcao != 6) {
             System.out.println("Bem vindo, professor! Escolha sua opção:\n");
             System.out.println("1 - Cadastrar aluno");
-            System.out.println("2 - Cadastrar treino");
+            System.out.println("2 - Monitorar treino de aluno");
             System.out.println("3 - Entrar na Academia");
             System.out.println("4 - Ver ficha de treino do aluno");
             System.out.println("5 - Ver avaliação física dos alunos");
@@ -180,8 +181,11 @@ public class Menus {
                     System.out.println("Aluno cadastrado com sucesso!\n");
                     break;
                 case 2:
-                    System.out.println("Cadastro de Novo Treino");
-                    System.out.println("Login do aluno que realizará o treino:");
+                    for (int i = 0; i < 30; ++i) {
+                        System.out.println();
+                    }
+                    System.out.println("Monitoramento de Treino");
+                    System.out.println("Digite o login do aluno que deseja monitorar o treino:");
                     String loginAlunoTreino = scanner.nextLine();
 
                     boolean alunoTreinoEncontrado = false;
@@ -192,40 +196,85 @@ public class Menus {
                         alunoTreinoEncontrado = true;
                     }
 
+                    for (int i = 0; i < 30; ++i) {
+                        System.out.println();
+                    }
+
                     if (alunoTreinoEncontrado) {
-                        TreinoAplicacao novoTreino = new TreinoAplicacao();
+                        System.out.println("Você está monitorando o treino de:\n" + pessoa.getNome());
+                        System.out.println("1 - Cadastrar exercício no treino");
+                        System.out.println("2 - Excluir exercício no treino");
+                        System.out.println("3 - Sair da opção");
+                        int opcaoTreino = scanner.nextInt();
+                        scanner.nextLine();
 
-                        System.out.println("Exercício do treino:");
-                        novoTreino.setExercicio(scanner.nextLine());
-                        System.out.println("Aplicação do exercício (repetições):");
-                        novoTreino.setExercicioAplicacao(scanner.nextLine());
-                        System.out.println("Divisão de treino (A,B,C):");
-                        novoTreino.setDivisaoTreino(scanner.nextLine());
-                        System.out.println("Divisão de treino músculo (Perna, Ombro):");
-                        novoTreino.setDivisaoTreinoMusculo(scanner.nextLine());
-                        novoTreino.setTreino(loginAlunoTreino);
-                        novoTreino.setDataCriacao(LocalDate.now());
-                        novoTreino.setDataModificacao(LocalDate.now());
+                        switch (opcaoTreino) {
+                            case 1:
+                                for (int i = 0; i < 30; ++i) {
+                                    System.out.println();
+                                }
 
-                        boolean treinoEncontrado = false;
-                        for (int i = 0; i < treinoAplicacaoDAO.getTreinoAplicacao().length; i++) {
-                            TreinoAplicacao treino = treinoAplicacaoDAO.getTreinoAplicacao()[i];
-                            if (treino != null && treino.getTreino().equals(loginAlunoTreino)) {
-                                treino.setExercicio(novoTreino.getExercicio());
-                                treino.setExercicioAplicacao(novoTreino.getExercicioAplicacao());
-                                treino.setDivisaoTreino(novoTreino.getDivisaoTreino());
-                                treino.setDivisaoTreinoMusculo(novoTreino.getDivisaoTreinoMusculo());
-                                treino.setDataModificacao(LocalDate.now());
-                                treinoEncontrado = true;
+                                TreinoAplicacao novoTreino = new TreinoAplicacao();
+
+                                System.out.println("Exercício do treino:");
+                                novoTreino.setExercicio(scanner.nextLine());
+                                System.out.println("Aplicação do exercício (repetições):");
+                                novoTreino.setExercicioAplicacao(scanner.nextLine());
+                                System.out.println("Divisão de treino (A,B,C):");
+                                novoTreino.setDivisaoTreino(scanner.nextLine());
+                                System.out.println("Divisão de treino músculo (Perna, Ombro):");
+                                novoTreino.setDivisaoTreinoMusculo(scanner.nextLine());
+                                novoTreino.setTreino(loginAlunoTreino);
+                                novoTreino.setDataCriacao(LocalDate.now());
+                                novoTreino.setDataModificacao(LocalDate.now());
+
+                                treinoAplicacaoDAO.inserir(novoTreino);
+
+                                System.out.println("Treino cadastrado com sucesso!");
                                 break;
-                            }
-                        }
+                            case 2:
+                                List<TreinoAplicacao> treinos = treinoAplicacaoDAO.getTreinoAplicacao(loginAlunoTreino);
 
-                        if (!treinoEncontrado) {
-                            treinoAplicacaoDAO.inserirTreinoAplicacao(novoTreino);
-                        }
+                                if (!treinos.isEmpty()) {
+                                    for (int i = 0; i < 30; ++i) {
+                                        System.out.println();
+                                    }
 
-                        System.out.println("Treino cadastrado/atualizado com sucesso!");
+                                    System.out.println("Treinos encontrados:");
+                                    for (TreinoAplicacao treino : treinos) {
+                                        System.out.println("Exercício: " + treino.getExercicio());
+                                        System.out.println("Divisão de Treino: " + treino.getDivisaoTreino());
+                                        System.out.println();
+                                    }
+
+                                    System.out.println("Qual exercício deseja excluir? Digite o nome do exercício:");
+                                    String exercicioExcluir = scanner.nextLine();
+
+                                    boolean exercicioEncontrado = false;
+                                    for (TreinoAplicacao treino : treinos) {
+                                        if (treino.getExercicio().equals(exercicioExcluir)) {
+                                            treinoAplicacaoDAO.remover(exercicioExcluir, loginAlunoTreino);
+                                            exercicioEncontrado = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!exercicioEncontrado) {
+                                        System.out.println("Exercício não encontrado no treino do aluno.");
+                                    } else {
+                                        System.out.println("Exercício excluído com sucesso!");
+                                    }
+                                } else {
+                                    System.out.println("Nenhum treino encontrado para o aluno.");
+                                }
+                                break;
+                            case 3:
+                                System.out.println("Saindo da opção de monitoramento de treino.");
+                                break;
+                            default:
+                                System.out.println("Opção inválida.");
+                                break;
+                        }
                     } else {
                         System.out.println("Aluno não encontrado ou não é um aluno.");
                     }
@@ -261,22 +310,26 @@ public class Menus {
                     Pessoa pessoatreino = pessoaDAO.buscarLogin(alunoLogin);
 
                     if (pessoatreino != null && pessoatreino.getTipoUsuario().equals("aluno")) {
-                        System.out.println("Login bem-sucedido!");
                         alunoEncontrado = true;
                     }
 
                     if (alunoEncontrado) {
-                        for (TreinoAplicacao treino : treinoaplicacaoDAO.getTreinoAplicacao()) {
-                            if (treino != null && treino.getTreino().equals(alunoLogin)) {
-                                System.out.println("Detalhes do Treino de " + treino.getTreino());
-                                System.out.println("Exercício: " + treino.getExercicio());
-                                System.out.println("Exercício Aplicação: " + treino.getExercicioAplicacao());
-                                System.out.println("Divisão do Treino: " + treino.getDivisaoTreino());
-                                System.out.println("Divisão do Treino Muscular: " + treino.getDivisaoTreinoMusculo());
-                                System.out.println("Data de Criação: " + treino.getDataCriacao());
-                                System.out.println("Data de Modificação: " + treino.getDataModificacao());
-                                System.out.println();
-                            }
+                        List<TreinoAplicacao> treinos = treinoaplicacaoDAO.getTreinoAplicacao(alunoLogin);
+                        boolean encontrouTreino = !treinos.isEmpty();
+
+                        for (TreinoAplicacao treino : treinos) {
+                            System.out.println("Detalhes do Treino de " + treino.getTreino());
+                            System.out.println("Exercício: " + treino.getExercicio());
+                            System.out.println("Exercício Aplicação: " + treino.getExercicioAplicacao());
+                            System.out.println("Divisão do Treino: " + treino.getDivisaoTreino());
+                            System.out.println("Divisão do Treino Muscular: " + treino.getDivisaoTreinoMusculo());
+                            System.out.println("Data de Criação: " + treino.getDataCriacao());
+                            System.out.println("Data de Modificação: " + treino.getDataModificacao());
+                            System.out.println();
+                        }
+
+                        if (!encontrouTreino) {
+                            System.out.println("Nenhum treino encontrado para o usuário " + alunoLogin);
                         }
                     } else {
                         System.out.println("Aluno não encontrado ou não é um aluno.");
@@ -327,23 +380,15 @@ public class Menus {
 
                                     System.out.println("Informe o último treino:");
                                     novaAvaliacao.setUltimoTreino(scanner.nextLine());
-
                                     System.out.println("Informe o peso:");
                                     novaAvaliacao.setPeso(scanner.nextDouble());
-
                                     System.out.println("Informe a altura:");
                                     novaAvaliacao.setAltura(scanner.nextDouble());
-
-                                    // Calcular o IMC
                                     double imc = novaAvaliacao.getPeso() / (novaAvaliacao.getAltura() * novaAvaliacao.getAltura());
                                     novaAvaliacao.setImc(imc);
-
-                                    scanner.nextLine();  // Consumir a quebra de linha
-
+                                    scanner.nextLine();
                                     System.out.println("Informe a satisfação:");
-                                    novaAvaliacao.setSatisfacao(scanner.nextLine());
-
-                                    // Definir as datas de criação e modificação
+                                    novaAvaliacao.setSatisfacao(scanner.nextLine());                             
                                     novaAvaliacao.setDataCriacao(LocalDate.now());
                                     novaAvaliacao.setDataModificacao(LocalDate.now());
 
@@ -369,23 +414,15 @@ public class Menus {
 
                                     System.out.println("Informe o último treino:");
                                     novaAvaliacao.setUltimoTreino(scanner.nextLine());
-
                                     System.out.println("Informe o peso:");
                                     novaAvaliacao.setPeso(scanner.nextDouble());
-
                                     System.out.println("Informe a altura:");
                                     novaAvaliacao.setAltura(scanner.nextDouble());
-
-                                    // Calcular o IMC
                                     double imc = novaAvaliacao.getPeso() / (novaAvaliacao.getAltura() * novaAvaliacao.getAltura());
                                     novaAvaliacao.setImc(imc);
-
-                                    scanner.nextLine();  // Consumir a quebra de linha
-
+                                    scanner.nextLine();  
                                     System.out.println("Informe a satisfação:");
                                     novaAvaliacao.setSatisfacao(scanner.nextLine());
-
-                                    // Definir as datas de criação e modificação
                                     novaAvaliacao.setDataCriacao(LocalDate.now());
                                     novaAvaliacao.setDataModificacao(LocalDate.now());
 
@@ -424,7 +461,7 @@ public class Menus {
         while (opcao != 8) {
             System.out.println("Bem vindo, administrador! Escolha sua opção:\n");
             System.out.println("1 - Cadastrar usuario");
-            System.out.println("2 - Cadastrar treino");
+            System.out.println("2 - Monitorar treino de alunos");
             System.out.println("3 - Entrar na Academia");
             System.out.println("4 - Ver ficha de treino do aluno");
             System.out.println("5 - Ver avaliação física dos alunos");
@@ -458,8 +495,11 @@ public class Menus {
                     System.out.println("Usuario cadastrado com sucesso!");
                     break;
                 case 2:
-                    System.out.println("Cadastro de Novo Treino");
-                    System.out.println("Login do aluno que realizará o treino:");
+                    for (int i = 0; i < 30; ++i) {
+                        System.out.println();
+                    }
+                    System.out.println("Monitoramento de Treino");
+                    System.out.println("Digite o login do aluno que deseja monitorar o treino:");
                     String loginAlunoTreino = scanner.nextLine();
 
                     boolean alunoTreinoEncontrado = false;
@@ -470,41 +510,85 @@ public class Menus {
                         alunoTreinoEncontrado = true;
                     }
 
+                    for (int i = 0; i < 30; ++i) {
+                        System.out.println();
+                    }
+
                     if (alunoTreinoEncontrado) {
-                        TreinoAplicacao novoTreino = new TreinoAplicacao();
+                        System.out.println("Você está monitorando o treino de:\n" + pessoa.getNome());
+                        System.out.println("1 - Cadastrar exercício no treino");
+                        System.out.println("2 - Excluir exercício no treino");
+                        System.out.println("3 - Sair da opção");
+                        int opcaoTreino = scanner.nextInt();
+                        scanner.nextLine();
 
-                        System.out.println("Exercício do treino:");
-                        novoTreino.setExercicio(scanner.nextLine());
-                        System.out.println("Aplicação do exercício (repetições):");
-                        novoTreino.setExercicioAplicacao(scanner.nextLine());
-                        System.out.println("Divisão de treino (A,B,C):");
-                        novoTreino.setDivisaoTreino(scanner.nextLine());
-                        System.out.println("Divisão de treino músculo (Perna, Ombro):");
-                        novoTreino.setDivisaoTreinoMusculo(scanner.nextLine());
-                        novoTreino.setTreino(loginAlunoTreino);
-                        novoTreino.setDataCriacao(LocalDate.now());
-                        novoTreino.setDataModificacao(LocalDate.now());
+                        switch (opcaoTreino) {
+                            case 1:
+                                for (int i = 0; i < 30; ++i) {
+                                    System.out.println();
+                                }
 
-                        boolean treinoEncontrado = false;
-                        for (int i = 0; i < treinoAplicacaoDAO.getTreinoAplicacao().length; i++) {
-                            TreinoAplicacao treino = treinoAplicacaoDAO.getTreinoAplicacao()[i];
-                            if (treino != null && treino.getTreino().equals(loginAlunoTreino)) {
+                                TreinoAplicacao novoTreino = new TreinoAplicacao();
 
-                                treino.setExercicio(novoTreino.getExercicio());
-                                treino.setExercicioAplicacao(novoTreino.getExercicioAplicacao());
-                                treino.setDivisaoTreino(novoTreino.getDivisaoTreino());
-                                treino.setDivisaoTreinoMusculo(novoTreino.getDivisaoTreinoMusculo());
-                                treino.setDataModificacao(LocalDate.now());
-                                treinoEncontrado = true;
+                                System.out.println("Exercício do treino:");
+                                novoTreino.setExercicio(scanner.nextLine());
+                                System.out.println("Aplicação do exercício (repetições):");
+                                novoTreino.setExercicioAplicacao(scanner.nextLine());
+                                System.out.println("Divisão de treino (A,B,C):");
+                                novoTreino.setDivisaoTreino(scanner.nextLine());
+                                System.out.println("Divisão de treino músculo (Perna, Ombro):");
+                                novoTreino.setDivisaoTreinoMusculo(scanner.nextLine());
+                                novoTreino.setTreino(loginAlunoTreino);
+                                novoTreino.setDataCriacao(LocalDate.now());
+                                novoTreino.setDataModificacao(LocalDate.now());
+
+                                treinoAplicacaoDAO.inserir(novoTreino);
+
+                                System.out.println("Treino cadastrado com sucesso!");
                                 break;
-                            }
-                        }
+                            case 2:
+                                List<TreinoAplicacao> treinos = treinoAplicacaoDAO.getTreinoAplicacao(loginAlunoTreino);
 
-                        if (!treinoEncontrado) {
-                            treinoAplicacaoDAO.inserirTreinoAplicacao(novoTreino);
-                        }
+                                if (!treinos.isEmpty()) {
+                                    for (int i = 0; i < 30; ++i) {
+                                        System.out.println();
+                                    }
 
-                        System.out.println("Treino cadastrado/atualizado com sucesso!");
+                                    System.out.println("Treinos encontrados:");
+                                    for (TreinoAplicacao treino : treinos) {
+                                        System.out.println("Exercício: " + treino.getExercicio());
+                                        System.out.println("Divisão de Treino: " + treino.getDivisaoTreino());
+                                        System.out.println();
+                                    }
+
+                                    System.out.println("Qual exercício deseja excluir? Digite o nome do exercício:");
+                                    String exercicioExcluir = scanner.nextLine();
+
+                                    boolean exercicioEncontrado = false;
+                                    for (TreinoAplicacao treino : treinos) {
+                                        if (treino.getExercicio().equals(exercicioExcluir)) {
+                                            treinoAplicacaoDAO.remover(exercicioExcluir, loginAlunoTreino);
+                                            exercicioEncontrado = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!exercicioEncontrado) {
+                                        System.out.println("Exercício não encontrado no treino do aluno.");
+                                    } else {
+                                        System.out.println("Exercício excluído com sucesso!");
+                                    }
+                                } else {
+                                    System.out.println("Nenhum treino encontrado para o aluno.");
+                                }
+                                break;
+                            case 3:
+                                System.out.println("Saindo da opção de monitoramento de treino.");
+                                break;
+                            default:
+                                System.out.println("Opção inválida.");
+                                break;
+                        }
                     } else {
                         System.out.println("Aluno não encontrado ou não é um aluno.");
                     }
@@ -529,7 +613,7 @@ public class Menus {
                 case 4:
                     System.out.println("Ficha de Treino do Aluno");
                     System.out.println("Informe o login do aluno:");
-                    String alunoLogin = scanner.next();
+                    String alunoLogin = scanner.nextLine();
 
                     for (int i = 0; i < 30; ++i) {
                         System.out.println();
@@ -544,17 +628,22 @@ public class Menus {
                     }
 
                     if (alunoEncontrado) {
-                        for (TreinoAplicacao treino : treinoaplicacaoDAO.getTreinoAplicacao()) {
-                            if (treino != null && treino.getTreino().equals(alunoLogin)) {
-                                System.out.println("Detalhes do Treino de " + treino.getTreino());
-                                System.out.println("Exercício: " + treino.getExercicio());
-                                System.out.println("Exercício Aplicação: " + treino.getExercicioAplicacao());
-                                System.out.println("Divisão do Treino: " + treino.getDivisaoTreino());
-                                System.out.println("Divisão do Treino Muscular: " + treino.getDivisaoTreinoMusculo());
-                                System.out.println("Data de Criação: " + treino.getDataCriacao());
-                                System.out.println("Data de Modificação: " + treino.getDataModificacao());
-                                System.out.println();
-                            }
+                        List<TreinoAplicacao> treinos = treinoaplicacaoDAO.getTreinoAplicacao(alunoLogin);
+                        boolean encontrouTreino = !treinos.isEmpty();
+
+                        for (TreinoAplicacao treino : treinos) {
+                            System.out.println("Detalhes do Treino de " + treino.getTreino());
+                            System.out.println("Exercício: " + treino.getExercicio());
+                            System.out.println("Exercício Aplicação: " + treino.getExercicioAplicacao());
+                            System.out.println("Divisão do Treino: " + treino.getDivisaoTreino());
+                            System.out.println("Divisão do Treino Muscular: " + treino.getDivisaoTreinoMusculo());
+                            System.out.println("Data de Criação: " + treino.getDataCriacao());
+                            System.out.println("Data de Modificação: " + treino.getDataModificacao());
+                            System.out.println();
+                        }
+
+                        if (!encontrouTreino) {
+                            System.out.println("Nenhum treino encontrado para o usuário " + alunoLogin);
                         }
                     } else {
                         System.out.println("Aluno não encontrado ou não é um aluno.");
@@ -659,14 +748,19 @@ public class Menus {
                                 System.out.println("Digite o valor do pagamento:");
                                 double valorPagamento = scanner.nextDouble();
                                 novoPagamento.setValorPago(valorPagamento);
-                                novoPagamento.setData(LocalDate.now());
                                 System.out.println("Digite a modalidade:");
-                                scanner.nextLine();
-                                novoPagamento.setModalidade(scanner.nextLine());
-                                System.out.println("Digite o status da mensalidade (valido ou invalido):");
-                                novoPagamento.setMensalidadeVigente(scanner.nextLine());
+                                String modalidade = scanner.nextLine();
+                                novoPagamento.setModalidade(modalidade);
+                                novoPagamento.setData(LocalDate.now());
+
+                                if (modalidade == "mensalidade" && valorPagamento == 100) {
+                                    novoPagamento.setMensalidadeVigente("valido");
+                                } else {
+                                    novoPagamento.setMensalidadeVigente("invalido");
+                                }
 
                                 alunoPagamentoMensalidadeDAO.inserirAlunoPagamentoMensalidade(novoPagamento);
+
                                 System.out.println("Pagamento registrado com sucesso!");
                             } else {
                                 System.out.println("Aluno não encontrado.");

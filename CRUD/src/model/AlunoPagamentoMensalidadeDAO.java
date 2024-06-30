@@ -12,7 +12,6 @@ public class AlunoPagamentoMensalidadeDAO {
 
     private String sql;
     private AlunoPagamentoMensalidade a;
-    List<AlunoPagamentoMensalidade> alunopagamentomensalidade = new ArrayList<>();
 
     // INSERT
     public void inserirAlunoPagamentoMensalidade(AlunoPagamentoMensalidade alunopagamento) {

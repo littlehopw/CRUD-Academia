@@ -183,6 +183,38 @@ CREATE TABLE pessoa (
 -- Inicializar serial (auto_increment) para id
 ALTER TABLE pessoa AUTO_INCREMENT = 1;
 
+-- Remover a tabela se ela já existir
+DROP TABLE IF EXISTS treino;
+
+CREATE TABLE treino (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    objetivo VARCHAR(255) NOT NULL,
+    divisao_treino VARCHAR(255) NOT NULL,
+    data_inicio DATE NOT NULL,
+    data_termino DATE NOT NULL,
+    data_criacao DATE NOT NULL,
+    data_modificacao DATE NOT NULL
+);
+
+-- Inicializar serial (auto_increment) para id
+ALTER TABLE treino AUTO_INCREMENT = 1;
+
+-- Remover a tabela se ela já existir
+DROP TABLE IF EXISTS treino_aplicacao;
+
+CREATE TABLE treino_aplicacao (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    treino VARCHAR(255) NOT NULL,
+    exercicio VARCHAR(255) NOT NULL,
+    exercicio_aplicacao VARCHAR(255) NOT NULL,
+    divisao_treino VARCHAR(255) NOT NULL,
+    divisao_treino_musculo VARCHAR(255) NOT NULL,
+    data_criacao DATE NOT NULL,
+    data_modificacao DATE NOT NULL
+);
+
+-- Inicializar serial (auto_increment) para id
+ALTER TABLE treino_aplicacao AUTO_INCREMENT = 1;
 
 -- INSERINDO EXEMPLOS
 
@@ -193,3 +225,11 @@ INSERT INTO pessoa (nome, sexo, nascimento, login, senha, tipo_usuario, data_cri
 ('Carlos Souza', 'Masculino', '2002-09-09', 'carlos', 'carlos', 'professor', CURDATE(), CURDATE()),
 ('Lucia Ferreira', 'Feminino', '2001-12-12', 'lucia', 'lucia', 'aluno', CURDATE(), CURDATE()),
 ('Roberto Santos', 'Masculino', '2000-02-17', 'roberto', 'roberto', 'aluno', CURDATE(), CURDATE());
+
+INSERT INTO treino_aplicacao (treino, exercicio, exercicio_aplicacao, divisao_treino, divisao_treino_musculo, data_criacao, data_modificacao) VALUES
+('lucia', 'elevação pélvica', '4x12', 'C', 'C = Perna', CURDATE(), CURDATE()),
+('roberto', 'elevação pélvica', '4x12', 'C', 'C = Perna', CURDATE(), CURDATE()),
+('lucia', 'rosca direta', '4x15', 'B', 'B = Bíceps', CURDATE(), CURDATE()),
+('roberto', 'agachamento', '4x10', 'C', 'C = Perna', CURDATE(), CURDATE()),
+('lucia', 'crucifixo', '3x12', 'A', 'A = Peito', CURDATE(), CURDATE()),
+('roberto', 'remada curvada', '4x8', 'B', 'B = Costas', CURDATE(), CURDATE());

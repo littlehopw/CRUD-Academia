@@ -1,86 +1,108 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class TreinoAplicacaoDAO {
-    TreinoAplicacao [] treinoAplicacoes = new TreinoAplicacao [10];
-    
-  public void  inserirTreinoAplicacaoExemplo() {
-    TreinoAplicacao exemplo1 = new TreinoAplicacao();
-    
-    exemplo1.setTreino("ana");
-    exemplo1.setExercicio("elevação pélvica");
-    exemplo1.setExercicioAplicacao("4x12");
-    exemplo1.setDivisaoTreino("C");
-    exemplo1.setDivisaoTreinoMusculo("C = Perna");
-    inserirTreinoAplicacao(exemplo1);
-    
-    TreinoAplicacao exemplo2 = new TreinoAplicacao();
-    
-    exemplo2.setTreino("joao");
-    exemplo1.setExercicio("elevação pélvica");
-    exemplo1.setExercicioAplicacao("4x12");
-    exemplo1.setDivisaoTreino("C");
-    exemplo1.setDivisaoTreinoMusculo("C = Perna");
-    inserirTreinoAplicacao(exemplo2);
-    
-    // Exemplo 3
-    TreinoAplicacao exemplo3 = new TreinoAplicacao();
-    exemplo3.setTreino("maria");
-    exemplo3.setExercicio("rosca direta");
-    exemplo3.setExercicioAplicacao("4x15");
-    exemplo3.setDivisaoTreino("B");
-    exemplo3.setDivisaoTreinoMusculo("B = Bíceps");
-    inserirTreinoAplicacao(exemplo3);
 
-    // Exemplo 4
-    TreinoAplicacao exemplo4 = new TreinoAplicacao();
-    exemplo4.setTreino("carlos");
-    exemplo4.setExercicio("agachamento");
-    exemplo4.setExercicioAplicacao("4x10");
-    exemplo4.setDivisaoTreino("C");
-    exemplo4.setDivisaoTreinoMusculo("C = Perna");
-    inserirTreinoAplicacao(exemplo4);
+    private String sql;
+    private TreinoAplicacao t;
 
-    // Exemplo 5
-    TreinoAplicacao exemplo5 = new TreinoAplicacao();
-    exemplo5.setTreino("lucia");
-    exemplo5.setExercicio("crucifixo");
-    exemplo5.setExercicioAplicacao("3x12");
-    exemplo5.setDivisaoTreino("A");
-    exemplo5.setDivisaoTreinoMusculo("A = Peito");
-    inserirTreinoAplicacao(exemplo5);
+    public void inserirTreinoAplicacaoExemplo() {
 
-    // Exemplo 6
-    TreinoAplicacao exemplo6 = new TreinoAplicacao();
-    exemplo6.setTreino("roberto");
-    exemplo6.setExercicio("remada curvada");
-    exemplo6.setExercicioAplicacao("4x8");
-    exemplo6.setDivisaoTreino("B");
-    exemplo6.setDivisaoTreinoMusculo("B = Costas");
-    inserirTreinoAplicacao(exemplo6);
-}
-    
-  public void inserirTreinoAplicacao(TreinoAplicacao treinoaplicacao){
-      for (int i = 0; i < treinoAplicacoes.length; i++){
-          if(null == treinoAplicacoes[i]){
-              treinoAplicacoes[i] = treinoaplicacao;
-              break;
-          } 
-      }
-  }
-  
-   public void mostrarTreinoAplicacao(){
-      for (int i = 0; i < treinoAplicacoes.length; i++){
-          if(null != treinoAplicacoes[i]){
-          System.out.println(treinoAplicacoes[i].toString());
-          }
-      }
-  }
-
-    public TreinoAplicacao[] getTreinoAplicacao() {
-        return treinoAplicacoes;
     }
 
-    public void setTreino(TreinoAplicacao[] treinoAplicacoes) {
-        this.treinoAplicacoes = treinoAplicacoes;
+    // INSERT
+    public void inserir(TreinoAplicacao treinoaplicacao) {
+        sql = "INSERT INTO treino_aplicacao (treino, exercicio, exercicio_aplicacao, divisao_treino, divisao_treino_musculo, data_criacao, data_modificacao) "
+                + "VALUES (?,?,?,?,?,?,?)";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            // VALORES
+            ps.setString(1, treinoaplicacao.getTreino());
+            ps.setString(2, treinoaplicacao.getExercicio());
+            ps.setString(3, treinoaplicacao.getExercicioAplicacao());
+            ps.setString(4, treinoaplicacao.getDivisaoTreino());
+            ps.setString(5, treinoaplicacao.getDivisaoTreinoMusculo());
+            ps.setDate(6, java.sql.Date.valueOf(treinoaplicacao.getDataCriacao()));
+            ps.setDate(7, java.sql.Date.valueOf(treinoaplicacao.getDataModificacao()));
+
+            ps.execute();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível adicionar o treino no banco!", e);
+        }
+    }
+
+    // REMOVE
+    public void remover(String exercicio, String treino) {
+        sql = "DELETE FROM treino_aplicacao WHERE exercicio = ? and treino = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, exercicio);
+            ps.setString(2, treino);
+
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível remover o exercício!", e);
+        }
+    }
+
+    // UPDATE
+    public void alterar(TreinoAplicacao treinoaplicacao) {
+        sql = "UPDATE treino_aplicacao SET treino = ?, exercicio = ?, exercicio_aplicacao = ?, divisao_treino = ?, divisao_treino_musculo = ?, data_modificacao = ? where id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            // VALORES
+            ps.setString(1, treinoaplicacao.getTreino());
+            ps.setString(2, treinoaplicacao.getExercicio());
+            ps.setString(3, treinoaplicacao.getExercicioAplicacao());
+            ps.setString(4, treinoaplicacao.getDivisaoTreino());
+            ps.setString(5, treinoaplicacao.getDivisaoTreinoMusculo());
+            ps.setDate(6, java.sql.Date.valueOf(treinoaplicacao.getDataModificacao()));
+            ps.setLong(7, treinoaplicacao.getId());
+
+            ps.execute();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível alterar o treino!", e);
+        }
+    }
+
+    //ACHAR NOME
+    public List<TreinoAplicacao> getTreinoAplicacao(String login) {
+        List<TreinoAplicacao> treinos = new ArrayList<>();
+        sql = "SELECT * FROM treino_aplicacao WHERE treino = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, login);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    TreinoAplicacao treino = new TreinoAplicacao();
+                    treino.setId(rs.getLong("id"));
+                    treino.setTreino(rs.getString("treino"));
+                    treino.setExercicio(rs.getString("exercicio"));
+                    treino.setExercicioAplicacao(rs.getString("exercicio_aplicacao"));
+                    treino.setDivisaoTreino(rs.getString("divisao_treino"));
+                    treino.setDivisaoTreinoMusculo(rs.getString("divisao_treino_musculo"));
+                    treino.setDataCriacao(rs.getDate("data_criacao").toLocalDate());
+                    treino.setDataModificacao(rs.getDate("data_modificacao").toLocalDate());
+
+                    treinos.add(treino);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar treinos aplicados!", e);
+        }
+
+        return treinos;
     }
 }
