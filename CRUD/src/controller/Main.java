@@ -1,5 +1,8 @@
 package controller;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.DocumentException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 import model.*;
@@ -7,7 +10,7 @@ import view.Menus;
 
 public class Main {
 
-    public Main() {
+    public Main() throws DocumentException, BadElementException, IOException {
         AcademiaDAO academiaDAO = new AcademiaDAO();
         AlunoPagamentoMensalidadeDAO mensalidadeDAO = new AlunoPagamentoMensalidadeDAO();
         AvaliacaoFisicaDAO avaliacaofisicaDAO = new AvaliacaoFisicaDAO();
@@ -115,7 +118,7 @@ public class Main {
         System.out.println("Obrigado por utilizar o sistema de academia!");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DocumentException, BadElementException, IOException {
         new Main();
     }
 }

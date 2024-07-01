@@ -1,5 +1,9 @@
 package view;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.DocumentException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +53,10 @@ public class Menus {
         }
     }
 
-    public void menuLoginAluno(String login, String senha) {
+    public void menuLoginAluno(String login, String senha) throws DocumentException, BadElementException, IOException {
 
         int opcao = 0;
+        int escolha;
 
         while (opcao != 4) {
             System.out.println("Bem vindo, aluno! Escolha sua opção:\n");
@@ -99,7 +104,17 @@ public class Menus {
                         System.out.println("Data de Modificação: " + treino.getDataModificacao());
                         System.out.println();
                     }
-
+                    System.out.println("Deseja gerar PDF? 1-sim 2-nao");
+                    escolha = scanner.nextInt();
+                    if (escolha == 1){
+                        GerarTreinoAplicacao gerarPdf = new GerarTreinoAplicacao();                              
+                        String destino = "FichaTreino_" + login + ".pdf";
+                        try {
+                            gerarPdf.createPdf(destino, login);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }  
                     if (!encontrouTreino) {
                         System.out.println("Nenhum treino encontrado para o usuário " + login);
                     }
@@ -129,6 +144,18 @@ public class Menus {
                             System.out.println("Satisfação: " + avaliacao.getSatisfacao());
                             System.out.println();
                         }
+                        System.out.println("Deseja gerar PDF? 1-sim 2-nao");
+                        escolha = scanner.nextInt();
+                        if (escolha == 1){
+                            GerarPdfAvaliacaoFisica gerarPdf = new GerarPdfAvaliacaoFisica();
+
+                            String destino = "AvaliacaoFisica_" + login + ".pdf";
+                            try {
+                                    gerarPdf.createPdf(destino, login);
+                                } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                }
+                        }    
                     } else {
                         System.out.println("Nenhuma avaliação física encontrada para o usuário " + login);
                     }
@@ -142,8 +169,9 @@ public class Menus {
         }
     }
 
-    public void menuLoginProfessor(String login, String senha) {
+    public void menuLoginProfessor(String login, String senha) throws DocumentException, BadElementException, IOException {
         int opcao = 0;
+        int escolha;
         TreinoAplicacaoDAO treinoAplicacaoDAO = new TreinoAplicacaoDAO();
 
         while (opcao != 6) {
@@ -327,6 +355,17 @@ public class Menus {
                             System.out.println("Data de Modificação: " + treino.getDataModificacao());
                             System.out.println();
                         }
+                        System.out.println("Deseja gerar PDF? 1-sim 2-nao");
+                        escolha = scanner.nextInt();
+                        if (escolha == 1){
+                            GerarTreinoAplicacao gerarPdf = new GerarTreinoAplicacao();                              
+                            String destino = "FichaTreino_" + alunoLogin + ".pdf";
+                        try {
+                            gerarPdf.createPdf(destino, alunoLogin);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        }  
 
                         if (!encontrouTreino) {
                             System.out.println("Nenhum treino encontrado para o usuário " + alunoLogin);
@@ -368,8 +407,8 @@ public class Menus {
                                     System.out.println("Satisfação: " + avaliacao.getSatisfacao());
                                     System.out.println("Data de Criação: " + avaliacao.getDataCriacao());
                                     System.out.println("Data de Modificação: " + avaliacao.getDataModificacao());
-                                    System.out.println();
-                                }
+                                    System.out.println();                               
+                                }                              
 
                                 System.out.println("Deseja adicionar uma nova avaliação? (sim/não)");
                                 String resposta = scanner.nextLine();
@@ -402,6 +441,17 @@ public class Menus {
                                     System.out.println("Você escolheu não realizar uma nova avaliação física do aluno!");
                                     System.out.println();
                                 }
+                                System.out.println("Deseja gerar PDF? 1-sim 2-nao");
+                                escolha = scanner.nextInt();
+                                if (escolha == 1){
+                                    GerarPdfAvaliacaoFisica gerarPdf = new GerarPdfAvaliacaoFisica();
+                                    String destino = "AvaliacaoFisica_" + alunoLoginAvaliacao + ".pdf";
+                                    try {
+                                            gerarPdf.createPdf(destino, alunoLoginAvaliacao);
+                                        } catch (FileNotFoundException e) {
+                                                e.printStackTrace();
+                                        }
+                                } 
 
                             } else {
                                 System.out.println("Nenhuma avaliação física encontrada para o aluno " + alunoLoginAvaliacao);
@@ -453,10 +503,11 @@ public class Menus {
         }
     }
 
-    public void menuLoginAdministrador(String login, String senha) {
+    public void menuLoginAdministrador(String login, String senha) throws DocumentException, BadElementException, IOException {
         AlunoPagamentoMensalidadeDAO alunoPagamentoMensalidadeDAO = new AlunoPagamentoMensalidadeDAO();
         TreinoAplicacaoDAO treinoAplicacaoDAO = new TreinoAplicacaoDAO();
         int opcao = 0;
+        int escolha;
 
         while (opcao != 8) {
             System.out.println("Bem vindo, administrador! Escolha sua opção:\n");
@@ -641,7 +692,17 @@ public class Menus {
                             System.out.println("Data de Modificação: " + treino.getDataModificacao());
                             System.out.println();
                         }
-
+                        System.out.println("Deseja gerar PDF? 1-sim 2-nao");
+                        escolha = scanner.nextInt();
+                        if (escolha == 1){
+                            GerarTreinoAplicacao gerarPdf = new GerarTreinoAplicacao();                              
+                            String destino = "FichaTreino_" + alunoLogin + ".pdf";
+                        try {
+                            gerarPdf.createPdf(destino, alunoLogin);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        }  
                         if (!encontrouTreino) {
                             System.out.println("Nenhum treino encontrado para o usuário " + alunoLogin);
                         }
@@ -684,6 +745,17 @@ public class Menus {
                                     System.out.println("Data de Modificação: " + avaliacao.getDataModificacao());
                                     System.out.println();
                                 }
+                                System.out.println("Deseja gerar PDF? 1-sim 2-nao");
+                                escolha = scanner.nextInt();
+                                if (escolha == 1){
+                                    GerarPdfAvaliacaoFisica gerarPdf = new GerarPdfAvaliacaoFisica();
+                                    String destino = "AvaliacaoFisica_" + alunoLoginAvaliacao + ".pdf";
+                                    try {
+                                            gerarPdf.createPdf(destino, alunoLoginAvaliacao);
+                                        } catch (FileNotFoundException e) {
+                                                e.printStackTrace();
+                                        }
+                                } 
                             } else {
                                 System.out.println("Nenhuma avaliação física encontrada para o aluno " + alunoLoginAvaliacao);
                             }
@@ -787,6 +859,17 @@ public class Menus {
                             System.out.println("Informe o ano:");
                             int anoRelatorio = scanner.nextInt();
                             alunoPagamentoMensalidadeDAO.relatorioAlunosPagaramAteFimDoMes(mesRelatorio, anoRelatorio);
+                            
+                            System.out.println("Deseja gerar PDF? 1-sim 2-nao");
+                            escolha = scanner.nextInt();
+                            if (escolha == 1){
+                            GerarPdfRelatorioPagamentos gerarPdf = new GerarPdfRelatorioPagamentos();
+                                try {
+                                    gerarPdf.createPdf("RelatorioPagamentos.pdf", mesRelatorio, anoRelatorio);
+                                } catch (DocumentException | IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                             break;
                         case 2:
                             System.out.println("Informe o mês (1 a 12):");
@@ -794,6 +877,16 @@ public class Menus {
                             System.out.println("Informe o ano:");
                             int anoMovimentacao = scanner.nextInt();
                             alunoPagamentoMensalidadeDAO.relatorioMovimentacaoAcademiaMes(mesMovimentacao, anoMovimentacao);
+                            System.out.println("Deseja gerar PDF? 1-sim 2-nao");
+                            escolha = scanner.nextInt();
+                            if (escolha == 1){
+                            GerarPdfRelatorioPagamentos gerarPdf = new GerarPdfRelatorioPagamentos();
+                                try {
+                                    gerarPdf.createPdf("RelatorioPagamentos.pdf", mesMovimentacao, anoMovimentacao);
+                                } catch (DocumentException | IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                             break;
                         default:
                             System.out.println("Opção inválida. Tente novamente.");

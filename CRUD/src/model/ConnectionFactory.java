@@ -12,7 +12,7 @@ public class ConnectionFactory {
 
             Properties properties = new Properties();
             properties.setProperty("user", "root");
-            properties.setProperty("password", "clara1400");
+            properties.setProperty("password", "125491Jh!");
             properties.setProperty("useSSL", "false");
             properties.setProperty("useTimezone", "true");
             properties.setProperty("serverTimezone", "America/Sao_Paulo");
