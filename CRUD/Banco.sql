@@ -227,9 +227,20 @@ INSERT INTO pessoa (nome, sexo, nascimento, login, senha, tipo_usuario, data_cri
 ('Roberto Santos', 'Masculino', '2000-02-17', 'roberto', 'roberto', 'aluno', CURDATE(), CURDATE());
 
 INSERT INTO treino_aplicacao (treino, exercicio, exercicio_aplicacao, divisao_treino, divisao_treino_musculo, data_criacao, data_modificacao) VALUES
-('lucia', 'elevação pélvica', '4x12', 'C', 'C = Perna', CURDATE(), CURDATE()),
-('roberto', 'elevação pélvica', '4x12', 'C', 'C = Perna', CURDATE(), CURDATE()),
-('lucia', 'rosca direta', '4x15', 'B', 'B = Bíceps', CURDATE(), CURDATE()),
-('roberto', 'agachamento', '4x10', 'C', 'C = Perna', CURDATE(), CURDATE()),
-('lucia', 'crucifixo', '3x12', 'A', 'A = Peito', CURDATE(), CURDATE()),
-('roberto', 'remada curvada', '4x8', 'B', 'B = Costas', CURDATE(), CURDATE());
+('lucia', 'elevação pélvica', '4x12', 'C', 'Perna', CURDATE(), CURDATE()),
+('roberto', 'elevação pélvica', '4x12', 'C', 'Perna', CURDATE(), CURDATE()),
+('lucia', 'rosca direta', '4x15', 'B', 'Braço', CURDATE(), CURDATE()),
+('roberto', 'agachamento', '4x10', 'C', 'Perna', CURDATE(), CURDATE()),
+('lucia', 'crucifixo', '3x12', 'A', 'Peito', CURDATE(), CURDATE()),
+('roberto', 'remada curvada', '4x8', 'D', 'Costas', CURDATE(), CURDATE());
+
+INSERT INTO avaliacao_fisica (pessoa, ultimo_treino, peso, altura, imc, satisfacao, data_criacao, data_modificacao) VALUES
+('lucia', '2024-06-22', '63', '1.56', '25.89', 'Mais ou menos', CURDATE(), CURDATE()),
+('lucia', '2024-06-30', '60', '1.56', '22.86', 'Muito satisfeito', CURDATE(), CURDATE()),
+('roberto', '2024-06-22', '85', '1.80', '20.96', 'Insatisfeito', CURDATE(), CURDATE()),
+('roberto', '2024-06-30', '82', '1.80', '25.31', 'Satisfeito', CURDATE(), CURDATE());
+
+INSERT INTO aluno_pagamento_mensalidade (pessoa, modalidade, mensalidade_vigente, valor_pago, data, data_criacao, data_modificacao) VALUES
+('maria', 'mensalidade', 'valido', 100.00, CURDATE(), CURDATE(), CURDATE()),
+('roberto', 'mensalidade', 'valido', 100.00, CURDATE(), CURDATE(), CURDATE()),
+('carlos', 'mensalidade', 'valido', 100.00, CURDATE(), CURDATE(), CURDATE());

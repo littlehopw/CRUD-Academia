@@ -104,7 +104,7 @@ public class AvaliacaoFisicaDAO {
         }
     }
 
-    /// ACHAR POR PESSOA
+    // ACHAR POR PESSOA
     public List<AvaliacaoFisica> buscarPorPessoa(String pessoa) {
         List<AvaliacaoFisica> avaliacoes = new ArrayList<>();
         sql = "SELECT * FROM avaliacao_fisica WHERE pessoa = ?";

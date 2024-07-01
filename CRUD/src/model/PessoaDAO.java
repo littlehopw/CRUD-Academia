@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PessoaDAO {
 
@@ -37,7 +39,6 @@ public class PessoaDAO {
 
             ps.execute();
 
-            System.out.println("\n Pessoa inserida com sucesso!");
         } catch (SQLException e) {
             throw new RuntimeException("Não foi possível adicionar essa pessoa no banco!", e);
         }
@@ -51,8 +52,7 @@ public class PessoaDAO {
 
             ps.setLong(1, pessoa.getId());
             ps.execute();
-
-            System.out.println("\n Pessoa removida com sucesso!");
+            
         } catch (SQLException e) {
             throw new RuntimeException("Não foi possível remover a pessoa!", e);
         }
@@ -112,5 +112,33 @@ public class PessoaDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Não foi possível buscar a pessoa!", e);
         }
+    }
+
+    // LISTAR TODOS OS USUÁRIOS
+    public List<Pessoa> listarTodos() {
+        List<Pessoa> pessoas = new ArrayList<>();
+        sql = "SELECT * FROM pessoa";
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Pessoa pessoa = new Pessoa();
+                pessoa.setId(rs.getLong("id"));
+                pessoa.setNome(rs.getString("nome"));
+                pessoa.setSexo(rs.getString("sexo"));
+                pessoa.setNascimento(rs.getString("nascimento"));
+                pessoa.setLogin(rs.getString("login"));
+                pessoa.setSenha(rs.getString("senha"));
+                pessoa.setTipoUsuario(rs.getString("tipo_usuario"));
+                pessoa.setDataCriacao(rs.getDate("data_criacao").toLocalDate());
+                pessoa.setDataModificacao(rs.getDate("data_modificacao").toLocalDate());
+
+                pessoas.add(pessoa);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar todas as pessoas!", e);
+        }
+
+        return pessoas;
     }
 }

@@ -1,3 +1,0 @@
-- Conectar o banco
-- Colocar os insert/delete/alter nos arquivos DAO
-- Mudar o main
